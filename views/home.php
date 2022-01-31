@@ -25,8 +25,8 @@ home.php
     <title>Avocado Mold Dreams</title>
 
 
-    <!--  Favicon ?  -->
-    <!--<link rel="icon" type="image/png" href="">-->
+    <!--  Favicon  -->
+    <link rel="icon" type="image" href="images/avoFavicon.svg">
 </head>
 
 <body id="overrideBootstrap">
