@@ -14,7 +14,31 @@ $f3 = Base::instance();
 $f3->route('GET /', function()
 {
     $views = new Template();
-    echo $views->render('views/home.php');
+    echo $views->render('views/home.html');
+});
+
+$f3->route('GET|POST /my-account', function()
+{
+    $views = new Template();
+    echo $views->render('views/my-account.html');
+});
+
+$f3->route('GET|POST /admin', function()
+{
+    $views = new Template();
+    echo $views->render('views/admin.html');
+});
+
+$f3->route('GET|POST /customer', function()
+{
+    $views = new Template();
+    echo $views->render('views/customer.html');
+});
+
+$f3->route('GET|POST /cart', function()
+{
+    $views = new Template();
+    echo $views->render('views/shopping-cart.html');
 });
 
 //run fat-free -> invokes

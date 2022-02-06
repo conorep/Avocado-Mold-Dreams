@@ -6,3 +6,16 @@ main-styles.css
 
 /* bootstrap overrides: add #overrideBootstrap prior to the class you may want to overrider*/
 /* brought to you by this: https://stackoverflow.com/questions/20721248/how-can-i-override-bootstrap-css-styles */
+
+
+/*id styles*/
+
+#resize-logo {
+    max-width: 15%;
+}
+
+/*class styles*/
+
+.header-colour {
+    background-color: #aec7b0;
+}
