@@ -11,11 +11,21 @@ main-styles.css
 /*id styles*/
 
 #resize-logo {
-    max-width: 15%;
+    max-width: 5%;
+}
+
+#title {
+    color: white;
 }
 
 /*class styles*/
 
 .header-colour {
     background-color: #aec7b0;
+}
+
+/*main styles*/
+
+body {
+    background-image: linear-gradient(135deg, #c4a68e, white);
 }
