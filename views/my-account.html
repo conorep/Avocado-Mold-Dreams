@@ -4,3 +4,52 @@ SDEV328 AMD
 my-account.html
 -->
 <include href="includes/header.html"></include>
+
+
+<div class="row justify-content-center">
+    <div class="container border border-dark m-5 col-6 " id="sign-in-block">
+        
+        <!--Admin login here-->
+        <form method="post" class="card mb-5 mt-5 " id="adminLogin" action="">
+            
+            <fieldset class="row justify-content-center">
+                
+                <div class="form-group col-10 ">
+                    
+                    <div class="mt-4">
+                        <label for="username">USERNAME:</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors['user']) }}">
+                            <span class="err">{{ @errors['user'] }}</span>
+                        </check>
+                        <input type="text" class="form-control" id="username" value="{{@username}}"
+                               placeholder="< enter user name here >" name="username">
+                    </div>
+                    
+                    <div class="mt-4">
+                        <label for="password">PASSWORD:</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors['pass']) }}">
+                            <span class="err">{{ @errors['pass'] }}</span>
+                        </check>
+                        <input type="password" class="form-control" id="password" placeholder="< enter password here >" name="password">
+                    </div>
+                    
+                    <div class="float-end">
+                        <button type="submit" class="btn btn-lg btn-outline-success mt-3 mb-3">Submit</button>
+                    </div>
+                
+                </div>
+            
+            
+            
+            </fieldset>
+        
+        </form>
+    
+    </div>
+</div>
+    
+    <include href="includes/jscript.html"></include>
+</body>
+</html>

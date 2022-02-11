@@ -6,7 +6,13 @@ main-styles.css
 
 /* bootstrap overrides: add #overrideBootstrap prior to the class you may want to overrider*/
 /* brought to you by this: https://stackoverflow.com/questions/20721248/how-can-i-override-bootstrap-css-styles */
+#overrideBootstrap .btn-outline-success:hover {
+    color: black;
+}
 
+#overrideBootstrap .form-control {
+    background-color: white;
+}
 
 /*id styles*/
 
@@ -18,14 +24,28 @@ main-styles.css
     color: white;
 }
 
+#sign-in-block {
+    border-radius: 20px;
+    margin-right: 4rem;
+    margin-left: 4rem;
+}
+
+#sign-in-block, #sign-in-block * {
+    background-color: #fcf3f3;
+}
+
 /*class styles*/
 
 .header-colour {
     background-color: #aec7b0;
 }
 
+.err {
+    color: red;
+}
+
 /*main styles*/
 
 body {
-    background-image: linear-gradient(45deg, white, #c4a68e);
+    background-image: linear-gradient(90deg, white, #c4a68e);
 }
