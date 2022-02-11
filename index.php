@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 //require the autoload file
 require_once('vendor/autoload.php');
 require('model/validation_functions.php');
+
 session_start();
 var_dump($_SESSION);
 
