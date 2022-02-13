@@ -13,7 +13,7 @@ require_once('vendor/autoload.php');
 require('model/validation_functions.php');
 
 session_start();
-var_dump($_SESSION);
+/*var_dump($_SESSION);*/
 
 //create an instance of the Base class for fat free
 $f3 = Base::instance();
