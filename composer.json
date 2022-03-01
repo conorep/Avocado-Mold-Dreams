@@ -1,0 +1,25 @@
+{
+  "name": "cobrien2/328/Avocado-Mold-Dreams",
+  "description": "AMD Web Store Project",
+  "license": "open source",
+  "authors": [
+    {
+      "name": "Conor OBrien",
+      "email": "obrien.conor@student.greenriver.edu"
+    },
+    {
+      "name": "Patrick Tagliavia",
+      "email": "tagliavia.patrick@student.greenriver.edu"
+    },
+    {
+      "name": "Regina Vanata",
+      "email": "vanata.regina@student.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  },
+  "autoload": {
+    "classmap": ["classes/", "model/", "controller/"]
+  }
+}

@@ -24,13 +24,13 @@
     session_start();
     /*var_dump($_SESSION);*/
 
-//create an instance of the Base class for fat free
+    //create an instance of the Base class for fat free
     $f3 = Base::instance();
+    $con = new Controller($f3);
 
     $f3->route('GET /', function ()
     {
-        $views = new Template();
-        echo $views->render('views/home.html');
+        $GLOBALS['con']->home();
     });
 
     $f3->route('GET|POST /my-account', function ($f3)
