@@ -9,29 +9,63 @@ admin.html
     <h1 class="text-center">BIG ADMIN PAGE STUFF HERE</h1>
     <h3 class="text-center">Username: '{{@SESSION.username}}' Password: '{{@SESSION.password}}'</h3>
 
-    <div class="container row">
+    <div class="container-fluid row">
         
         <!--orders table-->
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
             
-            <table class="sales-admin">
+            <table class="sales-admin display" style='width:100%'>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
                 
-                <thead></thead>
-                <tbody></tbody>
-                <tfoot></tfoot>
-            
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                    </tr>
+                </tfoot>
             </table>
         
         </div>
         
         <!--items table. add a button that opens a form for new additions or archiving old products.-->
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-md-6">
     
-            <table class="sales-admin">
-    
-                <thead></thead>
-                <tbody></tbody>
-                <tfoot></tfoot>
+            <table class="sales-admin display" style='width:100%'>
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>'Added' Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Item Name</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>'Added' Date</th>
+                    </tr>
+                </tfoot>
 
             </table>
             
@@ -40,11 +74,45 @@ admin.html
         <!--customer questions. add ability to answer from here-->
         <div class="col-12">
     
-            <table class="sales-admin">
+            <table class="sales-admin display" style='width:100%'>
     
-                <thead></thead>
-                <tbody></tbody>
-                <tfoot></tfoot>
+                <thead>
+                    <tr>
+                        <th>Question ID</th>
+                        <th>Date</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Question</th>
+                        <th>Has the question been answered?</th>
+                        <th>User's ID</th>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <repeat group="{{ @questionStuff }}" value="{{ @questionCategory }}">
+                        <tr>
+                            <th>{{ @questionCategory['q_id'] }}</th>
+                            <th>{{ @questionCategory['q_date'] }}</th>
+                            <th>{{ @questionCategory['contact_email'] }}</th>
+                            <th>{{ @questionCategory['user_name'] }}</th>
+                            <th>{{ @questionCategory['q_text'] }}</th>
+                            <th>{{ @questionCategory['is_answered'] }}</th>
+                            <th>{{ @questionCategory['user_id'] }}</th>
+                        </tr>
+                    </repeat>
+                </tbody>
+                
+                <tfoot>
+                    <tr>
+                        <th>Question ID</th>
+                        <th>Date</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Question</th>
+                        <th>Has the question been answered?</th>
+                        <th>User's ID</th>
+                    </tr>
+                </tfoot>
 
             </table>
             

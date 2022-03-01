@@ -70,8 +70,29 @@
         echo $views->render('views/my-account.html');
     });
 
-    $f3->route('GET|POST /admin', function ()
+    $f3->route('GET|POST /admin', function ($f3)
     {
+        /*USER QUESTIONS FIRST*/
+        //1. Define the query
+        $sql = "SELECT * FROM user_questions";
+
+        //2. Prepare the statement
+        $statement = $GLOBALS['dbh']->prepare($sql);
+
+        //3. Bind the parameters (if there are any)
+        /*n/a*/
+
+        //4. Execute the statement
+        $statement->execute();
+
+        //5. Process the result (if there is one)
+        $row = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        echo $row['q_id']." ".$row['q_date']." ".$row['contact_email']." ".$row['user_name']." "
+            .$row['q_text']." ".$row['is_answered']." ".$row['user_id'];
+
+        $f3->set('questionStuff', $row);
+
         $views = new Template();
         echo $views->render('views/admin.html');
     });
