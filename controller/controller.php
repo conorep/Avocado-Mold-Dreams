@@ -12,8 +12,6 @@
 
         function home()
         {
-            session_destroy();
-
             $views = new Template();
             echo $views->render('views/home.html');
         }
