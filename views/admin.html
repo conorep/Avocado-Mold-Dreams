@@ -9,6 +9,49 @@ admin.html
     <h1 class="text-center">BIG ADMIN PAGE STUFF HERE</h1>
     <h3 class="text-center">Username: '{{@SESSION.username}}' Password: '{{@SESSION.password}}'</h3>
 
+    <div class="container row">
+        
+        <!--orders table-->
+        <div class="col-12 col-md-4">
+            
+            <table class="sales-admin">
+                
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            
+            </table>
+        
+        </div>
+        
+        <!--items table. add a button that opens a form for new additions or archiving old products.-->
+        <div class="col-12 col-md-4">
+    
+            <table class="sales-admin">
+    
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+
+            </table>
+            
+        </div>
+    
+        <!--customer questions. add ability to answer from here-->
+        <div class="col-12">
+    
+            <table class="sales-admin">
+    
+                <thead></thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+
+            </table>
+            
+        </div>
+    </div>
+
     <include href="includes/jscript.html"></include>
+    <include href="includes/tables.html"></include>
 </body>
 </html>
