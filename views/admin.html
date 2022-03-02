@@ -29,9 +29,16 @@ admin.html
                     </tr>
                 </thead>
                 <tbody>
-                
+                    <repeat group="{{ @amdProducts }}" value="{{ @item }}">
+                        <tr>
+                            <th>{{ @item['item_id'] }}</th>
+                            <th>{{ @item['item_name'] }}</th>
+                            <th>{{ @item['price'] }}</th>
+                            <th>{{ @item['description'] }}</th>
+                            <th>{{ @item['add_date'] }}</th>
+                        </tr>
+                    </repeat>
                 </tbody>
-                
                 <tfoot>
                     <tr>
                         <th>Item ID</th>
