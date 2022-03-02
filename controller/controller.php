@@ -12,6 +12,8 @@
 
         function home()
         {
+            $this->_f3->set('amdProduct', DataLayer::getItems());
+
             $views = new Template();
             echo $views->render('views/home.html');
         }

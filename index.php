@@ -16,19 +16,18 @@
     try {
         //instantiate a PDO database object
         $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-       /* echo "\nSuccessful.";*/
+        /* echo "\nSuccessful.";*/
     } catch (PDOException $e) {
         echo "\nError connecting to DB " . $e->getMessage();
     }
 
     session_start();
-    /*var_dump($_SESSION);*/
 
     //create an instance of the Base class for fat free
     $f3 = Base::instance();
     $con = new Controller($f3);
 
-    $f3->route('GET /', function ()
+    $f3->route('GET|POST /', function ()
     {
         $GLOBALS['con']->home();
     });

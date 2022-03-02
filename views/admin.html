@@ -6,44 +6,19 @@ admin.html
 
 <include href="includes/header.html"></include>
 
-    <h1 class="text-center">BIG ADMIN PAGE STUFF HERE</h1>
-    <h3 class="text-center">Username: '{{@SESSION.username}}' Password: '{{@SESSION.password}}'</h3>
+    <h3 class="text-center">Admin page active. Hello, {{@SESSION.username}}.</h3>
 
     <div class="container-fluid row">
         
-        <!--orders table-->
-        <div class="col-12 col-md-6">
-            
-            <table class="sales-admin display" style='width:100%'>
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Price</th>
-                    </tr>
-                </tfoot>
-            </table>
         
-        </div>
         
         <!--items table. add a button that opens a form for new additions or archiving old products.-->
         <div class="col-12 col-md-6">
-    
+            <h3>Inventory</h3>
             <table class="sales-admin display" style='width:100%'>
+                <!--note: need inventory/stock table. keep that count separate
+                                   from item listing table for sql 'normalization'-->
+                <caption><strong>Inventory</strong></caption>
                 <thead>
                     <tr>
                         <th>Item ID</th>
@@ -72,10 +47,10 @@ admin.html
         </div>
     
         <!--customer questions. add ability to answer from here-->
-        <div class="col-12">
-    
+        <div class="col-12 col-md-6">
+            <h3>Customer Questions</h3>
             <table class="sales-admin display" style='width:100%'>
-    
+                <caption><strong>Customer Questions</strong></caption>
                 <thead>
                     <tr>
                         <th>Question ID</th>
@@ -96,7 +71,12 @@ admin.html
                             <th>{{ @questionCategory['contact_email'] }}</th>
                             <th>{{ @questionCategory['user_name'] }}</th>
                             <th>{{ @questionCategory['q_text'] }}</th>
-                            <th>{{ @questionCategory['is_answered'] }}</th>
+                            <th>
+                                <check if="@questionCategory['is_answered'] == 0">
+                                    <true>No</true>
+                                    <false>Yes</false>
+                                </check>
+                            </th>
                             <th>{{ @questionCategory['user_id'] }}</th>
                         </tr>
                     </repeat>
@@ -116,7 +96,38 @@ admin.html
 
             </table>
             
-        </div>
+        </div> <!--end of customer questions table-->
+
+        <!--orders table-->
+        <div class="col-12">
+            <h3>Order History</h3>
+            <table class="sales-admin display" style='width:100%'>
+                <caption><strong>Order History</strong></caption>
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+            
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                    </tr>
+                </tfoot>
+            </table>
+    
+        </div> <!--end of orders table-->
+        
     </div>
 
     <include href="includes/jscript.html"></include>
