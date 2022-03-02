@@ -5,80 +5,23 @@ home.html
 -->
 <include href="includes/header.html"></include>
 
-
-    <!--<h1 class="w-100 text-center">Body Stuff Here</h1>-->
-
     <div class="row px-5 justify-content-between">
-    
-        <!-- Inventory Item cards-->
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
+        
+        <!--inventory item cards-->
+        <repeat group="{{ @amdProducts }}" value="{{ @item }}">
+            
+            <div class="col-12 col-md-4">
+                <div class="card my-3">
+                    <img src="{{ @item['pic_link'] }}" class="card-img-top p-2" alt="{{ @item['description'] }}">
+                    <div class="card-body">
+                        <h3 class="card-title">Price ${{ @item['price'] }}</h3>
+                        <p class="card-text">{{ @item['description'] }}</p>
+                        <a href="" class="btn btn-outline-success">Add to cart</a>
+                    </div>
                 </div>
             </div>
-        </div>
-
-
-        <!-- Inventory Item cards-->
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-12 col-md-4">
-            <div class="card my-3">
-                <img src="images/amdPic.jpg" class="card-img-top p-2" alt="a mold from AMD">
-                <div class="card-body">
-                    <h3 class="card-title">Price $25.99</h3>
-                    <p class="card-text">Here's a description of this item.</p>
-                    <a href="" class="btn btn-outline-success">Add to cart</a>
-                </div>
-            </div>
-        </div>
-
+            
+        </repeat>
         
     </div>
     

@@ -8,18 +8,6 @@
 
     //require the autoload file
     require_once('vendor/autoload.php');
-    require('model/validation_functions.php');
-
-    //here's a nice way to get home directories when several people are doing work on diff servers
-    require $_SERVER['DOCUMENT_ROOT'].'/../amd-config.php';
-
-    try {
-        //instantiate a PDO database object
-        $dbh = new PDO(DB_DSN, DB_USERNAME, DB_PASSWORD);
-        /* echo "\nSuccessful.";*/
-    } catch (PDOException $e) {
-        echo "\nError connecting to DB " . $e->getMessage();
-    }
 
     session_start();
 
@@ -33,41 +21,9 @@
         $GLOBALS['con']->home();
     });
 
-    $f3->route('GET|POST /my-account', function ($f3)
+    $f3->route('GET|POST /my-account', function ()
     {
-        //initialize input variable(s) for sticky forms.
-        $username = "";
-
-        //if the form has been posted
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            if (validUserName($username)) {
-                //add data to session variable
-                $_SESSION['username'] = $username;
-            } else {
-                $f3->set('errors["user"]', 'Please enter a valid username.');
-            }
-
-            if (validPassword($password)) {
-                //add data to session variable
-                $_SESSION['password'] = $password;
-            } else {
-                $f3->set('errors["pass"]', 'Please enter a valid password.');
-            }
-
-            //redirect user to next page if no errors
-            if (empty($f3->get('errors'))) {
-                $f3->reroute('admin');
-            }
-        }
-
-        /*sticky username*/
-        $f3->set('username', $username);
-
-        $views = new Template();
-        echo $views->render('views/my-account.html');
+        $GLOBALS['con']->accountLogin();
     });
 
     $f3->route('GET|POST /admin', function ()
@@ -77,17 +33,15 @@
 
     $f3->route('GET|POST /customer', function ()
     {
-        $views = new Template();
-        echo $views->render('views/customer.html');
+        $GLOBALS['con']->customer();
     });
 
     $f3->route('GET|POST /cart', function ()
     {
-        $views = new Template();
-        echo $views->render('views/shopping-cart.html');
+        $GLOBALS['con']->cart();
     });
 
-//run fat-free -> invokes
+    //run fat-free -> invokes
     $f3->run();
 
     /*
@@ -96,5 +50,5 @@
     index.php
     */
 
-//send output to the browser
+    //send output to the browser
     ob_flush();

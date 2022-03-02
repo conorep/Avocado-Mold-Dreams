@@ -29,18 +29,15 @@
         function getUserQuestions()
         {
             //1. Define the query
-            $sql = "SELECT * FROM user_questions";
-
             //2. Prepare the statement
-            $statement = $this->_dbh->prepare($sql);
-            /*$statement = $GLOBALS['dbh']->prepare($sql);*/
-
             //3. Bind the parameters (if there are any)
-            /*n/a*/
             //4. Execute the statement
+            //5. Process the result (if there is one), return
+
+            $sql = "SELECT * FROM user_questions";
+            $statement = $this->_dbh->prepare($sql);
             $statement->execute();
 
-            //5. Process the result (if there is one), return
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
