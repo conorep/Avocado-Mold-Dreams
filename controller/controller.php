@@ -31,6 +31,9 @@
             $rows = $GLOBALS['dataLayer']->getUserQuestions();
             $this->_f3->set('questionStuff', $rows);
 
+            $rows = $GLOBALS['dataLayer']->getUsers();
+            $this->_f3->set('userTableStuff', $rows);
+
             $views = new Template();
             echo $views->render('views/admin.html');
         }
@@ -45,7 +48,8 @@
                 $username = $_POST['username'];
                 $password = $_POST['password'];
 
-                if (ValidationFunctions::validUserName($username)) {
+                // this was dummy validation. keeping for testing.
+                /*if (ValidationFunctions::validUserName($username)) {
                     //add data to session variable
                     $_SESSION['username'] = $username;
                 } else {
@@ -57,7 +61,21 @@
                     $_SESSION['password'] = $password;
                 } else {
                     $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
+                }*/
+
+                $validateEmail = $GLOBALS['dataLayer']->checkEmailExistence($username);
+                if($validateEmail == "") {
+                    $this->_f3->set('errors["user"]', 'Please enter a valid email.');
+                } else {
+
+                    $validatePass = $GLOBALS['dataLayer']->checkPass($password);
+                    if($validatePass == "") {
+                        $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
+                    } else {
+                        echo "<p>". $validatePass['user_email'] . "</p>";
+                    }
                 }
+
 
                 //redirect user to next page if no errors
                 //TODO: need to differentiate between admin and customer

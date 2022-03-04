@@ -44,6 +44,10 @@ main-styles.css
     background-color: #aec7b0;
 }
 
+.sales-admin {
+    width: 100%;
+}
+
 .err {
     color: red;
 }
