@@ -10,13 +10,14 @@ home.html
         <!--inventory item cards-->
         <repeat group="{{ @amdProducts }}" value="{{ @item }}">
             
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-sm-6 col-md-4">
                 <div class="card my-3">
                     <img src="{{ @item['pic_link'] }}" class="card-img-top p-2" alt="{{ @item['description'] }}">
                     <div class="card-body">
                         <h3 class="card-title">Price ${{ @item['price'] }}</h3>
                         <p class="card-text">{{ @item['description'] }}</p>
-                        <a href="" class="btn btn-outline-success">Add to cart</a>
+                        <!--TODO: BUTTONS NEED TO ADD TO A CART ONCE IT EXISTS-->
+                        <a href="" class="btn btn-outline-success float-end">Add to cart</a>
                     </div>
                 </div>
             </div>
