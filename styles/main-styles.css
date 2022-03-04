@@ -17,7 +17,11 @@ main-styles.css
 /*id styles*/
 
 #resize-logo {
-    max-width: 5%;
+    max-width: 8%;
+}
+
+#resize-logo-sm {
+    max-width: 15%;
 }
 
 #title {
