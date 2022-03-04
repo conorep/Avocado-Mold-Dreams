@@ -6,17 +6,16 @@ admin.html
 
 <include href="includes/header.html"></include>
 
-    <h3 class="text-center">Admin page active. Hello, {{@SESSION.username}}.</h3>
+    <h3 class="text-center text-white">Admin page active. Hello, {{@SESSION.username}}.</h3>
 
     <div class="container-fluid row">
         
         <!--items table. add a button that opens a form for new additions or archiving old products.-->
-        <div class="col-12 col-md-6">
-            <h3>Inventory</h3>
-            <table class="sales-admin display" style='width:100%'>
+        <div class="col-12 col-md-6 mb-5">
+            <h3 class="float-end">Inventory</h3>
+            <table class="sales-admin display">
                 <!--note: need inventory/stock table. keep that count separate
                                    from item listing table for sql 'normalization'-->
-                <caption><strong>Inventory</strong></caption>
                 <thead>
                     <tr>
                         <th>Item ID</th>
@@ -52,10 +51,9 @@ admin.html
         </div>
     
         <!--customer questions. add ability to answer from here-->
-        <div class="col-12 col-md-6">
-            <h3>Customer Questions</h3>
-            <table class="sales-admin display" style='width:100%'>
-                <caption><strong>Customer Questions</strong></caption>
+        <div class="col-12 col-md-6 mb-5">
+            <h3 class="float-end">Customer Questions</h3>
+            <table class="sales-admin display">
                 <thead>
                     <tr>
                         <th>Question ID</th>
@@ -104,10 +102,9 @@ admin.html
         </div> <!--end of customer questions table-->
 
         <!--orders table-->
-        <div class="col-12">
-            <h3>Order History</h3>
-            <table class="sales-admin display" style='width:100%'>
-                <caption><strong>Order History</strong></caption>
+        <div class="col-12 col-md-6 mb-5">
+            <h3 class="float-end">Order History</h3>
+            <table class="sales-admin display">
                 <thead>
                     <tr>
                         <th>Order ID</th>
@@ -132,6 +129,48 @@ admin.html
             </table>
     
         </div> <!--end of orders table-->
+
+        <!--list of users table-->
+        <div class="col-12 col-md-6 mb-5">
+            <h3 class="float-end">Site Users</h3>
+            <table class="sales-admin display">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
+                        <th>Administrator?</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <repeat group="{{ @userTableStuff }}" value="{{ @user }}">
+                        <tr>
+                            <th>{{ @user['user_id'] }}</th>
+                            <th>{{ @user['f_name'] }} {{ @user['l_name'] }}</th>
+                            <th>{{ @user['user_email'] }}</th>
+                            <th>
+                                <check if="@user['is_admin'] == 0">
+                                    <true>No</true>
+                                    <false>Yes</false>
+                                </check>
+                            </th>
+                            <th>{{ @user['user_phone'] }}</th>
+                        </tr>
+                    </repeat>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th>User ID</th>
+                        <th>User Name</th>
+                        <th>User Email</th>
+                        <th>Administrator?</th>
+                        <th>Phone Number</th>
+                    </tr>
+                </tfoot>
+            </table>
+    
+        </div> <!--end of users table-->
         
     </div>
 
