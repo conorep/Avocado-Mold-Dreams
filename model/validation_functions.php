@@ -14,4 +14,10 @@
         {
             return strlen($pass) >= 3;
         }
+
+
+        function checkPassword()
+        {
+
+        }
     }

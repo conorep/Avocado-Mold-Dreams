@@ -41,5 +41,86 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        function getUsers()
+        {
+            $sql = "SELECT * FROM users";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        function addNewItem()
+        {
+
+        }
+
+        function archiveItem()
+        {
+
+        }
+
+        //TODO: THIS NEEDS TO ESSENTIALLY MAKE A USER OBJECT
+        //TODO: make sure you check for an existing email first before making another user with that email
+        function makeNewUser()
+        {
+            $sql = "INSERT INTO users(isAdmin, userEmail, user_phone, f_name, l_name, hash_pass)
+                    VALUES(0, :email, :phoneNum, :fname, :lname, :hashpass)";
+            $statement = $this->_dbh->prepare($sql);
+
+            //hash the user's password
+            $hashedPass = $this->hashPass($_SESSION['AMDuserPass']);
+
+            $statement->bindParam(':email', $_SESSION['AMDemail']);
+            $statement->bindParam(':phoneNum', $_SESSION['AMDphoneNumber']);
+            $statement->bindParam(':fname', $_SESSION['AMDfname']);
+            $statement->bindParam(':lname', $_SESSION['AMDlname']);
+            $statement->bindParam(':hashpass', $hashedPass);
+
+            $statement->execute();
+        }
+
+        function addNewAdmin()
+        {
+
+        }
+
+        // whether this returns true or false it will be helpful.
+        // makenewuser needs it to return false, checkpass needs it to return true
+        function checkEmailExistence($userEmail)
+        {
+            $sql = "SELECT user_id FROM users WHERE user_email = :useremail";
+            $statement = $this->_dbh->prepare($sql);
+            $userEmail = stripslashes($userEmail);
+            $statement->bindParam(':useremail', $userEmail);
+
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }
+
+
+        //TODO: this should prob go in validation_functions...?
+        function checkPass($userPass)
+        {
+            $sql = "SELECT user_email FROM users WHERE hash_pass = :hashpass";
+            $statement = $this->_dbh->prepare($sql);
+
+            //block some shady sql stuff, then hash the pass
+            $userPass = stripslashes($userPass);
+            $userPass = $this->hashPass($userPass);
+
+            $statement->bindParam(':hashpass', $userPass);
+
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }
+
+        /*hash password with a salt (just gonna use the same every time for simplicity)*/
+        function hashPass($userPass)
+        {
+            $userPass = $userPass . "OrchOtters";
+            return hash("sha256", $userPass);
+        }
 
     }
