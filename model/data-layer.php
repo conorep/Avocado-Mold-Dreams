@@ -60,21 +60,28 @@
 
         }
 
-
-        //TODO: make sure you check for an existing email first before making another user with that email
-        function makeNewUser()
+        //TODO: javadoc this
+        /**
+         * @param $useremail
+         * @param $userphone
+         * @param $fname
+         * @param $lname
+         * @param $pass
+         * @return void
+         */
+         function makeNewUser($useremail, $userphone, $fname, $lname, $pass)
         {
-            $sql = "INSERT INTO users(isAdmin, userEmail, user_phone, f_name, l_name, hash_pass)
+            $sql = "INSERT INTO users(is_admin, user_email, user_phone, f_name, l_name, hash_pass)
                     VALUES(0, :email, :phoneNum, :fname, :lname, :hashpass)";
             $statement = $this->_dbh->prepare($sql);
 
             //hash the user's password
-            $hashedPass = $this->hashPass($_SESSION['AMDuserPass']);
+            $hashedPass = $this->hashPass($pass);
 
-            $statement->bindParam(':email', $_SESSION['AMDemail']);
-            $statement->bindParam(':phoneNum', $_SESSION['AMDphoneNumber']);
-            $statement->bindParam(':fname', $_SESSION['AMDfname']);
-            $statement->bindParam(':lname', $_SESSION['AMDlname']);
+            $statement->bindParam(':email', $useremail);
+            $statement->bindParam(':phoneNum', $userphone);
+            $statement->bindParam(':fname', $fname);
+            $statement->bindParam(':lname', $lname);
             $statement->bindParam(':hashpass', $hashedPass);
 
             $statement->execute();

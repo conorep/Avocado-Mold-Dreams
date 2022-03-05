@@ -15,4 +15,12 @@
             return strlen($pass) >= 3;
         }
 
+        static function validPhone()
+        {
+
+        }
+
+        /*TODO: probably need en email validation function (not just checking DB for existence), plus validating
+            names,possibly password content, etc.*/
+
     }
