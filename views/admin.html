@@ -6,7 +6,7 @@ admin.html
 
 <include href="includes/header.html"></include>
 
-    <h3 class="text-center text-white">Admin page active. Hello, {{@SESSION.username}}.</h3>
+    <h3 class="text-center text-white">Admin page active.</h3>
 
     <div class="container-fluid row">
         
@@ -58,11 +58,12 @@ admin.html
                     <tr>
                         <th>Question ID</th>
                         <th>Date</th>
+                        <th>User ID</th>
                         <th>Email</th>
-                        <th>Username</th>
-                        <th>Question</th>
+                        <th>User Name</th>
                         <th>Has the question been answered?</th>
-                        <th>User's ID</th>
+                        <th>Question</th>
+                        <th>Answer</th>
                     </tr>
                 </thead>
                 
@@ -71,16 +72,17 @@ admin.html
                         <tr>
                             <th>{{ @questionCategory['q_id'] }}</th>
                             <th>{{ @questionCategory['q_date'] }}</th>
+                            <th>{{ @questionCategory['user_id'] }}</th>
                             <th>{{ @questionCategory['contact_email'] }}</th>
                             <th>{{ @questionCategory['user_name'] }}</th>
-                            <th>{{ @questionCategory['q_text'] }}</th>
                             <th>
                                 <check if="@questionCategory['is_answered'] == 0">
                                     <true>No</true>
                                     <false>Yes</false>
                                 </check>
                             </th>
-                            <th>{{ @questionCategory['user_id'] }}</th>
+                            <th>{{ @questionCategory['q_text'] }}</th>
+                            <th>{{ @questionCategory['q_answer'] }}</th>
                         </tr>
                     </repeat>
                 </tbody>
@@ -89,11 +91,12 @@ admin.html
                     <tr>
                         <th>Question ID</th>
                         <th>Date</th>
+                        <th>User ID</th>
                         <th>Email</th>
-                        <th>Username</th>
-                        <th>Question</th>
+                        <th>User Name</th>
                         <th>Has the question been answered?</th>
-                        <th>User's ID</th>
+                        <th>Question</th>
+                        <th>Answer</th>
                     </tr>
                 </tfoot>
 
