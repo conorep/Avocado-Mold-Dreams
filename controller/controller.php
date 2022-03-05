@@ -46,8 +46,6 @@
             $newlname = "";
             $newemail = "";
             $newphone = "";
-            $newpass = "";
-
 
             //if the form has been posted
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'login') {
@@ -85,9 +83,6 @@
                 $newphone = stripslashes($_POST['newphone']);
                 $newpass = stripslashes($_POST['newpass']);
 
-                $this->_f3->set('display', 'd-block');
-                $this->_f3->set('check', 'checked');
-
                 $validNewEmail = $GLOBALS['dataLayer']->checkEmailExistence($newemail);
 
                 //check if the email address is in the system
@@ -113,11 +108,6 @@
                     $newlname = "";
                     $newemail = "";
                     $newphone = "";
-
-                    $this->_f3->set('display', 'd-none');
-                    /*so i can either make the checkbox disappear after making new user, just reload page, or
-                    figure something better*/
-                    $this->_f3->set('check', '');
                 }
             }
 
