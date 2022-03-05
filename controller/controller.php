@@ -42,9 +42,15 @@
         {
             //initialize input variable(s) for sticky forms.
             $usermail = "";
+            $newfname ="";
+            $newlname = "";
+            $newemail = "";
+            $newphone = "";
+            $newpass = "";
+
 
             //if the form has been posted
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'login') {
                 $usermail = $_POST['username'];
                 $password = $_POST['password'];
 
@@ -72,10 +78,47 @@
                         }
                     }
                 }
+            } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'newuser') {
+                $newfname = stripslashes($_POST['newfname']);
+                $newlname = stripslashes($_POST['newlname']);
+                $newemail = stripslashes($_POST['newemail']);
+                $newphone = stripslashes($_POST['newphone']);
+                $newpass = stripslashes($_POST['newpass']);
+
+                $validNewEmail = $GLOBALS['dataLayer']->checkEmailExistence($newemail);
+
+                //check if the email address is in the system
+                if(trim($newemail) == "" || $newemail == null) {
+                    $this->_f3->set('errors2["newemail"]', 'Email address is required.');
+                } elseif($validNewEmail != "") {
+                    $this->_f3->set('errors2["newemail"]', 'This email address is already registered.');
+                }
+
+                if(!ValidationFunctions::validUserName($newfname)) {
+                    $this->_f3->set('errors2["fname"]', 'First name must be longer than three letters.');
+                }
+
+                if(!ValidationFunctions::validUserName($newlname)) {
+                    $this->_f3->set('errors2["lname"]', 'Last name must be longer than three letters.');
+                }
+
+                if(empty($this->_f3->get('errors2'))) {
+                    $GLOBALS['dataLayer']->makeNewUser($newemail, $newphone, $newfname, $newlname, $newpass);
+                    $this->_f3->set('usermade["newusermade"]', 'Account successfully made. Login to continue.');
+                    //blank them again
+                    $newfname ="";
+                    $newlname = "";
+                    $newemail = "";
+                    $newphone = "";
+                }
             }
 
             /*sticky username*/
             $this->_f3->set('username', $usermail);
+            $this->_f3->set('newfname', $newfname);
+            $this->_f3->set('newlname', $newlname);
+            $this->_f3->set('newemail', $newemail);
+            $this->_f3->set('newphone', $newphone);
 
             $views = new Template();
             echo $views->render('views/my-account.html');
