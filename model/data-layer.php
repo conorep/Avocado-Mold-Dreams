@@ -60,7 +60,7 @@
 
         }
 
-        //TODO: THIS NEEDS TO ESSENTIALLY MAKE A USER OBJECT
+
         //TODO: make sure you check for an existing email first before making another user with that email
         function makeNewUser()
         {
@@ -85,12 +85,18 @@
 
         }
 
-        // whether this returns true or false it will be helpful.
-        // makenewuser needs it to return false, checkpass needs it to return true
+        /**
+         * Send in user email entry to check database for. Return array with user_email for usage to check against
+         * checkPass return values.
+         * @param $userEmail string user form input email
+         * @return mixed either empty or array with user_email
+         */
         function checkEmailExistence($userEmail)
         {
             $sql = "SELECT user_email FROM users WHERE user_email = :useremail";
             $statement = $this->_dbh->prepare($sql);
+
+            //block some shady sql stuff, then hash the pass
             $userEmail = stripslashes($userEmail);
             $statement->bindParam(':useremail', $userEmail);
 
@@ -98,8 +104,12 @@
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
-
-        //TODO: this should prob go in validation_functions...?
+        /**
+         * Send in user password entry, hash it, then check database for it. Return array with associated user email
+         * and is_admin for final verification and routing to admin or customer page.
+         * @param $userPass string user form input password
+         * @return mixed either empty or array with user_email and is_admin
+         */
         function checkPass($userPass)
         {
             $sql = "SELECT user_email, is_admin FROM users WHERE hash_pass = :hashpass";
@@ -116,7 +126,12 @@
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
-        /*hash password with a salt (just gonna use the same salt every time for simplicity)*/
+        /**
+         * This method takes an input user password and returns a hashed version. It appends a salt to the password
+         * before hashing using sha256. Used for new user creation, as well as for validation for login.
+         * @param $userPass string user password
+         * @return string hashed password with salt
+         */
         function hashPass($userPass)
         {
             $userPass = $userPass . "OrchOtters";
