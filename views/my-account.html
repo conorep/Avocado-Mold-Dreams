@@ -8,12 +8,16 @@ my-account.html
 <div class="row justify-content-center">
     <div class="container border border-dark m-5 col-6 " id="sign-in-block">
         
-        <!--Admin login here-->
+        <!-- login here-->
         <form method="post" class="card mb-5 mt-5 " id="adminLogin">
-            
+
             <fieldset class="row justify-content-center">
                 
                 <div class="form-group col-10 ">
+                    
+                    <check if="{{ isset(@usermade['newusermade']) }}">
+                        <span class="err">{{ @usermade['newusermade'] }}</span>
+                    </check>
                     
                     <div class="mt-4">
                         <label for="username">USER EMAIL:</label>
@@ -22,7 +26,7 @@ my-account.html
                             <span class="err">{{ @errors['user'] }}</span>
                         </check>
                         <input type="text" class="form-control" id="username" value="{{@username}}"
-                               placeholder="< enter user name here >" name="username">
+                               placeholder="enter user email here" name="username">
                     </div>
                     
                     <div class="mt-4">
@@ -31,22 +35,104 @@ my-account.html
                         <check if="{{ isset(@errors['pass']) }}">
                             <span class="err">{{ @errors['pass'] }}</span>
                         </check>
-                        <input type="password" class="form-control" id="password" placeholder="< enter password here >" name="password">
+                        <input type="password" class="form-control" id="password" placeholder="enter password here" name="password">
                     </div>
+    
+                    <!-- check box to show new user form or not -->
+                    <label class="mt-5"><input type="checkbox" id="newUserForms"> Create new user?</label>
                     
                     <div class="float-end">
-                        <button type="submit" class="btn btn-lg btn-outline-success mt-3 mb-3">Submit</button>
+                        <button type="submit" class="btn btn-lg btn-outline-success mt-3 mb-3"
+                                name="postbtn" value="login">Submit</button>
                     </div>
                 
                 </div>
             
             </fieldset>
         
+        </form> <!-- end login form -->
+        
+        <!-- new user form box here -->
+        <form method="post" class="mb-5 mt-5 " id="newUser" >
+    
+            <fieldset class="row justify-content-center">
+    
+                <div class="form-group col-10 ">
+    
+                    <!-- fname and lname form group -->
+                    <div class="form-group row">
+                        <!--first name-->
+                        <div class="col-md-6 col-12">
+                            <label for="newfname">FIRST NAME:</label>
+                            <!--display error if there is one -->
+                            <check if="{{ isset(@errors2['fname']) }}">
+                                <span class="err">{{ @errors2['fname'] }}</span>
+                            </check>
+                            <input type="text" class="form-control" id="newfname" value="{{@newfname}}"
+                                   placeholder="first name here" name="newfname">
+                        </div>
+    
+                        <!--last name-->
+                        <div class="col-md-6 col-12">
+                            <label for="newlname">LAST NAME:</label>
+                            <!--display error if there is one -->
+                            <check if="{{ isset(@errors2['lname']) }}">
+                                <span class="err">{{ @errors2['lname'] }}</span>
+                            </check>
+                            <input type="text" class="form-control" id="newlname" value="{{@newlname}}"
+                                   placeholder="last name here" name="newlname">
+                        </div>
+                        
+                    </div><!-- end fname and lname form group -->
+
+                    <!--user phone-->
+                    <div class="mt-4">
+                        <label for="newphone">USER PHONE NUMBER (optional):</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors2['newphone']) }}">
+                            <span class="err">{{ @errors2['newphone'] }}</span>
+                        </check>
+                        <input type="text" class="form-control" id="newphone" value="{{@newphone}}"
+                               placeholder="phone number here" name="newphone">
+                    </div>
+    
+                    <!--user email-->
+                    <div class="mt-4">
+                        <label for="newemail">USER EMAIL:</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors2['newemail']) }}">
+                            <span class="err">{{ @errors2['newemail'] }}</span>
+                        </check>
+                        <input type="text" class="form-control" id="newemail" value="{{@newemail}}"
+                               placeholder="email address here" name="newemail">
+                    </div>
+    
+                    <!--password-->
+                    <div class="mt-4">
+                        <label for="newpass">ACCOUNT PASSWORD:</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors2['pass']) }}">
+                            <span class="err">{{ @errors2['pass'] }}</span>
+                        </check>
+                        <input type="password" class="form-control" id="newpass" value="{{@newpass}}"
+                               placeholder="user password here" name="newpass">
+                    </div>
+    
+                    <div class="float-end">
+                        <button type="submit" class="btn btn-lg btn-outline-success mt-3 "
+                                name="postbtn" value="newuser">Submit</button>
+                    </div>
+
+                </div>
+                
+            </fieldset>
+            
         </form>
     
     </div>
 </div>
     
     <include href="includes/jscript.html"></include>
+    <script src="scripts/generic-script.js"></script>
 </body>
 </html>
