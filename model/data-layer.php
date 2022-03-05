@@ -89,7 +89,7 @@
         // makenewuser needs it to return false, checkpass needs it to return true
         function checkEmailExistence($userEmail)
         {
-            $sql = "SELECT user_id FROM users WHERE user_email = :useremail";
+            $sql = "SELECT user_email FROM users WHERE user_email = :useremail";
             $statement = $this->_dbh->prepare($sql);
             $userEmail = stripslashes($userEmail);
             $statement->bindParam(':useremail', $userEmail);
@@ -102,7 +102,7 @@
         //TODO: this should prob go in validation_functions...?
         function checkPass($userPass)
         {
-            $sql = "SELECT user_email FROM users WHERE hash_pass = :hashpass";
+            $sql = "SELECT user_email, is_admin FROM users WHERE hash_pass = :hashpass";
             $statement = $this->_dbh->prepare($sql);
 
             //block some shady sql stuff, then hash the pass
@@ -116,7 +116,7 @@
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
-        /*hash password with a salt (just gonna use the same every time for simplicity)*/
+        /*hash password with a salt (just gonna use the same salt every time for simplicity)*/
         function hashPass($userPass)
         {
             $userPass = $userPass . "OrchOtters";

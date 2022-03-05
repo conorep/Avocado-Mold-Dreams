@@ -41,51 +41,41 @@
         function accountLogin()
         {
             //initialize input variable(s) for sticky forms.
-            $username = "";
+            $usermail = "";
 
             //if the form has been posted
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                $username = $_POST['username'];
+                $usermail = $_POST['username'];
                 $password = $_POST['password'];
 
-                // this was dummy validation. keeping for testing.
-                /*if (ValidationFunctions::validUserName($username)) {
-                    //add data to session variable
-                    $_SESSION['username'] = $username;
-                } else {
-                    $this->_f3->set('errors["user"]', 'Please enter a valid username.');
-                }
+                //check if the email address is in the system
+                $validateEmail = $GLOBALS['dataLayer']->checkEmailExistence($usermail);
 
-                if (ValidationFunctions::validPassword($password)) {
-                    //add data to session variable
-                    $_SESSION['password'] = $password;
-                } else {
-                    $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
-                }*/
-
-                $validateEmail = $GLOBALS['dataLayer']->checkEmailExistence($username);
                 if($validateEmail == "") {
-                    $this->_f3->set('errors["user"]', 'Please enter a valid email.');
+                    //if email not in db, error code
+                    $this->_f3->set('errors["user"]', 'Please enter a valid email address.');
                 } else {
-
+                    //email exists in db, check against it for password accuracy
                     $validatePass = $GLOBALS['dataLayer']->checkPass($password);
-                    if($validatePass == "") {
+
+                    if($validatePass['user_email'] !== $usermail) {
+                        //if password doesn't match email address pass, error code
                         $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
                     } else {
-                        echo "<p>". $validatePass['user_email'] . "</p>";
+
+                        //user_id 1 is for admins, user_id 0 is for custies
+                        if($validatePass['is_admin'] == 1)
+                        {
+                            $this->_f3->reroute('admin');
+                        } else {
+                            $this->_f3->reroute('customer');
+                        }
                     }
-                }
-
-
-                //redirect user to next page if no errors
-                //TODO: need to differentiate between admin and customer
-                if (empty($this->_f3->get('errors'))) {
-                    $this->_f3->reroute('admin');
                 }
             }
 
             /*sticky username*/
-            $this->_f3->set('username', $username);
+            $this->_f3->set('username', $usermail);
 
             $views = new Template();
             echo $views->render('views/my-account.html');
