@@ -38,6 +38,10 @@ main-styles.css
     background-color: #fcf3f3;
 }
 
+#newUser {
+    display: none;
+}
+
 /*class styles*/
 
 .header-colour {
