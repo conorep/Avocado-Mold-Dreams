@@ -6,7 +6,7 @@
 
 let userCheck = document.getElementById("newUserForms");
 
-//toggle on and off, but also keep track of state with session variables.
+//toggle on and off
 userCheck.onclick = function showNewUserBox()
 {
     if (document.getElementById("newUser").style.display === "block") {

@@ -40,7 +40,7 @@ my-account.html
     
                     <!-- check box to show new user form or not -->
                     <!--for now, disappears after making a new user-->
-                    <label class="mt-5 "><input type="checkbox" id="newUserForms"> Create new user?</label>
+                    <label class="mt-5 {{ @display2 }}"><input type="checkbox" id="newUserForms" {{ @check }}> Create new user?</label>
                     
                     <div class="float-end">
                         <button type="submit" class="btn btn-lg btn-outline-success mt-3 mb-3"
@@ -55,7 +55,7 @@ my-account.html
     
         
         <!-- new user form box here -->
-        <form method="post" class="mb-5 mt-5" id="newUser">
+        <form method="post" class="mb-5 mt-5 {{ @display }} " id="newUser" >
         
             <fieldset class="row justify-content-center">
             

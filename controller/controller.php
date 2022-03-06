@@ -15,8 +15,6 @@
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
 
-            /*var_dump($rows);*/
-
             $views = new Template();
             echo $views->render('views/home.html');
         }
@@ -83,6 +81,10 @@
                 $newphone = stripslashes($_POST['newphone']);
                 $newpass = stripslashes($_POST['newpass']);
 
+                $this->_f3->set('display', 'd-block');
+                $this->_f3->set('display2', 'd-none');
+                /*$this->_f3->set('check', 'checked');*/
+
                 $validNewEmail = $GLOBALS['dataLayer']->checkEmailExistence($newemail);
 
                 //check if the email address is in the system
@@ -108,6 +110,11 @@
                     $newlname = "";
                     $newemail = "";
                     $newphone = "";
+
+                    $this->_f3->set('display', 'd-none');
+                    /*so i can either make the checkbox disappear after making new user, just reload page, or
+                    figure something better*/
+                    $this->_f3->set('check', '');
                 }
             }
 
