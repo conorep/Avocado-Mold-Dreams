@@ -21,23 +21,43 @@
 
         function admin()
         {
-            //should I make a sub method for home and admin to use...?
-            $rows = $GLOBALS['dataLayer']->getItems();
-            $this->_f3->set('amdProducts', $rows);
-
-            //user questions stuff for table display
-            $rows = $GLOBALS['dataLayer']->getUserQuestions();
-            $this->_f3->set('questionStuff', $rows);
-
-            $rows = $GLOBALS['dataLayer']->getUsers();
-            $this->_f3->set('userTableStuff', $rows);
-
             $views = new Template();
-            echo $views->render('views/admin.html');
+
+            //check to see if anyone is logged in. if yes, send them to appropriate section - don't allow access to
+            //admin page if admin not logged in.
+            if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
+                //should I make a sub method for home and admin to use...?
+                $rows = $GLOBALS['dataLayer']->getItems();
+                $this->_f3->set('amdProducts', $rows);
+
+                //user questions stuff for table display
+                $rows = $GLOBALS['dataLayer']->getUserQuestions();
+                $this->_f3->set('questionStuff', $rows);
+
+                $rows = $GLOBALS['dataLayer']->getUsers();
+                $this->_f3->set('userTableStuff', $rows);
+
+                echo $views->render('views/admin.html');
+            }
+            else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
+                $this->_f3->reroute('customer');
+            }
+            else {
+                $this->_f3->reroute('my-account');
+            }
+
         }
 
         function accountLogin()
         {
+            if (isset($_SESSION['loggedUser'])) {
+                if ($_SESSION['loggedUser']->getIsAdmin() == 0) {
+                    $this->_f3->reroute('customer');
+                } else if ($_SESSION['loggedUser']->getIsAdmin() == 1) {
+                    $this->_f3->reroute('admin');
+                }
+            }
+
             //initialize input variable(s) for sticky forms.
             $usermail = "";
             $newfname ="";
@@ -51,9 +71,9 @@
                 $password = $_POST['password'];
 
                 //check if the email address is in the system
-                $validateEmail = $GLOBALS['dataLayer']->checkEmailExistence($usermail);
+                $retrieveUser = $GLOBALS['dataLayer']->getUser($usermail);
 
-                if($validateEmail == "") {
+                if($retrieveUser == "") {
                     //if email not in db, error code
                     $this->_f3->set('errors["user"]', 'Please enter a valid email address.');
                 } else {
@@ -64,6 +84,10 @@
                         //if password doesn't match email address pass, error code
                         $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
                     } else {
+
+                        $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
+                            $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
+                            $retrieveUser['l_name'], $retrieveUser['hash_pass']);
 
                         //user_id 1 is for admins, user_id 0 is for custies
                         if($validatePass['is_admin'] == 1)
@@ -83,14 +107,13 @@
 
                 $this->_f3->set('display', 'd-block');
                 $this->_f3->set('display2', 'd-none');
-                /*$this->_f3->set('check', 'checked');*/
 
-                $validNewEmail = $GLOBALS['dataLayer']->checkEmailExistence($newemail);
+                $retrieveUser = $GLOBALS['dataLayer']->getUser($newemail);
 
                 //check if the email address is in the system
                 if(trim($newemail) == "" || $newemail == null) {
                     $this->_f3->set('errors2["newemail"]', 'Email address is required.');
-                } elseif($validNewEmail != "") {
+                } elseif($retrieveUser != "") {
                     $this->_f3->set('errors2["newemail"]', 'This email address is already registered.');
                 }
 
@@ -132,7 +155,18 @@
         function customer()
         {
             $views = new Template();
-            echo $views->render('views/customer.html');
+            if (isset($_SESSION['loggedUser'])) {
+                if ($_SESSION['loggedUser']->getIsAdmin() == 0) {
+                    //do customer stuff here!
+
+
+                    echo $views->render('views/customer.html');
+                } else if ($_SESSION['loggedUser']->getIsAdmin() == 1) {
+                    $this->_f3->reroute('admin');
+                }
+            } else {
+                    echo $views->render('views/my-account.html');
+            }
         }
 
         function cart()

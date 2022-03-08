@@ -98,9 +98,9 @@
          * @param $userEmail string user form input email
          * @return mixed either empty or array with user_email
          */
-        function checkEmailExistence($userEmail)
+        function getUser($userEmail)
         {
-            $sql = "SELECT user_email FROM users WHERE user_email = :useremail";
+            $sql = "SELECT * FROM users WHERE user_email = :useremail";
             $statement = $this->_dbh->prepare($sql);
 
             //block some shady sql stuff, then hash the pass
