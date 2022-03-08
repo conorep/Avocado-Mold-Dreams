@@ -84,7 +84,7 @@
         /**
          * @param mixed $isAdmin
          */
-        public function setIsAdmin($isAdmin): void
+        public function setIsAdmin($isAdmin)
         {
             $this->_isAdmin = $isAdmin;
         }
@@ -92,7 +92,7 @@
         /**
          * @param mixed $email
          */
-        public function setEmail($email): void
+        public function setEmail($email)
         {
             $this->_email = $email;
         }
@@ -100,7 +100,7 @@
         /**
          * @param mixed $phoneNum
          */
-        public function setPhoneNum($phoneNum): void
+        public function setPhoneNum($phoneNum)
         {
             $this->_phoneNum = $phoneNum;
         }
@@ -108,7 +108,7 @@
         /**
          * @param mixed $fname
          */
-        public function setFname($fname): void
+        public function setFname($fname)
         {
             $this->_fname = $fname;
         }
@@ -116,10 +116,11 @@
         /**
          * @param mixed $lname
          */
-        public function setLname($lname): void
+        public function setLname($lname)
         {
             $this->_lname = $lname;
         }
+
 
 
     }

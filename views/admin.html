@@ -111,22 +111,34 @@ admin.html
                 <thead>
                     <tr>
                         <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Price</th>
+                        <th>User ID</th>
+                        <th>Order Total</th>
+                        <th>Order Date</th>
+                        <th>Fulfilled?</th>
+                        <th>Fulfilled Date</th>
                     </tr>
                 </thead>
                 <tbody>
-            
+                    <repeat group="{{ @amdOrders }}" value="{{ @order }}">
+                        <tr>
+                            <th>{{ @order['order_id'] }}</th>
+                            <th>{{ @order['user_id'] }}</th>
+                            <th>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</th>
+                            <th>{{ @order['created_date'] }}</th>
+                            <th>{{ @order['is_fulfilled'] }}</th>
+                            <th>{{ @order['fulfilled_date'] }}</th>
+                        </tr>
+                    </repeat>
+                    
                 </tbody>
                 <tfoot>
                     <tr>
                         <th>Order ID</th>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Price</th>
+                        <th>User ID</th>
+                        <th>Order Total</th>
+                        <th>Order Date</th>
+                        <th>Fulfilled?</th>
+                        <th>Fulfilled Date</th>
                     </tr>
                 </tfoot>
             </table>

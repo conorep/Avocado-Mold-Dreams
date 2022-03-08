@@ -30,10 +30,24 @@
                 $rows = $GLOBALS['dataLayer']->getItems();
                 $this->_f3->set('amdProducts', $rows);
 
+                //orders for table
+                $rows = $GLOBALS['dataLayer']->getOrders();
+                $this->_f3->set('amdOrders', $rows);
+
+                //TODO: use this to populate Order class...?
+                //items for table
+/*                $rows = $GLOBALS['dataLayer']->getOrderItems();
+                $this->_f3->set('amdTotals', $rows);*/
+
+                //prices for table
+/*                $price = $GLOBALS['dataLayer']->getOrderTotal(1);
+                $this->_f3->set('dummyOrder1Total', $price);*/
+
                 //user questions stuff for table display
                 $rows = $GLOBALS['dataLayer']->getUserQuestions();
                 $this->_f3->set('questionStuff', $rows);
 
+                //users for table
                 $rows = $GLOBALS['dataLayer']->getUsers();
                 $this->_f3->set('userTableStuff', $rows);
 
@@ -67,6 +81,7 @@
 
             //if the form has been posted
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'login') {
+                //LOGIN BUTTON POST AREA
                 $usermail = $_POST['username'];
                 $password = $_POST['password'];
 
@@ -99,10 +114,11 @@
                     }
                 }
             } elseif ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'newuser') {
+                //NEW USER BUTTON POST AREA
                 $newfname = stripslashes($_POST['newfname']);
                 $newlname = stripslashes($_POST['newlname']);
                 $newemail = stripslashes($_POST['newemail']);
-                $newphone = stripslashes($_POST['newphone']);
+                $newphone = ValidationFunctions::stripPhone($_POST['newphone']);
                 $newpass = stripslashes($_POST['newpass']);
 
                 $this->_f3->set('display', 'd-block');
@@ -115,6 +131,8 @@
                     $this->_f3->set('errors2["newemail"]', 'Email address is required.');
                 } elseif($retrieveUser != "") {
                     $this->_f3->set('errors2["newemail"]', 'This email address is already registered.');
+                } elseif(!ValidationFunctions::validEmail($newemail)) {
+                    $this->_f3->set('errors2["newemail"]', 'This is not a valid email address.');
                 }
 
                 if(!ValidationFunctions::validUserName($newfname)) {
@@ -123,6 +141,10 @@
 
                 if(!ValidationFunctions::validUserName($newlname)) {
                     $this->_f3->set('errors2["lname"]', 'Last name must be longer than three letters.');
+                }
+
+                if(!ValidationFunctions::validPhone($newphone) && !empty($newphone)) {
+                    $this->_f3->set('errors2["newphone"]', 'If entering a phone number, it must be 10 numbers long.');
                 }
 
                 if(empty($this->_f3->get('errors2'))) {

@@ -50,6 +50,65 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        function getShippingAddresses($userID)
+        {
+            $sql = "SELECT * FROM shipping_info WHERE user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userid', $userID);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        function getOrders()
+        {
+            $sql = "SELECT * FROM orders";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        function getOrderItems($orderID)
+        {
+            $sql = "SELECT o.item_id, o.buy_qty, p.price 
+                            FROM order_items o, product p
+                            INNER JOIN ON o.item_id = p.item_id
+                            WHERE o.order_id = :orderID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':orderID', $orderID);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        function getOrderTotal($orderID)
+        {
+            $sql = "SELECT * from order_items o
+                        INNER JOIN product p ON o.item_id = p.item_id
+                        WHERE o.order_id = :orderid";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':orderid', $orderID);
+            $statement->execute();
+            $items = $statement->fetchAll(PDO::FETCH_ASSOC);
+            $sum = 0;
+            foreach ($items as $item)
+            {
+                $sum += $item['buy_qty'] * $item['price'];
+            }
+            return $sum;
+        }
+
+        function completeOrder()
+        {
+
+        }
+
+        function addNewAdmin()
+        {
+
+        }
+
         function addNewItem()
         {
 
@@ -60,14 +119,13 @@
 
         }
 
-        //TODO: javadoc this
         /**
+         * Create a new user and add them to the database.
          * @param $useremail
          * @param $userphone
          * @param $fname
          * @param $lname
          * @param $pass
-         * @return void
          */
          function makeNewUser($useremail, $userphone, $fname, $lname, $pass)
         {
@@ -85,11 +143,6 @@
             $statement->bindParam(':hashpass', $hashedPass);
 
             $statement->execute();
-        }
-
-        function addNewAdmin()
-        {
-
         }
 
         /**
