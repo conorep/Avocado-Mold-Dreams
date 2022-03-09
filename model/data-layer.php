@@ -26,14 +26,9 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        //generic get-all-user-questions method
         function getUserQuestions()
         {
-            //1. Define the query
-            //2. Prepare the statement
-            //3. Bind the parameters (if there are any)
-            //4. Execute the statement
-            //5. Process the result (if there is one), return
-
             $sql = "SELECT * FROM user_questions";
             $statement = $this->_dbh->prepare($sql);
             $statement->execute();
@@ -109,7 +104,21 @@
 
         }
 
-        function addNewItem()
+        //TODO: set a qty in item_stock table after this. need item_id, though
+        function addNewItem($itemName, $itemPrice, $itemDesc, $sendName)
+        {
+            $sql = "INSERT INTO product(item_name, price, description, pic_link)
+                    VALUES(:itemname, :itemprice, :itemdesc, :piclink)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemname', $itemName);
+            $statement->bindParam(':itemprice', $itemPrice);
+            $statement->bindParam(':itemdesc', $itemDesc);
+            $statement->bindParam(':piclink', $sendName);
+
+            $statement->execute();
+        }
+
+        function addItemQty()
         {
 
         }

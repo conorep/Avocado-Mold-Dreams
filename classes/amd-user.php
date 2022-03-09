@@ -34,7 +34,7 @@
         }
 
         /**
-         * @return mixed
+         * @return number
          */
         public function getUserID()
         {
@@ -42,7 +42,7 @@
         }
 
         /**
-         * @return mixed
+         * @return number
          */
         public function getIsAdmin()
         {
@@ -50,7 +50,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getEmail()
         {
@@ -58,7 +58,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getPhoneNum()
         {
@@ -66,7 +66,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getFname()
         {
@@ -74,7 +74,7 @@
         }
 
         /**
-         * @return mixed
+         * @return String
          */
         public function getLname()
         {
@@ -82,7 +82,7 @@
         }
 
         /**
-         * @param mixed $isAdmin
+         * @param number $isAdmin
          */
         public function setIsAdmin($isAdmin)
         {
@@ -90,7 +90,7 @@
         }
 
         /**
-         * @param mixed $email
+         * @param String $email
          */
         public function setEmail($email)
         {
@@ -98,7 +98,7 @@
         }
 
         /**
-         * @param mixed $phoneNum
+         * @param String $phoneNum
          */
         public function setPhoneNum($phoneNum)
         {
@@ -106,7 +106,7 @@
         }
 
         /**
-         * @param mixed $fname
+         * @param String $fname
          */
         public function setFname($fname)
         {
@@ -114,7 +114,7 @@
         }
 
         /**
-         * @param mixed $lname
+         * @param String $lname
          */
         public function setLname($lname)
         {

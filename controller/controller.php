@@ -26,6 +26,9 @@
             //check to see if anyone is logged in. if yes, send them to appropriate section - don't allow access to
             //admin page if admin not logged in.
             if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
+                //vars for sticky forms
+                $itemName = ""; $itemPrice = ""; $itemQty = "";
+
                 //should I make a sub method for home and admin to use...?
                 $rows = $GLOBALS['dataLayer']->getItems();
                 $this->_f3->set('amdProducts', $rows);
@@ -33,15 +36,6 @@
                 //orders for table
                 $rows = $GLOBALS['dataLayer']->getOrders();
                 $this->_f3->set('amdOrders', $rows);
-
-                //TODO: use this to populate Order class...?
-                //items for table
-/*                $rows = $GLOBALS['dataLayer']->getOrderItems();
-                $this->_f3->set('amdTotals', $rows);*/
-
-                //prices for table
-/*                $price = $GLOBALS['dataLayer']->getOrderTotal(1);
-                $this->_f3->set('dummyOrder1Total', $price);*/
 
                 //user questions stuff for table display
                 $rows = $GLOBALS['dataLayer']->getUserQuestions();
@@ -51,8 +45,85 @@
                 $rows = $GLOBALS['dataLayer']->getUsers();
                 $this->_f3->set('userTableStuff', $rows);
 
+                //stuff for adding new item to db inventory
+                if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'itemUpload') {
+
+                    //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
+                    $sendName = basename($_FILES["uploadPic"]["name"]);
+                    $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
+                    $uploadOk = 1;
+                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+                    // Check if image file is actual or fake image
+                    if(isset($_POST["submit"])) {
+                        $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+                        if($check !== false) {
+                            echo "File is an image - " . $check["mime"] . ".";
+                            $uploadOk = 1;
+                        } else {
+                            echo "File is not an image.";
+                            $uploadOk = 0;
+                        }
+                    }
+                    // Check if file already exists
+                    if (file_exists($target_file)) {
+                        echo "Sorry, file already exists.";
+                        $uploadOk = 0;
+                    }
+                    // Check file size
+                    if ($_FILES["fileToUpload"]["size"] > 500000) {
+                        echo "Sorry, your file is too large.";
+                        $uploadOk = 0;
+                    }
+                    // Allow certain file formats
+                    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                        echo "Sorry, only JPG, JPEG, & PNG files are allowed.";
+                        $uploadOk = 0;
+                    }
+                    // Check if $uploadOk is set to 0 by an error
+                    if ($uploadOk == 0) {
+                        echo "Sorry, your file was not uploaded.";
+                    // if everything is ok, try to upload file
+                    } else {
+                        if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                            $this->_f3->set('picUp["newPicUp"]', 'Picture uploaded successfully.');
+                        } else {
+                            $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
+                        }
+                    }
+
+                    $itemName = stripslashes($_POST['uploadName']);
+                    $itemPrice = stripslashes($_POST['uploadPrice']);
+                    $itemDesc = stripslashes($_POST['uploadDescription']);
+                    $itemQty = stripslashes($_POST['uploadCount']);
+
+                    if($itemName == "") {
+                        $this->_f3->set('errors["emptyName"]', 'Item name empty.');
+                    }
+                    if($itemPrice == "") {
+                        $this->_f3->set('errors["emptyPrice"]', 'Item price empty.');
+                    }
+                    if($itemDesc == "") {
+                        $this->_f3->set('errors["emptyDesc"]', 'Item description empty.');
+                    }
+                    if($itemQty == "") {
+                        $this->_f3->set('errors["emptyQty"]', 'Item qty empty.');
+                    }
+
+                    if(empty($this->_f3->get('errors'))) {
+                        $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
+                    }
+
+                }
+
+                /*sticky forms*/
+                $this->_f3->set('uploadName', $itemName);
+                $this->_f3->set('uploadPrice', $itemPrice);
+                $this->_f3->set('uploadCount', $itemQty);
+
                 echo $views->render('views/admin.html');
             }
+            //if not admin, send to user page if there's a login active in session
             else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
                 $this->_f3->reroute('customer');
             }

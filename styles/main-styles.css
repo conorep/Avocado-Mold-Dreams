@@ -28,18 +28,26 @@ main-styles.css
     color: white;
 }
 
-#sign-in-block {
+#forms-block {
     border-radius: 20px;
     margin-right: 4rem;
     margin-left: 4rem;
 }
 
-#sign-in-block, #sign-in-block * {
+#forms-block, #forms-block * {
     background-color: #fcf3f3;
 }
 
 #newUser {
     display: none;
+}
+
+#newItemForms input, label {
+    display: block;
+}
+
+#newItemForms input[type=text], textarea {
+    width: 100%;
 }
 
 /*class styles*/

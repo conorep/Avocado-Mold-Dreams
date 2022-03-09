@@ -6,7 +6,96 @@ admin.html
 
 <include href="includes/header.html"></include>
 
-    <h3 class="text-center text-white">Admin page active.</h3>
+    <h3 class="text-center text-white">Admin page active. Welcome, {{ @SESSION.loggedUser->getFname() }}</h3>
+
+    <!--'add new item' form-->
+    <div class="row justify-content-center">
+        
+        <div class="container border border-dark m-5 col-md-8 col-10" id="forms-block">
+            
+            <form method="post" class="card m-3 " id="newItemForms">
+                <h3 class="text-center">Add New Item</h3>
+                <check if="{{ isset(@picUp['newPicUp']) }}">
+                    <span class="err">{{ @picUp['newPicUp'] }}</span>
+                </check>
+                <check if="{{ isset(@picUp['noPicUp']) }}">
+                    <span class="err">{{ @picUp['noPicUp'] }}</span>
+                </check>
+                
+                <fieldset class="row justify-content-center">
+
+                    <div class="form-group col-md-10 col-12 ">
+    
+                        <div class="mt-4 row justify-content-center">
+                            
+                            <!--item name-->
+                            <div class="col-md-6 col-12 my-md-0 my-2 px-5 px-md-2">
+                                <check if="{{ isset(@errors['emptyName']) }}">
+                                    <span class="err">{{ @errors['emptyName'] }}</span>
+                                </check>
+                                <label for="uploadName">Item Name </label>
+                                <input class="form-control" type="text" name="uploadName" value="{{ @uploadName }}" id="uploadName">
+                            </div>
+
+                            <!--item price-->
+                            <div class="col-md-6 col-12 my-md-0 my-2 px-5 px-md-2">
+                                <check if="{{ isset(@errors['emptyPrice']) }}">
+                                    <span class="err">{{ @errors['emptyPrice'] }}</span>
+                                </check>
+                                <label for="uploadPrice">Item Price </label>
+                                <input class="form-control" type="text" name="uploadPrice" value="{{ @uploadPrice }}" id="uploadPrice">
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="mt-4 row justify-content-center">
+    
+                            <!--item description-->
+                            <div class="col-lg-6 col-12 my-lg-0 my-2 px-5 px-lg-1">
+                                <check if="{{ isset(@errors['emptyDesc']) }}">
+                                    <span class="err">{{ @errors['emptyDesc'] }}</span>
+                                </check>
+                                <label for="uploadDescription">Description </label>
+                                <textarea class="form-control" type="text" name="uploadDescription" id="uploadDescription"></textarea>
+                            </div>
+
+                            <!--item pic-->
+                            <div class="col-lg-6 col-12 my-lg-0 my-2 px-5 px-lg-1">
+                                <label for="uploadPic">Picture </label>
+                                <input class="form-control" type="file" name="uploadPic" value="uploadPic" id="uploadPic">
+                            </div>
+                            
+                        </div>
+
+        
+                        <div class="mt-4 mb-2 row justify-content-center">
+    
+                            <!--item qty-->
+                            <div class="col-6 my-md-1 my-2 mb-3 ">
+                                <check if="{{ isset(@errors['emptyQty']) }}">
+                                    <span class="err">{{ @errors['emptyQty'] }}</span>
+                                </check>
+                                <label for="uploadCount">Quantity </label>
+                                <input class="form-control" type="text" name="uploadCount" value="{{ @uploadCount }}" id="uploadCount">
+                            </div>
+
+                            <!--submit-->
+                            <div class="col-6 my-md-1 my-2 ">
+                                <label for="submitNewItem"></label>
+                                <button class="float-end btn btn-lg btn-outline-success" type="submit"
+                                        value="itemUpload" id="submitNewItem" name="submit">Submit</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </fieldset>
+
+                
+            </form>
+        </div>
+        
+    </div> <!--end add new item form-->
 
     <div class="container-fluid row">
         
