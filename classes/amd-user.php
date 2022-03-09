@@ -121,6 +121,4 @@
             $this->_lname = $lname;
         }
 
-
-
     }
