@@ -13,7 +13,7 @@ admin.html
         
         <div class="container border border-dark m-5 col-md-8 col-10" id="forms-block">
             
-            <form method="post" class="card m-3 " id="newItemForms">
+            <form method="post" class="card m-3 " id="newItemForms" enctype="multipart/form-data">
                 <h3 class="text-center">Add New Item</h3>
                 <check if="{{ isset(@picUp['newPicUp']) }}">
                     <span class="err">{{ @picUp['newPicUp'] }}</span>
