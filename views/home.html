@@ -5,12 +5,12 @@ home.html
 -->
 <include href="includes/header.html"></include>
 
-    <div class="row px-5 justify-content-between">
+    <div class="row px-5 justify-content-start align-items-center">
         
         <!--inventory item cards-->
         <repeat group="{{ @amdProducts }}" value="{{ @item }}">
             
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
                 <div class="card my-3">
                     <img src="images/inventory/{{ @item['pic_link'] }}" class="card-img-top p-2" alt="{{ @item['description'] }}">
                     <div class="card-body">
