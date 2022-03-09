@@ -261,7 +261,7 @@
                     $this->_f3->reroute('admin');
                 }
             } else {
-                    echo $views->render('views/my-account.html');
+                    $this->_f3->reroute('my-account');
             }
         }
 
