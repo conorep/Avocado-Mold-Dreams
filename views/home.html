@@ -17,7 +17,8 @@ home.html
                         <h3 class="card-title">Price ${{ @item['price'] }}</h3>
                         <p class="card-text">{{ @item['description'] }}</p>
                         <!--TODO: BUTTONS NEED TO ADD TO A CART ONCE IT EXISTS-->
-                        <a href="" class="btn btn-outline-success float-end">Add to cart</a>
+<!--                        <a href="" class="btn btn-outline-success float-end">Add to cart</a>-->
+                        <button class="btn btn-outline-success float-end" id="addCartBtn">Add to cart</button>
                     </div>
                 </div>
             </div>
@@ -28,5 +29,23 @@ home.html
     
 
     <include href="includes/jscript.html"></include>
+
+<script src="//code.jquery.com/jquery.js"></script>
+
+<!--This script posts to the page below, does what is in the php (session change), and makes that change available-->
+<script>
+    $("#addCartBtn").on("click",function(){
+        $.ajax({
+            type: "POST",
+            url: "https://ptagliavia.greenriverdev.com/SDEV328/Avocado-Mold-Dreams/classes/ajaxTest.php",
+            data: $(this).serialize(),
+            success: function(){
+            }
+        });
+
+        return false;
+    });
+</script>
+
 </body>
 </html>

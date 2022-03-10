@@ -6,11 +6,15 @@
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
 
+
     //require the autoload file
     require_once('vendor/autoload.php');
 
     session_start();
-
+    echo("SESSION: <BR>");
+    var_dump($_SESSION);
+    echo("<br>POST: <BR>");
+    var_dump($_POST);
     //create an instance of the Base class for fat free
     $f3 = Base::instance();
     $con = new Controller($f3);
