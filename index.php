@@ -19,6 +19,7 @@
     $f3 = Base::instance();
     $con = new Controller($f3);
     $dataLayer = new DataLayer();
+    $cart = new Cart();
 
     $f3->route('GET|POST /', function ()
     {
