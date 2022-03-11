@@ -13,8 +13,10 @@
     session_start();
     echo("SESSION: <BR>");
     var_dump($_SESSION);
-    echo("<br>POST: <BR>");
-    var_dump($_POST);
+
+/*    echo("<br>POST: <BR>");
+    var_dump($_POST);*/
+
     //create an instance of the Base class for fat free
     $f3 = Base::instance();
     $con = new Controller($f3);

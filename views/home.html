@@ -18,7 +18,8 @@ home.html
                         <p class="card-text">{{ @item['description'] }}</p>
                         <!--TODO: BUTTONS NEED TO ADD TO A CART ONCE IT EXISTS-->
 <!--                        <a href="" class="btn btn-outline-success float-end">Add to cart</a>-->
-                        <button class="btn btn-outline-success float-end" id="addCartBtn">Add to cart</button>
+                        <button class="btn btn-outline-success float-end addToCart" value="{{@item['item_id']}}"
+                                id="cartBtn">Add to cart</button>^
                     </div>
                 </div>
             </div>
@@ -34,7 +35,7 @@ home.html
 
 <!--This script posts to the page below, does what is in the php (session change), and makes that change available-->
 <script>
-    $("#addCartBtn").on("click",function(){
+/*    $("#addCartBtn").on("click",function(){
         $.ajax({
             type: "POST",
             url: "classes/ajaxTest.php",
@@ -43,6 +44,16 @@ home.html
             }
         });
 
+        return false;
+    });*/
+    $(".addToCart").on("click",function(){
+       let val = $(this).val();
+        $.ajax({
+                    type: "POST",
+                    url: "classes/ajaxTest.php",
+                    data: {'sendVal' : val},
+                    success: function(){}
+        });
         return false;
     });
 </script>
