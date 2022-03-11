@@ -29,7 +29,7 @@ echo "<br>";
      *Adds
      */
 
-    public function addToCart(int $productID) {
+    public function addToCart($productID) {
         $this->_inCartArr[$productID] = 1;
     }
 
