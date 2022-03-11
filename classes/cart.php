@@ -2,7 +2,7 @@
 
 class Cart
 {
-    private array $_inCartArr;
+    private $_inCartArr;
 
 
 
@@ -18,7 +18,6 @@ echo "<br>";
 */
     /**
      * default constructor, don't believe this needs anything to initialize the cart
-     *
      */
     public function __construct()
     {
@@ -26,49 +25,12 @@ echo "<br>";
     }
 
     /**
-     * Get items in  cart.
-     *
-     * @return array
-     */
-    public function getItems()
-    {
-        return $this->_inCartArr;
-    }
-
-    /**
      *
      *Adds
      */
 
-    public function addToCart(int $productID)
-    {
+    public function addToCart(int $productID) {
         $this->_inCartArr[$productID] = 1;
-    }
-
-    /**
-     * Get the total of item in cart.
-     *
-     * @return int
-     */
-    public function getTotalItem()
-    {
-        $total = 0;
-
-        foreach ($this->_inCartArr as $items) {
-            foreach ($items as $item) {
-                $total++;
-            }
-        }
-
-        return $total;
-    }
-
-    /**
-     * Remove all items from cart.
-     */
-    public function clear()
-    {
-        $this->_inCartArr = [];
     }
 
 }
