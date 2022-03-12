@@ -10,8 +10,15 @@
             $this->_f3 = $f3;
         }
 
+        function logOut()
+        {
+            session_destroy();
+            $this->_f3->reroute('my-account');
+        }
+
         function home()
         {
+            $_SESSION['adminOrCusty'] = 0;
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
             //if add to cart button is clicked?
@@ -27,9 +34,10 @@
         {
             $views = new Template();
 
-            //check to see if anyone is logged in. if yes, send them to appropriate section - don't allow access to
-            //admin page if admin not logged in.
+            //check to see if anyone is logged in.
+            //if yes, send them to appropriate section - don't allow access to admin page if admin not logged in.
             if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
+                $_SESSION['adminOrCusty'] = 1;
                 //vars for sticky forms
                 $itemName = ""; $itemPrice = ""; $itemQty = "";
 
@@ -55,42 +63,29 @@
                     //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
                     $sendName = basename($_FILES["uploadPic"]["name"]);
                     $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
-                    $uploadOk = 1;
                     $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
                     // Check if image file is actual or fake image
                     if(isset($_POST["submit"])) {
                         $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
-                        if($check !== false) {
-                            /*echo "File is an image - " . $check["mime"] . ".";*/
-                            $uploadOk = 1;
-                        } else {
-                            echo "File is not an image.";
-                            $uploadOk = 0;
+                        if(!$check) {
+                            $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
                         }
                     }
-                    // Check if file already exists
-                    //TODO: note that this error check doesn't work, because I wills till be sending a file name
-                    // for an existing file to the DB. gotta be careful. validations to come!
+                    // Check if file already exists here. IS THIS NEEDED?
                     if (file_exists($target_file)) {
-                        echo "Sorry, file already exists.";
-                        $uploadOk = 0;
+                        $this->_f3->set('errorsPic["fileExists"]', 'This image already exists at this domain.');
                     }
                     // Check file size
                     if ($_FILES["uploadPic"]["size"] > 500000) {
-                        echo "Sorry, your file is too large.";
-                        $uploadOk = 0;
+                        $this->_f3->set('errorsPic["imageSize"]', 'Your image cannot be bigger than 500kb.');
                     }
                     // Allow certain file formats
                     if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                        echo "Sorry, only JPG, JPEG, & PNG files are allowed.";
-                        $uploadOk = 0;
+                        $this->_f3->set('errorsPic["imageType"]', 'Your picture must be jpg, png, or jpeg.');
                     }
-                    // Check if $uploadOk is set to 0 by an error
-                    if ($uploadOk == 0) {
-                        echo "Sorry, your file was not uploaded.";
-                    // if everything is ok, try to upload file
-                    } else {
+                    // if no image errors,
+                    if (empty($this->_f3->get('errorsPic'))) {
                         if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
                             $this->_f3->set('picUp["newPicUp"]', 'Picture uploaded successfully.');
                         } else {
@@ -120,9 +115,7 @@
                         $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
                         $itemName = ""; $itemPrice = ""; $itemQty = "";
                     }
-
                 }
-
                 /*sticky forms*/
                 $this->_f3->set('uploadName', $itemName);
                 $this->_f3->set('uploadPrice', $itemPrice);
@@ -130,6 +123,10 @@
 
                 echo $views->render('views/admin.html');
             }
+            //TODO: next up create the actual admin
+/*            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'adminUpdate') {
+
+            }*/
             //if not admin, send to user page if there's a login active in session
             else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
                 $this->_f3->reroute('customer');
@@ -137,7 +134,6 @@
             else {
                 $this->_f3->reroute('my-account');
             }
-
         }
 
         function accountLogin()
@@ -149,10 +145,9 @@
                     $this->_f3->reroute('admin');
                 }
             }
-
             //initialize input variable(s) for sticky forms.
             $usermail = "";
-            $newfname ="";
+            $newfname = "";
             $newlname = "";
             $newemail = "";
             $newphone = "";
@@ -235,12 +230,9 @@
                     $newphone = "";
 
                     $this->_f3->set('display', 'd-none');
-                    /*so i can either make the checkbox disappear after making new user, just reload page, or
-                    figure something better*/
                     $this->_f3->set('check', '');
                 }
             }
-
             /*sticky username*/
             $this->_f3->set('username', $usermail);
             $this->_f3->set('newfname', $newfname);
@@ -256,6 +248,7 @@
         {
             $views = new Template();
             if (isset($_SESSION['loggedUser'])) {
+                $_SESSION['adminOrCusty'] = 1;
                 if ($_SESSION['loggedUser']->getIsAdmin() == 0) {
                     //do customer stuff here!
 
@@ -271,6 +264,7 @@
 
         function cart()
         {
+            $_SESSION['adminOrCusty'] = 0;
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
         }

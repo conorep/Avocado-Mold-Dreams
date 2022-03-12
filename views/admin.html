@@ -3,23 +3,34 @@ Conor, Pat, Regina
 SDEV328 AMD
 admin.html
 -->
-
 <include href="includes/header.html"></include>
 
     <h3 class="text-center text-white">Admin page active. Welcome, {{ @SESSION.loggedUser->getFname() }}</h3>
 
     <!--'add new item' form-->
     <div class="row justify-content-center">
-        
         <div class="container border border-dark m-5 col-md-8 col-10" id="forms-block">
-            
             <form method="post" class="card m-3 " id="newItemForms" enctype="multipart/form-data">
-                <h3 class="text-center">Add New Item</h3>
+                
+                <h3 class="text-center mt-3">Add New Item</h3>
+                
                 <check if="{{ isset(@picUp['newPicUp']) }}">
                     <span class="err">{{ @picUp['newPicUp'] }}</span>
                 </check>
                 <check if="{{ isset(@picUp['noPicUp']) }}">
                     <span class="err">{{ @picUp['noPicUp'] }}</span>
+                </check>
+                <check if="{{ isset(@errorsPic['realImage']) }}">
+                    <span class="err">{{ @errorsPic['realImage'] }}</span>
+                </check>
+                <check if="{{ isset(@errorsPic['fileExists']) }}">
+                    <span class="err">{{ @errorsPic['fileExists'] }}</span>
+                </check>
+                <check if="{{ isset(@errorsPic['imageSize']) }}">
+                    <span class="err">{{ @errorsPic['imageSize'] }}</span>
+                </check>
+                <check if="{{ isset(@errorsPic['imageType']) }}">
+                    <span class="err">{{ @errorsPic['imageType'] }}</span>
                 </check>
                 
                 <fieldset class="row justify-content-center">
@@ -49,7 +60,6 @@ admin.html
                         </div>
                         
                         <div class="mt-4 row justify-content-center">
-    
                             <!--item description-->
                             <div class="col-lg-6 col-12 my-lg-0 my-2 px-5 px-lg-1">
                                 <check if="{{ isset(@errors['emptyDesc']) }}">
@@ -64,12 +74,9 @@ admin.html
                                 <label for="uploadPic">Picture </label>
                                 <input class="form-control" type="file" name="uploadPic" value="uploadPic" id="uploadPic">
                             </div>
-                            
                         </div>
-
-        
+                        
                         <div class="mt-4 mb-2 row justify-content-center">
-    
                             <!--item qty-->
                             <div class="col-6 my-md-1 my-2 mb-3 ">
                                 <check if="{{ isset(@errors['emptyQty']) }}">
@@ -88,15 +95,36 @@ admin.html
                         </div>
 
                     </div>
-
                 </fieldset>
+            </form>
+        </div>
+    </div> <!--end add new item form-->
 
+    <!--make an admin form-->
+    <div class="row justify-content-center">
+        <div class="container border border-dark m-5 col-md-8 col-10" id="make-admin-block">
+            <form>
+                <div class="text-center">
+                    <h3>Non-Admin Users</h3>
+                    <h4>Select one that you'd like to make into an admin.</h4>
+                </div>
+    
+                <div class="text-center">
+                    <select class="form-control w-50 d-inline-block">
+                        <repeat group="{{@userTableStuff}}" value="{{@user}}">
+                            <check if="@user['is_admin'] == 0">
+                                <option value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
+                            </check>
+                        </repeat>
+                    </select>
+                    <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="adminUpdate">Create Admin</button>
+                </div>
                 
             </form>
         </div>
-        
-    </div> <!--end add new item form-->
+    </div>
 
+    <!--a bunch of tables-->
     <div class="container-fluid row">
         
         <!--items table. add a button that opens a form for new additions or archiving old products.-->

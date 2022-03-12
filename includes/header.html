@@ -30,8 +30,14 @@
                     <img id="resize-logo-sm" class="d-inline-block d-md-none" src="images/avoFavicon.svg" alt="avocado mold dreams logo">
                     <h2 id="title" class="text-left d-inline pb-4">Avocado Mold Dreams</h2>
                 </a>
+                <check if="@SESSION['adminOrCusty'] == 0">
+                    <a href="my-account" class="btn btn-outline-success float-end mt-4" >My Account</a>
+                </check>
                 
-                <a href="my-account" class="btn btn-outline-success float-end mt-4" >My Account</a>
+                <check if="isset(@SESSION['loggedUser'])">
+                    <a href="logout" class="btn btn-outline-success float-end mt-4 me-3" >Logout</a>
+                </check>
+                
             </div>
             
         </div>

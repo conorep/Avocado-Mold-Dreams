@@ -99,7 +99,7 @@
 
         }
 
-        function addNewAdmin()
+        function addNewAdmin($userId)
         {
 
         }

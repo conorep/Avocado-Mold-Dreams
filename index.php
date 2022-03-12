@@ -11,8 +11,8 @@
     require_once('vendor/autoload.php');
 
     session_start();
-    echo("SESSION: <BR>");
-    var_dump($_SESSION);
+/*    echo("SESSION: <BR>");
+    var_dump($_SESSION);*/
 
 /*    echo("<br>POST: <BR>");
     var_dump($_POST);*/
@@ -46,6 +46,11 @@
     $f3->route('GET|POST /cart', function ()
     {
         $GLOBALS['con']->cart();
+    });
+
+    $f3->route('GET /logout', function ()
+    {
+        $GLOBALS['con']->logOut();
     });
 
     //run fat-free -> invokes
