@@ -2,9 +2,9 @@
 
 class Cart
 {
-    public ?array $_inCartArr;
-    public int $_testField;
-//
+    //NOTE: no need to declare types in PHP.
+    public $_inCartArr;
+    public $_testField;
 /*
  $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
  foreach($age as $x=>$x_value)
@@ -25,8 +25,7 @@ echo "<br>";
      *
      *Pushes an item to the cart array containing product ids
      */
-
-    public function addToCart(int $productID) {
+    public function addToCart($productID) {
         array_push($this->_inCartArr, $productID);
 
         //just for testing purposes, went through a lot just to get the object to populate
