@@ -120,13 +120,15 @@
                     //TODO: think about validating these. do I need to...? only accessed via admin panel.
                     if ($_POST['submit'] == 'adminUpdate') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
-                        echo 'can i see this';
-                        echo 'upping user' . $_POST['addition'];
+                        $this->_f3->reroute('admin');
                     }
                     if ($_POST['submit'] == 'adminRemove') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
-                        echo 'can you see this';
-                        echo 'downing user' .  $_POST['removal'];
+                        $this->_f3->reroute('admin');
+                    }
+                    if ($_POST['submit'] == 'orderFill') {
+                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
+                        $this->_f3->reroute('admin');
                     }
                 }
                 /*sticky forms*/
@@ -182,7 +184,6 @@
                         //if password doesn't match email address pass, error code
                         $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
                     } else {
-
                         $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
                             $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
                             $retrieveUser['l_name'], $retrieveUser['hash_pass']);
@@ -278,6 +279,4 @@
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
         }
-
-
     }
