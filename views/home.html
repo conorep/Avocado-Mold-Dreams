@@ -37,7 +37,7 @@ home.html
 
 //Pat's
 
-    $("#cartBtn").on("click",function(){
+    $(".addToCart").on("click",function(){
         let productValue = $(this).val();
         $.ajax({
             type: "POST",

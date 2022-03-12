@@ -11,6 +11,11 @@
 
     session_start();
 
+    //comment out when not in use, using this for testing purposes to see what our cart is doing
+    echo("SESSION: <BR>");
+    var_dump($_SESSION);
+    echo("<br>POST: <BR>");
+    var_dump($_POST);
 
     //create an instance of the Base class for fat free
     $f3 = Base::instance();
