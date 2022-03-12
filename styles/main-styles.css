@@ -28,13 +28,13 @@ main-styles.css
     color: white;
 }
 
-#forms-block, #make-admin-block {
+#forms-block, #make-admin-block, #fulfill-block {
     border-radius: 20px;
     margin-right: 4rem;
     margin-left: 4rem;
 }
 
-#forms-block, #forms-block *, #make-admin-block, #make-admin-block * {
+#forms-block, #forms-block *, #make-admin-block, #make-admin-block *, #fulfill-block, #fulfill-block * {
     background-color: #fcf3f3;
 }
 

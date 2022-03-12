@@ -100,6 +100,34 @@ admin.html
         </div>
     </div> <!--end add new item form-->
 
+    <!--mark order fulfilled block-->
+    <div class="row justify-content-center">
+        <div class="container border border-dark m-5 col-md-8 col-10" id="fulfill-block">
+            <form class="mt-3 mb-4" method="post">
+                <div class="text-center">
+                    <h3>Order Fulfill</h3>
+                    <h4>Select one that you'd like to mark fulfilled.</h4>
+                </div>
+                
+                <div class="text-center ">
+                    <select class="form-control w-50 d-inline-block" name="fulfill">
+                        <repeat group="{{@amdOrders}}" value="{{@order}}">
+                            <check if="@order['is_fulfilled'] == 0">
+                                <option name='orderfill' value="{{@order['order_id']}}" >
+                                    Order ID: {{@order['order_id']}}
+                                    User ID: {{@order['l_name']}}
+                                    Total: {{@order['user_email']}}
+                                    {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</option>
+                            </check>
+                        </repeat>
+                    </select>
+                    <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="orderFill">Fulfill Order</button>
+                </div>
+            
+            </form>
+        </div>
+    </div>
+
     <!--make an admin form-->
     <div class="row justify-content-center">
         <div class="container border border-dark m-5 col-md-8 col-10" id="make-admin-block">
@@ -261,7 +289,12 @@ admin.html
                             <th>{{ @order['user_id'] }}</th>
                             <th>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</th>
                             <th>{{ @order['created_date'] }}</th>
-                            <th>{{ @order['is_fulfilled'] }}</th>
+                            <th>
+                                <check if="@order['is_fulfilled'] == 1">
+                                    <true>Yes</true>
+                                    <false>No</false>
+                                </check>
+                            </th>
                             <th>{{ @order['fulfilled_date'] }}</th>
                         </tr>
                     </repeat>

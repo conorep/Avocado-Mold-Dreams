@@ -39,8 +39,6 @@ home.html
 
     $("#cartBtn").on("click",function(){
         let productValue = $(this).val();
-        console.log("product val: " +productValue);
-        console.log($(this).serialize());
         $.ajax({
             type: "POST",
             url: "classes/ajaxTest.php",
