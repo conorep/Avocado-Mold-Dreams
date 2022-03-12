@@ -99,10 +99,18 @@
 
         }
 
-        function addNewAdmin($userId)
+        function changeUserType($userId, $number)
         {
+            $sql = "UPDATE users
+                    SET is_admin = :usernum
+                    WHERE user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userid', $userId);
+            $statement->bindParam(':usernum', $number);
 
+            $statement->execute();
         }
+
 
         //TODO: set a qty in item_stock table after this. need item_id, though
         function addNewItem($itemName, $itemPrice, $itemDesc, $sendName)

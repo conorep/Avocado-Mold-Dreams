@@ -59,62 +59,74 @@
                 $this->_f3->set('userTableStuff', $rows);
 
                 //stuff for adding new item to db inventory
-                if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'itemUpload') {
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                    if ($_POST['submit'] == 'itemUpload') {
+                        //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
+                        $sendName = basename($_FILES["uploadPic"]["name"]);
+                        $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
+                        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-                    //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
-                    $sendName = basename($_FILES["uploadPic"]["name"]);
-                    $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
-                    $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                        // Check if image file is actual or fake image
+                        if(isset($_POST["submit"])) {
+                            $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
+                            if(!$check) {
+                                $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
+                            }
+                        }
+                        // Check if file already exists here. IS THIS NEEDED?
+                        if (file_exists($target_file)) {
+                            $this->_f3->set('errorsPic["fileExists"]', 'This image already exists at this domain.');
+                        }
+                        // Check file size
+                        if ($_FILES["uploadPic"]["size"] > 500000) {
+                            $this->_f3->set('errorsPic["imageSize"]', 'Your image cannot be bigger than 500kb.');
+                        }
+                        // Allow certain file formats
+                        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                            $this->_f3->set('errorsPic["imageType"]', 'Your picture must be jpg, png, or jpeg.');
+                        }
+                        // if no image errors,
+                        if (empty($this->_f3->get('errorsPic'))) {
+                            if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
+                                $this->_f3->set('picUp["newPicUp"]', 'Picture uploaded successfully.');
+                            } else {
+                                $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
+                            }
+                        }
 
-                    // Check if image file is actual or fake image
-                    if(isset($_POST["submit"])) {
-                        $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
-                        if(!$check) {
-                            $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
+                        $itemName = stripslashes($_POST['uploadName']);
+                        $itemPrice = stripslashes($_POST['uploadPrice']);
+                        $itemDesc = stripslashes($_POST['uploadDescription']);
+                        $itemQty = stripslashes($_POST['uploadCount']);
+
+                        if($itemName == "") {
+                            $this->_f3->set('errors["emptyName"]', 'Item name empty.');
+                        }
+                        if($itemPrice == "") {
+                            $this->_f3->set('errors["emptyPrice"]', 'Item price empty.');
+                        }
+                        if($itemDesc == "") {
+                            $this->_f3->set('errors["emptyDesc"]', 'Item description empty.');
+                        }
+                        if($itemQty == "") {
+                            $this->_f3->set('errors["emptyQty"]', 'Item qty empty.');
+                        }
+
+                        if(empty($this->_f3->get('errors'))) {
+                            $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
+                            $itemName = ""; $itemPrice = ""; $itemQty = "";
                         }
                     }
-                    // Check if file already exists here. IS THIS NEEDED?
-                    if (file_exists($target_file)) {
-                        $this->_f3->set('errorsPic["fileExists"]', 'This image already exists at this domain.');
+                    //TODO: think about validating these. do I need to...? only accessed via admin panel.
+                    if ($_POST['submit'] == 'adminUpdate') {
+                        $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
+                        echo 'can i see this';
+                        echo 'upping user' . $_POST['addition'];
                     }
-                    // Check file size
-                    if ($_FILES["uploadPic"]["size"] > 500000) {
-                        $this->_f3->set('errorsPic["imageSize"]', 'Your image cannot be bigger than 500kb.');
-                    }
-                    // Allow certain file formats
-                    if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                        $this->_f3->set('errorsPic["imageType"]', 'Your picture must be jpg, png, or jpeg.');
-                    }
-                    // if no image errors,
-                    if (empty($this->_f3->get('errorsPic'))) {
-                        if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
-                            $this->_f3->set('picUp["newPicUp"]', 'Picture uploaded successfully.');
-                        } else {
-                            $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
-                        }
-                    }
-
-                    $itemName = stripslashes($_POST['uploadName']);
-                    $itemPrice = stripslashes($_POST['uploadPrice']);
-                    $itemDesc = stripslashes($_POST['uploadDescription']);
-                    $itemQty = stripslashes($_POST['uploadCount']);
-
-                    if($itemName == "") {
-                        $this->_f3->set('errors["emptyName"]', 'Item name empty.');
-                    }
-                    if($itemPrice == "") {
-                        $this->_f3->set('errors["emptyPrice"]', 'Item price empty.');
-                    }
-                    if($itemDesc == "") {
-                        $this->_f3->set('errors["emptyDesc"]', 'Item description empty.');
-                    }
-                    if($itemQty == "") {
-                        $this->_f3->set('errors["emptyQty"]', 'Item qty empty.');
-                    }
-
-                    if(empty($this->_f3->get('errors'))) {
-                        $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
-                        $itemName = ""; $itemPrice = ""; $itemQty = "";
+                    if ($_POST['submit'] == 'adminRemove') {
+                        $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
+                        echo 'can you see this';
+                        echo 'downing user' .  $_POST['removal'];
                     }
                 }
                 /*sticky forms*/
@@ -124,10 +136,7 @@
 
                 echo $views->render('views/admin.html');
             }
-            //TODO: next up create the actual admin
-/*            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'adminUpdate') {
 
-            }*/
             //if not admin, send to user page if there's a login active in session
             else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
                 $this->_f3->reroute('customer');

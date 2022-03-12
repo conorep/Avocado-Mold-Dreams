@@ -103,23 +103,42 @@ admin.html
     <!--make an admin form-->
     <div class="row justify-content-center">
         <div class="container border border-dark m-5 col-md-8 col-10" id="make-admin-block">
-            <form>
+            <form class="mt-3" method="post">
                 <div class="text-center">
                     <h3>Non-Admin Users</h3>
                     <h4>Select one that you'd like to make into an admin.</h4>
                 </div>
     
-                <div class="text-center">
-                    <select class="form-control w-50 d-inline-block">
+                <div class="text-center ">
+                    <select class="form-control w-50 d-inline-block" name="addition">
                         <repeat group="{{@userTableStuff}}" value="{{@user}}">
                             <check if="@user['is_admin'] == 0">
-                                <option value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
+                                <option name='userAdd' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
                             </check>
                         </repeat>
                     </select>
                     <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="adminUpdate">Create Admin</button>
                 </div>
                 
+            </form>
+    
+            <form class="mt-3 mb-3" method="post">
+                <div class="text-center">
+                    <h3>Administrators</h3>
+                    <h4>Select one that you'd like to remove admin privileges from.</h4>
+                </div>
+        
+                <div class="text-center">
+                    <select class="form-control w-50 d-inline-block" name="removal">
+                        <repeat group="{{@userTableStuff}}" value="{{@user}}">
+                            <check if="@user['is_admin'] == 1">
+                                <option name='userRemove' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
+                            </check>
+                        </repeat>
+                    </select>
+                    <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="adminRemove">Remove Admin</button>
+                </div>
+    
             </form>
         </div>
     </div>
