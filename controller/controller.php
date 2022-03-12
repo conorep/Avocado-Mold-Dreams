@@ -21,6 +21,7 @@
             $_SESSION['adminOrCusty'] = 0;
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
+            print_r($rows);
             //if add to cart button is clicked?
             if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //how to get item from post array?

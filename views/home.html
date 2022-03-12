@@ -34,17 +34,26 @@ home.html
 
 <!--This script posts to the page below, does what is in the php (session change), and makes that change available-->
 <script>
-/*    $("#addCartBtn").on("click",function(){
+
+//Pat's
+
+    $("#cartBtn").on("click",function(){
+        let productValue = $(this).val();
+        console.log("product val: " +productValue);
+        console.log($(this).serialize());
         $.ajax({
             type: "POST",
             url: "classes/ajaxTest.php",
-            data: $(this).serialize(),
+            data: {val: productValue},
             success: function(){
             }
         });
         return false;
-    });*/
-    $(".addToCart").on("click",function(){
+    });
+
+//Conor's
+
+/*    $(".addToCart").on("click",function(){
        let val = $(this).val();
         $.ajax({
                     type: "POST",
@@ -53,7 +62,7 @@ home.html
                     success: function(){}
         });
         return false;
-    });
+    });*/
 </script>
 
 </body>
