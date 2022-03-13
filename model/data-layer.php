@@ -17,7 +17,10 @@
             }
         }
 
-        //generic get-all-items method. can make it cooler with parameters (price range and such)
+        /**
+         * This method returns all items from the database.
+         * @return array|false array of items, or none if there aren't any
+         */
         function getItems()
         {
             $sql = "SELECT * FROM product";
@@ -26,7 +29,10 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        //generic get-all-user-questions method
+        /**
+         * This method returns all user questions in the database.
+         * @return array|false array of questions or none if there aren't any
+         */
         function getUserQuestions()
         {
             $sql = "SELECT * FROM user_questions";
@@ -36,6 +42,10 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * This method returns all users from the database.
+         * @return array|false array of users, or nothing if there are none.
+         */
         function getUsers()
         {
             $sql = "SELECT * FROM users";
@@ -45,6 +55,11 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * This method returns a user's shipping addresses from the database.
+         * @param $userID mixed ID to search by
+         * @return array|false array of all known addresses or none if there aren't any
+         */
         function getShippingAddresses($userID)
         {
             $sql = "SELECT * FROM shipping_info WHERE user_id = :userid";
@@ -55,6 +70,10 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * This method retrieves orders from the database.
+         * @return array|false array of all orders, or none if there aren't any
+         */
         function getOrders()
         {
             $sql = "SELECT * FROM orders";
@@ -64,6 +83,11 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /**
+         * This method gathers all items associated with an order number and returns them.
+         * @param $orderID mixed order num to search for associated items
+         * @return array|false array of the items, or nothing if no items
+         */
         function getOrderItems($orderID)
         {
             $sql = "SELECT o.item_id, o.buy_qty, p.price 
@@ -77,6 +101,12 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        //TODO: calculate tax and add that.
+        /**
+         * This method returns a cash total of the items in an order.
+         * @param $orderID mixed order id to search my
+         * @return float|int number return of the sum of all order items
+         */
         function getOrderTotal($orderID)
         {
             $sql = "SELECT * from order_items o
@@ -94,6 +124,11 @@
             return $sum;
         }
 
+        /**
+         * This method allows marking an order as fulfilled.
+         * @param $orderID mixed id to set as fulfilled
+         * @return void
+         */
         function completeOrder($orderID)
         {
             $sql = "UPDATE orders SET is_fulfilled = 1, fulfilled_date = :fdate WHERE order_id = :orderid";
@@ -104,6 +139,12 @@
             $statement->execute();
         }
 
+        /**
+         * This method allows changing of account types to admin or customer.
+         * @param $userId mixed user if to mark as admin or customer
+         * @param $number number 0 for customer 1 for admin
+         * @return void
+         */
         function changeUserType($userId, $number)
         {
             $sql = "UPDATE users SET is_admin = :adminnum WHERE user_id = :userid";
@@ -117,6 +158,15 @@
 
 
         //TODO: set a qty in item_stock table after this. need item_id, though
+
+        /**
+         * This method allows addition of new items to the database.
+         * @param $itemName string item name
+         * @param $itemPrice number item price
+         * @param $itemDesc string item description
+         * @param $sendName string pic link
+         * @return void
+         */
         function addNewItem($itemName, $itemPrice, $itemDesc, $sendName)
         {
             $sql = "INSERT INTO product(item_name, price, description, pic_link)
@@ -130,7 +180,30 @@
             $statement->execute();
         }
 
-        function addItemQty()
+        /**
+         * This method allows addition of a new question to the database.
+         * @param $contactEmail user's provided contact email
+         * @param $userName user's provided contact name
+         * @param $qText user's provided question
+         * @param $userID user's ID if logged in
+         * @return void
+         */
+        function addNewQuestion($contactEmail, $userName, $qText, $userID)
+        {
+            $sql = "INSERT INTO user_questions(contact_email, user_name, q_text, user_id)
+                    VALUES(:contactemail, :username, :qtext, :userid)";
+            $statement = $this->_dbh->prepare($sql);
+
+            $statement->bindParam(':contactemail', $contactEmail);
+            $statement->bindParam(':username', $userName);
+            $statement->bindParam(':qtext', $qText);
+            $statement->bindParam(':userid', $userID);
+
+            $statement->execute();
+
+        }
+
+        function changeIteamQty()
         {
 
         }
