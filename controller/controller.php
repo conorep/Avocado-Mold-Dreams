@@ -1,6 +1,7 @@
 <?php
 
     //328/Avocado-Mold-Dreams/controller/controller.php
+    //NOTE: adminorcusty var is used to check whether to display a link to login page. pages with a 0 will have the account login route button visible
     class Controller
     {
         private $_f3; //f3 object
@@ -16,16 +17,66 @@
             $this->_f3->reroute('my-account');
         }
 
+        /**
+         * This method does verifications for the modal that can be used in any given window.
+         * @return void
+         */
+        private function modalOps()
+        {
+            $qUserName = "";
+            $userQuestionEmail = "";
+            $qUserID = null;
+
+            //sticky form vars. if there's an active user, get the values.
+            if(isset($_SESSION['loggedUser'])) {
+                $qUserName = $_SESSION['loggedUser']->getFname() . " " . $_SESSION['loggedUser']->getLname();
+                $userQuestionEmail = $_SESSION['loggedUser']->getEmail();
+                $qUserID = $_SESSION['loggedUser']->getUserID();
+            }
+            //submit stuff from modal question form
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'questionSubmit'){
+
+                $userQuestion = stripslashes($_POST['questionText']);
+                $qUserName = stripslashes($_POST['questionUser']);
+                $userQuestionEmail = stripslashes($_POST['questionEmail']);
+
+                if($userQuestion == "" || !isset($_POST['questionText'])) {
+                    $this->_f3->set('errorsQuestion["questionTextErr"]', 'Please enter a question.');
+                }
+                if($qUserName == "" || !isset($_POST['questionUser'])) {
+                    $this->_f3->set('errorsQuestion["questionUserError"]', 'Please enter a contact name.');
+                }
+                if($userQuestionEmail == "" || !isset($_POST['questionEmail'])) {
+                    $this->_f3->set('errorsQuestion["questionEmailErr"]', 'Please enter a contact email.');
+                }
+
+                if(empty($this->_f3->get('errorsQuestion'))) {
+                    $GLOBALS['dataLayer']->addNewQuestion($userQuestionEmail, $qUserName, $userQuestion, $qUserID);
+                    $qUserName = "";
+                    $userQuestionEmail = "";
+                }
+
+            }
+            $this->_f3->set('questionEmailVal', $userQuestionEmail);
+            $this->_f3->set('questionUserNameVal', $qUserName);
+        }
+
         function home()
         {
             $_SESSION['adminOrCusty'] = 0;
+            //call modal method
+            $this->modalOps();
+
+            //if add to cart button or other submit is clicked
+            if ($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+                //how to get item from post array?
+
+            }
+
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-//            print_r($rows);
-            //if add to cart button is clicked?
-            if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-                //how to get item from post array?
-            }
+            //print_r($rows);
 
             $views = new Template();
             echo $views->render('views/home.html');
@@ -39,6 +90,10 @@
             //if yes, send them to appropriate section - don't allow access to admin page if admin not logged in.
             if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
                 $_SESSION['adminOrCusty'] = 1;
+
+                //call modal method
+                $this->modalOps();
+
                 //vars for sticky forms
                 $itemName = ""; $itemPrice = ""; $itemQty = "";
 
@@ -60,7 +115,10 @@
 
                 //stuff for adding new item to db inventory
                 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                    //item upload code
                     if ($_POST['submit'] == 'itemUpload') {
+
                         //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
                         $sendName = basename($_FILES["uploadPic"]["name"]);
                         $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
@@ -88,7 +146,7 @@
                         // if no image errors,
                         if (empty($this->_f3->get('errorsPic'))) {
                             if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
-                                $this->_f3->set('picUp["newPicUp"]', 'Picture uploaded successfully.');
+                                $this->_f3->set('picUp["newPicUp"]', 'Picture good for upload.');
                             } else {
                                 $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
                             }
@@ -118,14 +176,17 @@
                         }
                     }
                     //TODO: think about validating these. do I need to...? only accessed via admin panel.
+                    //admin update code
                     if ($_POST['submit'] == 'adminUpdate') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
                         $this->_f3->reroute('admin');
                     }
+                    //admin remove code
                     if ($_POST['submit'] == 'adminRemove') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
                         $this->_f3->reroute('admin');
                     }
+                    //filled order code
                     if ($_POST['submit'] == 'orderFill') {
                         $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
                         $this->_f3->reroute('admin');
@@ -157,12 +218,16 @@
                     $this->_f3->reroute('admin');
                 }
             }
+
             //initialize input variable(s) for sticky forms.
             $usermail = "";
             $newfname = "";
             $newlname = "";
             $newemail = "";
             $newphone = "";
+
+            //call modal method
+            $this->modalOps();
 
             //if the form has been posted
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['postbtn'] == 'login') {
@@ -260,6 +325,10 @@
             $views = new Template();
             if (isset($_SESSION['loggedUser'])) {
                 $_SESSION['adminOrCusty'] = 1;
+
+                //call modal method
+                $this->modalOps();
+
                 if ($_SESSION['loggedUser']->getIsAdmin() == 0) {
                     //do customer stuff here!
 
@@ -276,6 +345,9 @@
         function cart()
         {
             $_SESSION['adminOrCusty'] = 0;
+            //call modal method
+            $this->modalOps();
+
             $productArr = $_SESSION['sessionCart']->getInCartArr();
 
             //if there's a cart object in the session, generate a cart page
