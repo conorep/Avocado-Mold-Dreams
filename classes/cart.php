@@ -1,10 +1,26 @@
 <?php
 
-class Cart
+class cart
 {
     //NOTE: no need to declare types in PHP.
     public $_inCartArr;
     public $_testField;
+
+    /**
+     * @return array
+     */
+    public function getInCartArr(): array
+    {
+        return $this->_inCartArr;
+    }
+
+    /**
+     * @param array $inCartArr
+     */
+    public function setInCartArr(array $inCartArr): void
+    {
+        $this->_inCartArr = $inCartArr;
+    }
 /*
  $age=array("Peter"=>"35","Ben"=>"37","Joe"=>"43");
  foreach($age as $x=>$x_value)

@@ -21,7 +21,7 @@
             $_SESSION['adminOrCusty'] = 0;
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-            print_r($rows);
+//            print_r($rows);
             //if add to cart button is clicked?
             if ($_SERVER['REQUEST_METHOD'] == 'POST'){
                 //how to get item from post array?
@@ -276,6 +276,13 @@
         function cart()
         {
             $_SESSION['adminOrCusty'] = 0;
+            $productArr = $_SESSION['sessionCart']->getInCartArr();
+
+            //if there's a cart object in the session, generate a cart page
+
+            $rows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
+            $this->_f3->set('cartItems', $rows);
+
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
         }

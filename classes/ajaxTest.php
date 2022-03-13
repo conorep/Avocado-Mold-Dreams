@@ -10,6 +10,7 @@ require_once('cart.php');
 //testing alteration to the session here from the 'add to cart' click on the main page
 session_start();
 
+//showing us what is in post and session from home.html
 echo("SESSION: <BR>");
 var_dump($_SESSION);
 echo("<br>POST: <BR>");
@@ -23,7 +24,7 @@ var_dump($_POST);
 
 if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
-        $userCart= new Cart();
+        $userCart= new cart();
         $userCart->addToCart((int)$_POST['val']);
         $_SESSION['sessionCart'] = $userCart;
 

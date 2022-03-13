@@ -219,4 +219,16 @@
             return hash("sha256", $userPass);
         }
 
+
+        function getItemsForCart($cartArrayInput)
+        {
+            $sqlString = implode(',', $cartArrayInput);
+            //need to select rows that match product ids from cart session
+
+            $sql = "SELECT * FROM product WHERE item_id IN '$sqlString'";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
     }
