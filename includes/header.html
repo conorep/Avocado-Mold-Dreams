@@ -30,6 +30,11 @@
                     <img id="resize-logo-sm" class="d-inline-block d-md-none" src="images/avoFavicon.svg" alt="avocado mold dreams logo">
                     <h2 id="title" class="text-left d-inline pb-4">Avocado Mold Dreams</h2>
                 </a>
+                
+                <!--modal toggle button-->
+                <button class="btn btn-outline-success float-end mt-4 mx-3" data-bs-toggle="modal"
+                        data-bs-target="#amdQuestionModal">Ask a Question</button>
+                
                 <check if="@SESSION['adminOrCusty'] == 0">
                     <a href="my-account" class="btn btn-outline-success float-end mt-4" >My Account</a>
                 </check>
@@ -41,5 +46,54 @@
             </div>
             
         </div>
-    
+        
     </nav>
+    
+    <!-- Modal -->
+    <form type="post" method="post">
+        <div class="modal fade" id="amdQuestionModal" tabindex="-1" aria-labelledby="amdQuestionModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="amdQuestionModalLabel">Ask a Question</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <!--question content-->
+                        <div class="my-3">
+                            <check if="{{ isset(@errorsQuestion['questionTextErr']) }}">
+                                <span class="err errQs">{{ @errorsQuestion['questionTextErr'] }}</span>
+                            </check>
+                            <label for="questionContent">User Question</label>
+                            <textarea id="questionContent" name="questionText"></textarea>
+                        </div>
+                        
+                        <!--question sender-->
+                        <div class="my-3">
+                            <check if="{{ isset(@errorsQuestion['questionUserError']) }}">
+                                <span class="err errQs">{{ @errorsQuestion['questionUserError'] }}</span>
+                            </check>
+                            <label for="questionUserInput">User Name</label>
+                            <input type="text" class="w-100" id="questionUserInput" name="questionUser" value="{{@questionUserNameVal}}">
+                        </div>
+                        
+                        <!--question sender email-->
+                        <div class="my-3">
+                            <check if="{{ isset(@errorsQuestion['questionEmailErr']) }}">
+                                <span class="err errQs">{{ @errorsQuestion['questionEmailErr'] }}</span>
+                            </check>
+                            <label for="questionEmailInput">Answer Email Address</label>
+                            <input type="text" class="w-100" id="questionEmailInput" name="questionEmail" value="{{@questionEmailVal}}">
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" name="submit" class="btn btn-outline-success" value="questionSubmit">Submit Question</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    
