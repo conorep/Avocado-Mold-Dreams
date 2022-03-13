@@ -280,8 +280,13 @@
 
             //if there's a cart object in the session, generate a cart page
 
-            $rows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
-            $this->_f3->set('cartItems', $rows);
+            $cartRows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
+            $this->_f3->set('cartItems', $cartRows);
+
+            echo("<br><br>product array: <BR>");
+            print_r($productArr);
+            echo("<br><br>products returned from db: <BR>");
+            print_r($cartRows);
 
             $views = new Template();
             echo $views->render('views/shopping-cart.html');

@@ -12,6 +12,9 @@
     session_start();
 
     //comment out when not in use, using this for testing purposes to see what our cart is doing
+
+
+
     echo("SESSION: <BR>");
     var_dump($_SESSION);
     echo("<br>POST: <BR>");

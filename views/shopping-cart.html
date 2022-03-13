@@ -5,7 +5,10 @@ shopping-cart.html
 -->
 <include href="includes/header.html"></include>
     <h3>Shopping Cart</h3>
+<repeat group="{{ @cartItems }}" value="{{ @item }}">
+    <p>{{@item['item_id']}}</p>
 
+</repeat>
 
     <include href="includes/jscript.html"></include>
 </body>
