@@ -403,6 +403,7 @@
 
             if(empty($this->_f3->get('errors')) && empty($this->_f3->get('errorsPic'))) {
                 $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
+                $GLOBALS['dataLayer']->addItemQty($GLOBALS['dataLayer']->maxID(), $itemQty);
                 $this->_f3->set('picUp["newPicUp"]', "Picture good for upload.\nItem added successfully.");
                 return true;
             }

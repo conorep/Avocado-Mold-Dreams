@@ -213,6 +213,32 @@
             $statement->execute();
         }
 
+        //NEED TO CHECK IF THERE IS ALREADY ITEM STOCK WHEN USING THIS
+        function addItemQty($itemID, $itemQTY)
+        {
+            $sql = "INSERT INTO item_stock (item_id, item_stock)
+                    VALUES(:itemID, :itemQTY)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemID', $itemID);
+            $statement->bindParam(':itemQTY', $itemQTY);
+
+            $statement->execute();
+        }
+
+        /**
+         * This method returns the highest item id in the products table. Used for retrieving
+         * the latest-added product.
+         * @return mixed item_id
+         */
+        function maxID()
+        {
+            $sql = "SELECT MAX(item_id) FROM products";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['item_id'];
+        }
+
+
         /**
          * This function returns a stock number for an item.
          * @param $itemID number used for finding associated stock num
