@@ -6,7 +6,7 @@
 
 let userCheck = document.getElementById("newUserForms");
 
-//toggle on and off
+//toggle on and off new user box
 userCheck.onclick = function showNewUserBox()
 {
     if (document.getElementById("newUser").style.display === "block") {

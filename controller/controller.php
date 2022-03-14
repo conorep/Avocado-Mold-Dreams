@@ -91,6 +91,20 @@
                         }
                     }
 
+                    //question response code
+                    if($_POST['submitQ']) {
+                        $hiddenQID = substr($_POST['answers'], 7);
+                        $userAnswer = $_POST[$hiddenQID];
+
+
+                        if($_POST[$hiddenQID] == "") {
+                            $this->_f3->set('errorsAns["blankAnswer"]', "Please enter an answer before submitting.");
+                        } else {
+                            $GLOBALS['dataLayer']->answerUserQuestion($userAnswer, $hiddenQID);
+                            $this->_f3->reroute('admin');
+                        }
+                    }
+
                     //item archive code
                     if ($_POST['submit'] == 'archiveItem') {
                         $GLOBALS['dataLayer']->archiveItem($_POST['archiveOrDelete']);
@@ -102,8 +116,6 @@
                         $GLOBALS['dataLayer']->deleteItem($_POST['archiveOrDelete']);
                         $this->_f3->reroute('admin');
                     }
-
-                    //message response code
 
                     //admin update code
                     if ($_POST['submit'] == 'adminUpdate') {

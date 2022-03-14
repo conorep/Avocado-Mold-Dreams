@@ -43,6 +43,22 @@
         }
 
         /**
+         * This function fills in an admin's answer to a user question and marks it answered.
+         * @param $ansText
+         * @param $qID
+         * @return void
+         */
+        function answerUserQuestion($ansText, $qID)
+        {
+            $sql = "UPDATE user_questions SET q_answer = :anstext, is_answered = 1 WHERE q_id = :qID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':anstext', $ansText);
+            $statement->bindParam(':qID', $qID);
+
+            $statement->execute();
+        }
+
+        /**
          * This method returns all users from the database.
          * @return array|false array of users, or nothing if there are none.
          */

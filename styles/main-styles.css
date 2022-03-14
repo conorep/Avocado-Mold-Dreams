@@ -32,14 +32,14 @@ main-styles.css
     color: white;
 }
 
-#forms-block, #make-admin-block, #fulfill-block, #delete-block {
+#forms-block, #make-admin-block, #fulfill-block, #delete-block, #answers-block {
     border-radius: 20px;
     margin-right: 4rem;
     margin-left: 4rem;
 }
 
 #forms-block, #forms-block *, #make-admin-block, #make-admin-block *,
-#fulfill-block, #fulfill-block *, #delete-block, #delete-block * {
+#fulfill-block, #fulfill-block *, #delete-block, #delete-block *, #answers-block, #answers-block * {
     background-color: #fcf3f3;
 }
 
@@ -55,7 +55,15 @@ main-styles.css
     width: 100%;
 }
 
+/**[^='hiddenQ']{
+    display: none;
+}*/
+
 /*class styles*/
+
+.hiddenQClass {
+    display: none;
+}
 
 .header-colour {
     background-color: #aec7b0;
