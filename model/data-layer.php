@@ -203,23 +203,66 @@
 
         }
 
-        function changeIteamQty()
+        function changeItemQty($itemID, $itemQTY)
         {
+            $sql = "UPDATE item_stock SET stck_num = :stocknum WHERE item_id = :itemID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':stocknum', $itemQTY);
+            $statement->bindParam(':itemID', $itemID);
 
+            $statement->execute();
         }
 
-        function archiveItem()
+        /**
+         * This function returns a stock number for an item.
+         * @param $itemID number used for finding associated stock num
+         * @return mixed the stock num for that ID
+         */
+        function getItemQty($itemID)
         {
+            $sql = "SELECT * FROM item_stock WHERE item_id = :itemID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemID', $itemID);
 
+            $statement->execute();
+            return $statement->fetch(PDO::FETCH_ASSOC)['stock_num'];
+        }
+
+        /**
+         * This method archives an item in the database.
+         * @param $itemID number item to archive
+         * @return void
+         */
+        function archiveItem($itemID)
+        {
+            $sql = "UPDATE product SET is_archived = 1 WHERE item_id = :itemID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemID', $itemID);
+
+            $statement->execute();
+        }
+
+        /**
+         * This function deletes an item from the database.
+         * @param $itemID number item to delete
+         * @return void
+         */
+        function deleteItem($itemID)
+        {
+            $sql = "DELETE FROM product WHERE item_id = :itemID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemID', $itemID);
+
+            $statement->execute();
         }
 
         /**
          * Create a new user and add them to the database.
-         * @param $useremail
-         * @param $userphone
-         * @param $fname
-         * @param $lname
-         * @param $pass
+         * @param $useremail string
+         * @param $userphone mixed
+         * @param $fname string
+         * @param $lname string
+         * @param $pass mixed
          */
          function makeNewUser($useremail, $userphone, $fname, $lname, $pass)
         {

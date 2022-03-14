@@ -32,13 +32,14 @@ main-styles.css
     color: white;
 }
 
-#forms-block, #make-admin-block, #fulfill-block {
+#forms-block, #make-admin-block, #fulfill-block, #delete-block {
     border-radius: 20px;
     margin-right: 4rem;
     margin-left: 4rem;
 }
 
-#forms-block, #forms-block *, #make-admin-block, #make-admin-block *, #fulfill-block, #fulfill-block * {
+#forms-block, #forms-block *, #make-admin-block, #make-admin-block *,
+#fulfill-block, #fulfill-block *, #delete-block, #delete-block * {
     background-color: #fcf3f3;
 }
 

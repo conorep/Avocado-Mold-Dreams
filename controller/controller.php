@@ -17,50 +17,6 @@
             $this->_f3->reroute('my-account');
         }
 
-        /**
-         * This method does verifications for the modal that can be used in any given window.
-         * @return void
-         */
-        private function modalOps()
-        {
-            $qUserName = "";
-            $userQuestionEmail = "";
-            $qUserID = null;
-
-            //sticky form vars. if there's an active user, get the values.
-            if(isset($_SESSION['loggedUser'])) {
-                $qUserName = $_SESSION['loggedUser']->getFname() . " " . $_SESSION['loggedUser']->getLname();
-                $userQuestionEmail = $_SESSION['loggedUser']->getEmail();
-                $qUserID = $_SESSION['loggedUser']->getUserID();
-            }
-            //submit stuff from modal question form
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'questionSubmit'){
-
-                $userQuestion = stripslashes($_POST['questionText']);
-                $qUserName = stripslashes($_POST['questionUser']);
-                $userQuestionEmail = stripslashes($_POST['questionEmail']);
-
-                if($userQuestion == "" || !isset($_POST['questionText'])) {
-                    $this->_f3->set('errorsQuestion["questionTextErr"]', 'Please enter a question.');
-                }
-                if($qUserName == "" || !isset($_POST['questionUser'])) {
-                    $this->_f3->set('errorsQuestion["questionUserError"]', 'Please enter a contact name.');
-                }
-                if($userQuestionEmail == "" || !isset($_POST['questionEmail'])) {
-                    $this->_f3->set('errorsQuestion["questionEmailErr"]', 'Please enter a contact email.');
-                }
-
-                if(empty($this->_f3->get('errorsQuestion'))) {
-                    $GLOBALS['dataLayer']->addNewQuestion($userQuestionEmail, $qUserName, $userQuestion, $qUserID);
-                    $qUserName = "";
-                    $userQuestionEmail = "";
-                }
-
-            }
-            $this->_f3->set('questionEmailVal', $userQuestionEmail);
-            $this->_f3->set('questionUserNameVal', $qUserName);
-        }
-
         function home()
         {
             $_SESSION['adminOrCusty'] = 0;
@@ -82,6 +38,11 @@
             echo $views->render('views/home.html');
         }
 
+        /**
+         * This method routes to the admin page and calls for data to fill its tables, handles the calls for new/archived admins,
+         *
+         * @return void
+         */
         function admin()
         {
             $views = new Template();
@@ -118,64 +79,32 @@
 
                     //item upload code
                     if ($_POST['submit'] == 'itemUpload') {
-
-                        //TODO: move all of the pic import stuff to its own method and stop echoing. add errors
-                        $sendName = basename($_FILES["uploadPic"]["name"]);
-                        $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
-                        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-                        // Check if image file is actual or fake image
-                        if(isset($_POST["submit"])) {
-                            $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
-                            if(!$check) {
-                                $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
-                            }
-                        }
-                        // Check if file already exists here. IS THIS NEEDED?
-                        if (file_exists($target_file)) {
-                            $this->_f3->set('errorsPic["fileExists"]', 'This image already exists at this domain.');
-                        }
-                        // Check file size
-                        if ($_FILES["uploadPic"]["size"] > 500000) {
-                            $this->_f3->set('errorsPic["imageSize"]', 'Your image cannot be bigger than 500kb.');
-                        }
-                        // Allow certain file formats
-                        if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-                            $this->_f3->set('errorsPic["imageType"]', 'Your picture must be jpg, png, or jpeg.');
-                        }
-                        // if no image errors,
-                        if (empty($this->_f3->get('errorsPic'))) {
-                            if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
-                                $this->_f3->set('picUp["newPicUp"]', 'Picture good for upload.');
-                            } else {
-                                $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
-                            }
-                        }
-
+                        //call to item add method
                         $itemName = stripslashes($_POST['uploadName']);
                         $itemPrice = stripslashes($_POST['uploadPrice']);
                         $itemDesc = stripslashes($_POST['uploadDescription']);
                         $itemQty = stripslashes($_POST['uploadCount']);
 
-                        if($itemName == "") {
-                            $this->_f3->set('errors["emptyName"]', 'Item name empty.');
-                        }
-                        if($itemPrice == "") {
-                            $this->_f3->set('errors["emptyPrice"]', 'Item price empty.');
-                        }
-                        if($itemDesc == "") {
-                            $this->_f3->set('errors["emptyDesc"]', 'Item description empty.');
-                        }
-                        if($itemQty == "") {
-                            $this->_f3->set('errors["emptyQty"]', 'Item qty empty.');
-                        }
-
-                        if(empty($this->_f3->get('errors'))) {
-                            $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
+                        //if itemLoad returns true, reset those vars to empty
+                        if($this->itemLoad($itemName, $itemPrice, $itemDesc, $itemQty)) {
                             $itemName = ""; $itemPrice = ""; $itemQty = "";
                         }
                     }
-                    //TODO: think about validating these. do I need to...? only accessed via admin panel.
+
+                    //item archive code
+                    if ($_POST['submit'] == 'archiveItem') {
+                        $GLOBALS['dataLayer']->archiveItem($_POST['archiveOrDelete']);
+                        $this->_f3->reroute('admin');
+                    }
+
+                    //item delete code
+                    if ($_POST['submit'] == 'deleteItem') {
+                        $GLOBALS['dataLayer']->deleteItem($_POST['archiveOrDelete']);
+                        $this->_f3->reroute('admin');
+                    }
+
+                    //message response code
+
                     //admin update code
                     if ($_POST['submit'] == 'adminUpdate') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
@@ -209,6 +138,10 @@
             }
         }
 
+        /**
+         * This method routes to the account login page and handles login logic.
+         * @return void
+         */
         function accountLogin()
         {
             if (isset($_SESSION['loggedUser'])) {
@@ -218,7 +151,6 @@
                     $this->_f3->reroute('admin');
                 }
             }
-
             //initialize input variable(s) for sticky forms.
             $usermail = "";
             $newfname = "";
@@ -320,6 +252,10 @@
             echo $views->render('views/my-account.html');
         }
 
+        /**
+         * This method routes to the customer page.
+         * @return void
+         */
         function customer()
         {
             $views = new Template();
@@ -342,6 +278,10 @@
             }
         }
 
+        /**
+         * This method routes to the cart page.
+         * @return void
+         */
         function cart()
         {
             $_SESSION['adminOrCusty'] = 0;
@@ -363,4 +303,110 @@
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
         }
+
+        /**
+         * This method does verifications for the modal that can be used in any given window.
+         * @return void
+         */
+        private function modalOps()
+        {
+            $qUserName = "";
+            $userQuestionEmail = "";
+            $qUserID = null;
+
+            //sticky form vars. if there's an active user, get the values.
+            if(isset($_SESSION['loggedUser'])) {
+                $qUserName = $_SESSION['loggedUser']->getFname() . " " . $_SESSION['loggedUser']->getLname();
+                $userQuestionEmail = $_SESSION['loggedUser']->getEmail();
+                $qUserID = $_SESSION['loggedUser']->getUserID();
+            }
+            //submit stuff from modal question form
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['submit'] == 'questionSubmit'){
+
+                $userQuestion = stripslashes($_POST['questionText']);
+                $qUserName = stripslashes($_POST['questionUser']);
+                $userQuestionEmail = stripslashes($_POST['questionEmail']);
+
+                if($userQuestion == "" || !isset($_POST['questionText'])) {
+                    $this->_f3->set('errorsQuestion["questionTextErr"]', 'Please enter a question.');
+                }
+                if($qUserName == "" || !isset($_POST['questionUser'])) {
+                    $this->_f3->set('errorsQuestion["questionUserError"]', 'Please enter a contact name.');
+                }
+                if($userQuestionEmail == "" || !isset($_POST['questionEmail']) ||
+                    !ValidationFunctions::validEmail($userQuestionEmail)) {
+                    $this->_f3->set('errorsQuestion["questionEmailErr"]', 'Please enter a contact email.');
+                }
+
+                if(empty($this->_f3->get('errorsQuestion'))) {
+                    $GLOBALS['dataLayer']->addNewQuestion($userQuestionEmail, $qUserName, $userQuestion, $qUserID);
+                    $qUserName = "";
+                    $userQuestionEmail = "";
+                }
+
+            }
+            $this->_f3->set('questionEmailVal', $userQuestionEmail);
+            $this->_f3->set('questionUserNameVal', $qUserName);
+        }
+
+        /**
+         * This private function handles verifications of the photo upload for new items. If it worked, return true,
+         * otherwise return false.
+         * @return bool
+         */
+        private function itemLoad($itemName, $itemPrice, $itemDesc, $itemQty)
+        {
+            $sendName = basename($_FILES["uploadPic"]["name"]);
+            $target_file = "images/inventory/". basename($_FILES["uploadPic"]["name"]);
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+
+            // Check if image file is actual or fake image
+            if(isset($_POST["submit"])) {
+                $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
+                if(!$check) {
+                    $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
+                }
+            }
+            // Check if file already exists here. IS THIS NEEDED?
+            if (file_exists($target_file)) {
+                $this->_f3->set('errorsPic["fileExists"]', 'This image already exists at this domain.');
+            }
+            // Check file size
+            if ($_FILES["uploadPic"]["size"] > 500000) {
+                $this->_f3->set('errorsPic["imageSize"]', 'Your image cannot be bigger than 500kb.');
+            }
+            // Allow certain file formats
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+                $this->_f3->set('errorsPic["imageType"]', 'Your picture must be jpg, png, or jpeg.');
+            }
+            // if no image errors,
+            if (empty($this->_f3->get('errorsPic'))) {
+                if (move_uploaded_file($_FILES["uploadPic"]["tmp_name"], $target_file)) {
+                    $this->_f3->set('picUp["newPicUp"]', 'Picture good for upload.');
+                } else {
+                    $this->_f3->set('picUp["noPicUp"]', 'Error. Picture did not upload.');
+                }
+            }
+
+            if($itemName == "") {
+                $this->_f3->set('errors["emptyName"]', 'Item name empty.');
+            }
+            if($itemPrice == "") {
+                $this->_f3->set('errors["emptyPrice"]', 'Item price empty.');
+            }
+            if($itemDesc == "") {
+                $this->_f3->set('errors["emptyDesc"]', 'Item description empty.');
+            }
+            if($itemQty == "") {
+                $this->_f3->set('errors["emptyQty"]', 'Item qty empty.');
+            }
+
+            if(empty($this->_f3->get('errors')) && empty($this->_f3->get('errorsPic'))) {
+                $GLOBALS['dataLayer']->addNewItem($itemName, $itemPrice, $itemDesc, $sendName);
+                $this->_f3->set('picUp["newPicUp"]', "Picture good for upload.\nItem added successfully.");
+                return true;
+            }
+            return false;
+        }
+
     }
