@@ -5,10 +5,40 @@ shopping-cart.html
 -->
 <include href="includes/header.html"></include>
     <h3>Shopping Cart</h3>
-<repeat group="{{ @cartItems }}" value="{{ @item }}">
-    <p>{{@item['item_id']}}</p>
+<div class="container-fluid">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col">Item ID</th>
+            <th scope="col">Item Name</th>
+            <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>
+                <repeat group="{{ @cartItems }}" value="{{ @item }}">
+                    <p>{{@item['item_id']}}</p>
 
-</repeat>
+                </repeat>
+            </td>
+            <td>
+                <repeat group="{{ @cartItems }}" value="{{ @item }}">
+                    <p>{{@item['item_name']}}</p>
+                </repeat>
+            </td>
+            <td>
+                <repeat group="{{ @cartItems }}" value="{{ @item }}">
+                    <p>{{@item['price']}} <button type="button" class="btn btn-danger">Remove Item</button></p>
+                </repeat>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
 
     <include href="includes/jscript.html"></include>
 <script src="scripts/modal-check.js"></script>
