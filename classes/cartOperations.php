@@ -23,8 +23,18 @@ var_dump($_POST);
 //if no existing cart
 
 if(isset($_POST['val'])) {
-    $_SESSION['cartMessage'] = "increment triggered" .$_POST['val'];
-    $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+
+    if($_POST['flag']=="add") {
+        $_SESSION['cartMessage'] = "increment triggered" .$_POST['val'];
+        $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+    }
+
+    if($_POST['flag']=="sub") {
+        $_SESSION['cartMessage'] = "decrement triggered" .$_POST['val'];
+        $_SESSION['sessionCart']->removeFromCart((int)$_POST['val']);
+    }
+
+
 }
 //if there is an increment signal, increment (add) to item quantity
 //$_SESSION['sessionCart']->addToCart((int)$_POST['val']);

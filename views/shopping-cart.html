@@ -53,17 +53,38 @@ shopping-cart.html
         let productID= $(this).attr('id').substring(3);
         alert(productID);
         $.ajax({
+            flag: "add",
             context: this,
             vars: {id:productID},
             type: "POST",
             url: "classes/cartOperations.php",
-            data: {val: productID},
+            data: {val: productID, flag: "add"},
             success: function(){
                 alert("success reached")
 
                 let nextVal = parseInt($(this).prev().val())+1;
                 alert("next value is: " +nextVal);
                 $(this).prev().val(nextVal);
+            }
+        });
+        return false;
+    });
+
+    $(".sub").on("click",function(){
+        let productID= $(this).attr('id').substring(3);
+        alert(productID);
+        $.ajax({
+            context: this,
+            vars: {id:productID},
+            type: "POST",
+            url: "classes/cartOperations.php",
+            data: {val: productID, flag: "sub"},
+            success: function(){
+                alert("success reached")
+
+                let nextVal = parseInt($(this).next().val())-1;
+                alert("next value is: " +nextVal);
+                $(this).next().val(nextVal);
             }
         });
         return false;

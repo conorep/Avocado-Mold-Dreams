@@ -55,4 +55,17 @@ echo "<br>";
         $this->_testField = $productID;
     }
 
+    /**
+     *
+     *Removes an item from the cart array containing product ids
+     */
+    public function removeFromCart($productID) {
+//        array_push($this->_inCartArr, $productID);
+
+        $this->_inCartArr[$productID] -= 1;
+
+        //just for testing purposes, went through a lot just to get the object to populate
+        $this->_testField = $productID;
+    }
+
 }
