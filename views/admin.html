@@ -16,7 +16,7 @@ admin.html
                 </div>
                 
                 <div class="text-center ">
-                    <select class="form-control w-75 text-center d-inline-block" id="questionSelects" name="answers">
+                    <select class="bg-white w-75 p-1 text-center d-inline-block" id="questionSelects" name="answers">
     
                         <repeat group="{{ @questionStuff }}" value="{{ @question }}">
                                 
@@ -34,7 +34,7 @@ admin.html
                         <check if="@question['is_answered'] == 0">
                             <div class="hiddenQClass mx-2 mx-md-3 mt-4" id="hiddenQ{{@question['q_id']}}">
                                 <p><strong>{{@question['q_text']}}</strong></p>
-                                <textarea class="form-control " name="{{@question['q_id']}}" id="{{@question['q_id']}}"></textarea>
+                                <textarea class="bg-white form-control" name="{{@question['q_id']}}" id="{{@question['q_id']}}"></textarea>
                                 <button class="float-end btn btn-lg btn-outline-success d-inline-block my-3"
                                         type="submit" name="submitQ" value="{{@question['q_id']}}">Answer question</button>
                             </div>
@@ -156,7 +156,7 @@ admin.html
                 </div>
                 
                 <div class="text-center ">
-                    <select class="form-control w-50 d-inline-block" name="archiveOrDelete">
+                    <select class="bg-white w-50  p-1 d-inline-block" name="archiveOrDelete">
                         
                         <repeat group="{{ @amdProducts }}" value="{{ @item }}">
                             <check if="@item['is_archived'] == 0">
@@ -187,7 +187,7 @@ admin.html
                 </div>
                 
                 <div class="text-center ">
-                    <select class="form-control w-50 d-inline-block" name="fulfill">
+                    <select class="bg-white w-50 p-1 d-inline-block" name="fulfill">
                         <repeat group="{{@amdOrders}}" value="{{@order}}">
                             <check if="@order['is_fulfilled'] == 0">
                                 <option name='orderfill' value="{{@order['order_id']}}" >
@@ -215,7 +215,7 @@ admin.html
                 </div>
     
                 <div class="text-center ">
-                    <select class="form-control w-50 d-inline-block" name="addition">
+                    <select class="bg-white w-50  p-1 d-inline-block" name="addition">
                         <repeat group="{{@userTableStuff}}" value="{{@user}}">
                             <check if="@user['is_admin'] == 0">
                                 <option name='userAdd' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
@@ -234,7 +234,7 @@ admin.html
                 </div>
         
                 <div class="text-center">
-                    <select class="form-control w-50 d-inline-block" name="removal">
+                    <select class="bg-white w-50  p-1 d-inline-block" name="removal">
                         <repeat group="{{@userTableStuff}}" value="{{@user}}">
                             <check if="@user['is_admin'] == 1">
                                 <option name='userRemove' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
@@ -259,7 +259,7 @@ admin.html
                     <div class="mx-5 my-3">
                         <h3>Admin Info Tables</h3>
                         <label for="tableSelect" ><strong>Select one to show the applicable table.</strong></label>
-                        <select class="form-control text-center" id="tableSelect">
+                        <select class="bg-white text-center p-1" id="tableSelect">
                             <option value="itemsDiv">Inventory Table</option>
                             <option value="questionsDiv">Customer Questions Table</option>
                             <option value="ordersDiv">Orders Table</option>
