@@ -115,10 +115,12 @@ my-account.html
                         <label for="newpass">ACCOUNT PASSWORD:</label>
                         <!--display error if there is one -->
                         <check if="{{ isset(@errors2['pass']) }}">
-                            <span class="err" id="err-newpass">{{ @errors2['pass'] }}</span>
+                            <span class="err">{{ @errors2['pass'] }}</span>
                         </check>
                         <input type="password" class="form-control" id="newpass" value="{{@newpass}}"
                                placeholder="user password here" name="newpass">
+                        <span class="err" id="err-newpass">Please enter a password between 7-15 characters, with at least 1 numeric value
+                        and one special character</span>
                     </div>
                 
                     <div class="float-end">
