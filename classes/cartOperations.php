@@ -22,24 +22,28 @@ var_dump($_POST);
 
 //if no existing cart
 
-if(isset($_POST['val'])) {
+
+//if there is an increment signal, increment (add) to item quantity
+if($_POST['val']==true) {
+//        $_SESSION['sessionCart']->
+    $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+
+}
+
+/*if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
         $userCart= new cart();
         $userCart->addToCart((int)$_POST['val']);
         $_SESSION['sessionCart'] = $userCart;
 
-    }
-//if cart already exists
+    }*/
+/*//if cart already exists
     elseif (isset($_SESSION['sessionCart'])) {
         $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
-    }
+    }*/
 
-    //if there is an increment signal, increment (add) to item quantity
-    if($_POST['incQuantity']==true) {
-//        $_SESSION['sessionCart']->
 
-    }
-        if(!(isset($_SESSION['sessionCart']))) {
+/*        if(!(isset($_SESSION['sessionCart']))) {
             $userCart= new cart();
             $userCart->addToCart((int)$_POST['val']);
             $_SESSION['sessionCart'] = $userCart;
@@ -48,8 +52,8 @@ if(isset($_POST['val'])) {
 //if cart already exists
         elseif (isset($_SESSION['sessionCart'])) {
             $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
-        }
-}
+        }*/
+
 
 
 
