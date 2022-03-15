@@ -7,7 +7,7 @@ admin.html
 
     <h3 class="text-center text-white">Admin page active. Welcome, {{ @SESSION.loggedUser->getFname() }}</h3>
 
-    <!--archive/delete item block-->
+    <!--answer question block-->
     <div class="row justify-content-center">
         <div class="container border border-dark m-3 col-md-8 col-10" id="answers-block">
                 <form class="mt-3 mb-4" method="post">
@@ -138,8 +138,11 @@ admin.html
                         </div>
 
                     </div>
+                    
                 </fieldset>
+                
             </form>
+            
         </div>
     </div> <!--end add new item form-->
 
@@ -246,195 +249,218 @@ admin.html
     </div> <!--end make admin block-->
 
     <!--a bunch of tables-->
-    <div class="container-fluid row">
+    <div class="container-fluid">
+        <div class="row mx-md-5 mx-3 justify-content-center">
+    
+            <!--table select-->
+            <div class="row justify-content-center">
+                <div class="container border border-dark m-3 col-md-8 col-10 text-center" id="select-table-block">
+            
+                    <div class="mx-5 my-3">
+                        <h3>Admin Info Tables</h3>
+                        <label for="tableSelect" ><strong>Select one to show the applicable table.</strong></label>
+                        <select class="form-control text-center" id="tableSelect">
+                            <option value="itemsDiv">Inventory Table</option>
+                            <option value="questionsDiv">Customer Questions Table</option>
+                            <option value="ordersDiv">Orders Table</option>
+                            <option value="usersDiv">Users Table</option>
+                        </select>
+                    </div>
         
-        <!--items table. add a button that opens a form for new additions or archiving old products.-->
-        <div class="col-12 col-md-6 mb-5">
-            <h3 class="float-end">Inventory</h3>
-            <table class="sales-admin display">
-                <!--note: need inventory/stock table. keep that count separate
-                                   from item listing table for sql 'normalization'-->
-                <thead>
-                    <tr>
-                        <th>Item ID</th>
-                        <th>Item Name</th>
-                        <th>Price</th>
-                        <th>Description</th>
-                        <th>'Added' Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <repeat group="{{ @amdProducts }}" value="{{ @item }}">
+                </div>
+            </div> <!--end table select-->
+    
+    
+    
+            <!--items table. add a button that opens a form for new additions or archiving old products.-->
+            <div class="tableChoices" id="itemsDiv">
+                <h3 >Inventory</h3>
+                <table class="sales-admin display">
+                    <!--NOTE: need inventory/stock table. keep that count separate
+                                       from item listing table for sql 'normalization'-->
+                    <thead>
                         <tr>
-                            <th>{{ @item['item_id'] }}</th>
-                            <th>{{ @item['item_name'] }}</th>
-                            <th>{{ @item['price'] }}</th>
-                            <th>{{ @item['description'] }}</th>
-                            <th>{{ @item['add_date'] }}</th>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>'Added' Date</th>
                         </tr>
-                    </repeat>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Item ID</th>
-                        <th>Item Name</th>
-                        <th>Price</th>
-                        <th>Description</th>
-                        <th>'Added' Date</th>
-                    </tr>
-                </tfoot>
-
-            </table>
+                    </thead>
+                    <tbody>
+                        <repeat group="{{ @amdProducts }}" value="{{ @item }}">
+                            <tr>
+                                <th>{{ @item['item_id'] }}</th>
+                                <th>{{ @item['item_name'] }}</th>
+                                <th>{{ @item['price'] }}</th>
+                                <th>{{ @item['description'] }}</th>
+                                <th>{{ @item['add_date'] }}</th>
+                            </tr>
+                        </repeat>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Item Name</th>
+                            <th>Price</th>
+                            <th>Description</th>
+                            <th>'Added' Date</th>
+                        </tr>
+                    </tfoot>
+        
+                </table>
+    
+            </div>
+    
+            <!--customer questions. add ability to answer from here-->
+            <div class="col-12 tableChoices" id="questionsDiv">
+                <h3 >Customer Questions</h3>
+                <table class="sales-admin display">
+                    <thead>
+                        <tr>
+                            <th>Question ID</th>
+                            <th>Date</th>
+                            <th>User ID</th>
+                            <th>Email</th>
+                            <th>User Name</th>
+                            <th>Has the question been answered?</th>
+                            <th>Question</th>
+                            <th>Answer</th>
+                        </tr>
+                    </thead>
+            
+                    <tbody>
+                        <repeat group="{{ @questionStuff }}" value="{{ @questionCategory }}">
+                            <tr>
+                                <th>{{ @questionCategory['q_id'] }}</th>
+                                <th>{{ @questionCategory['q_date'] }}</th>
+                                <th>{{ @questionCategory['user_id'] }}</th>
+                                <th>{{ @questionCategory['contact_email'] }}</th>
+                                <th>{{ @questionCategory['user_name'] }}</th>
+                                <th>
+                                    <check if="@questionCategory['is_answered'] == 0">
+                                        <true>No</true>
+                                        <false>Yes</false>
+                                    </check>
+                                </th>
+                                <th>{{ @questionCategory['q_text'] }}</th>
+                                <th>{{ @questionCategory['q_answer'] }}</th>
+                            </tr>
+                        </repeat>
+                    </tbody>
+            
+                    <tfoot>
+                        <tr>
+                            <th>Question ID</th>
+                            <th>Date</th>
+                            <th>User ID</th>
+                            <th>Email</th>
+                            <th>User Name</th>
+                            <th>Has the question been answered?</th>
+                            <th>Question</th>
+                            <th>Answer</th>
+                        </tr>
+                    </tfoot>
+        
+                </table>
+    
+            </div> <!--end of customer questions table-->
+    
+            <!--orders table-->
+            <div class="col-12 tableChoices" id="ordersDiv">
+                <h3 >Order History</h3>
+                <table class="sales-admin display">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User ID</th>
+                            <th>Order Total</th>
+                            <th>Order Date</th>
+                            <th>Fulfilled?</th>
+                            <th>Fulfilled Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <repeat group="{{ @amdOrders }}" value="{{ @order }}">
+                            <tr>
+                                <th>{{ @order['order_id'] }}</th>
+                                <th>{{ @order['user_id'] }}</th>
+                                <th>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</th>
+                                <th>{{ @order['created_date'] }}</th>
+                                <th>
+                                    <check if="@order['is_fulfilled'] == 1">
+                                        <true>Yes</true>
+                                        <false>No</false>
+                                    </check>
+                                </th>
+                                <th>{{ @order['fulfilled_date'] }}</th>
+                            </tr>
+                        </repeat>
+            
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>User ID</th>
+                            <th>Order Total</th>
+                            <th>Order Date</th>
+                            <th>Fulfilled?</th>
+                            <th>Fulfilled Date</th>
+                        </tr>
+                    </tfoot>
+                </table>
+    
+            </div> <!--end of orders table-->
+    
+            <!--list of users table-->
+            <div class="col-12 tableChoices" id="usersDiv">
+                <h3 >Site Users</h3>
+                <table class="sales-admin display">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>User Email</th>
+                            <th>Administrator?</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <repeat group="{{ @userTableStuff }}" value="{{ @user }}">
+                            <tr>
+                                <th>{{ @user['user_id'] }}</th>
+                                <th>{{ @user['f_name'] }} {{ @user['l_name'] }}</th>
+                                <th>{{ @user['user_email'] }}</th>
+                                <th>
+                                    <check if="@user['is_admin'] == 0">
+                                        <true>No</true>
+                                        <false>Yes</false>
+                                    </check>
+                                </th>
+                                <th>{{ @user['user_phone'] }}</th>
+                            </tr>
+                        </repeat>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>User ID</th>
+                            <th>User Name</th>
+                            <th>User Email</th>
+                            <th>Administrator?</th>
+                            <th>Phone Number</th>
+                        </tr>
+                    </tfoot>
+                </table>
+    
+            </div> <!--end of users table-->
             
         </div>
-    
-        <!--customer questions. add ability to answer from here-->
-        <div class="col-12 col-md-6 mb-5">
-            <h3 class="float-end">Customer Questions</h3>
-            <table class="sales-admin display">
-                <thead>
-                    <tr>
-                        <th>Question ID</th>
-                        <th>Date</th>
-                        <th>User ID</th>
-                        <th>Email</th>
-                        <th>User Name</th>
-                        <th>Has the question been answered?</th>
-                        <th>Question</th>
-                        <th>Answer</th>
-                    </tr>
-                </thead>
-                
-                <tbody>
-                    <repeat group="{{ @questionStuff }}" value="{{ @questionCategory }}">
-                        <tr>
-                            <th>{{ @questionCategory['q_id'] }}</th>
-                            <th>{{ @questionCategory['q_date'] }}</th>
-                            <th>{{ @questionCategory['user_id'] }}</th>
-                            <th>{{ @questionCategory['contact_email'] }}</th>
-                            <th>{{ @questionCategory['user_name'] }}</th>
-                            <th>
-                                <check if="@questionCategory['is_answered'] == 0">
-                                    <true>No</true>
-                                    <false>Yes</false>
-                                </check>
-                            </th>
-                            <th>{{ @questionCategory['q_text'] }}</th>
-                            <th>{{ @questionCategory['q_answer'] }}</th>
-                        </tr>
-                    </repeat>
-                </tbody>
-                
-                <tfoot>
-                    <tr>
-                        <th>Question ID</th>
-                        <th>Date</th>
-                        <th>User ID</th>
-                        <th>Email</th>
-                        <th>User Name</th>
-                        <th>Has the question been answered?</th>
-                        <th>Question</th>
-                        <th>Answer</th>
-                    </tr>
-                </tfoot>
-
-            </table>
-            
-        </div> <!--end of customer questions table-->
-
-        <!--orders table-->
-        <div class="col-12 col-md-6 mb-5">
-            <h3 class="float-end">Order History</h3>
-            <table class="sales-admin display">
-                <thead>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>User ID</th>
-                        <th>Order Total</th>
-                        <th>Order Date</th>
-                        <th>Fulfilled?</th>
-                        <th>Fulfilled Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <repeat group="{{ @amdOrders }}" value="{{ @order }}">
-                        <tr>
-                            <th>{{ @order['order_id'] }}</th>
-                            <th>{{ @order['user_id'] }}</th>
-                            <th>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</th>
-                            <th>{{ @order['created_date'] }}</th>
-                            <th>
-                                <check if="@order['is_fulfilled'] == 1">
-                                    <true>Yes</true>
-                                    <false>No</false>
-                                </check>
-                            </th>
-                            <th>{{ @order['fulfilled_date'] }}</th>
-                        </tr>
-                    </repeat>
-                    
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Order ID</th>
-                        <th>User ID</th>
-                        <th>Order Total</th>
-                        <th>Order Date</th>
-                        <th>Fulfilled?</th>
-                        <th>Fulfilled Date</th>
-                    </tr>
-                </tfoot>
-            </table>
-    
-        </div> <!--end of orders table-->
-
-        <!--list of users table-->
-        <div class="col-12 col-md-6 mb-5">
-            <h3 class="float-end">Site Users</h3>
-            <table class="sales-admin display">
-                <thead>
-                    <tr>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>User Email</th>
-                        <th>Administrator?</th>
-                        <th>Phone Number</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <repeat group="{{ @userTableStuff }}" value="{{ @user }}">
-                        <tr>
-                            <th>{{ @user['user_id'] }}</th>
-                            <th>{{ @user['f_name'] }} {{ @user['l_name'] }}</th>
-                            <th>{{ @user['user_email'] }}</th>
-                            <th>
-                                <check if="@user['is_admin'] == 0">
-                                    <true>No</true>
-                                    <false>Yes</false>
-                                </check>
-                            </th>
-                            <th>{{ @user['user_phone'] }}</th>
-                        </tr>
-                    </repeat>
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>User ID</th>
-                        <th>User Name</th>
-                        <th>User Email</th>
-                        <th>Administrator?</th>
-                        <th>Phone Number</th>
-                    </tr>
-                </tfoot>
-            </table>
-    
-        </div> <!--end of users table-->
-        
     </div>
 
     <include href="includes/jscript.html"></include>
     <include href="includes/tables.html"></include>
 <script src="scripts/modal-check.js"></script>
 <script src="scripts/qandaScript.js"></script>
+<script src="scripts/tableScript.js"></script>
 </body>
 </html>

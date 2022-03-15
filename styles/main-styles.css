@@ -20,6 +20,10 @@ main-styles.css
 
 /*id styles*/
 
+#overrideBootstrap {
+    width: 100%;
+}
+
 #resize-logo {
     max-width: 8%;
 }
@@ -32,14 +36,15 @@ main-styles.css
     color: white;
 }
 
-#forms-block, #make-admin-block, #fulfill-block, #delete-block, #answers-block {
+#forms-block, #make-admin-block, #fulfill-block, #delete-block, #answers-block, #select-table-block {
     border-radius: 20px;
     margin-right: 4rem;
     margin-left: 4rem;
 }
 
 #forms-block, #forms-block *, #make-admin-block, #make-admin-block *,
-#fulfill-block, #fulfill-block *, #delete-block, #delete-block *, #answers-block, #answers-block * {
+#fulfill-block, #fulfill-block *, #delete-block, #delete-block *, #answers-block, #answers-block *,
+#select-table-block , #select-table-block * {
     background-color: #fcf3f3;
 }
 
@@ -63,6 +68,13 @@ main-styles.css
 
 .hiddenQClass {
     display: none;
+}
+
+.tableChoices {
+    display: none;
+    background-color: white;
+    border: green 5px solid;
+    padding: 15px;
 }
 
 .header-colour {
