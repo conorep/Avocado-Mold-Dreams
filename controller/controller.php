@@ -302,6 +302,10 @@
                     $addys = $GLOBALS['dataLayer']->getShippingAddresses($_SESSION['loggedUser']->getUserID());
                     $this->_f3->set('customerAddys', $addys);
 
+                    //user's questions
+                    $custQs = $GLOBALS['dataLayer']->getThisUsersQuestions($_SESSION['loggedUser']->getUserID());
+                    $this->_f3->set('custQuestions', $custQs);
+
 
                     echo $views->render('views/customer.html');
                 } else if ($_SESSION['loggedUser']->getIsAdmin() == 1) {

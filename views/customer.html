@@ -100,7 +100,7 @@ customer.html
         </div>
         
         <!--provided addresses-->
-        <div class="col-md-6 col-12 mb-3">
+        <div class="col-md-6 col-12 mb-3 mt-3">
             <div class="container py-3 userData">
                 
                 <h3>{{@SESSION.loggedUser->getFname()}}'s Addresses</h3>
@@ -128,6 +128,31 @@ customer.html
                         <button type="submit" name="submit" value="deladdressSub">Delete</button>
                     </form>
 
+            </div>
+        </div> <!--end addresses block-->
+    
+        <!--user questions block-->
+        <div class="col-md-6 col-12 mb-3 mt-3">
+            <div class="container py-3 userData">
+                <h3>{{@SESSION.loggedUser->getFname()}}'s Questions</h3>
+                <hr>
+                
+                <repeat group="{{@custQuestions}}" value="{{@question}}">
+                    <br>
+                    <div class="container">
+                        <h6>Question Date: {{@question['q_date']}}</h6>
+                        <h6><i>Question:</i> {{@question['q_text']}}</h6>
+                        <check if="@question['is_answered'] == 0">
+                            <true>
+                                <h6><strong>This question has not been answered yet.</strong></h6>
+                            </true>
+                            <false>
+                                <h6><i>Admin answer:</i> {{@question['q_answer']}}</h6>
+                            </false>
+                        </check>
+                        <br>
+                    </div>
+                </repeat>
             </div>
         </div>
     
