@@ -31,11 +31,11 @@ shopping-cart.html
                 <repeat group="{{ @cartItems }}" value="{{ @item }}">
                     <p>{{@item['price']}} <button type="button" class="btn btn-danger">Remove Item</button></p>
 
-                    <button class="btn btn-success btn-sm sub">-</button>
+                    <button id="sub{{@item['item_id']}}" class="btn btn-success btn-sm sub">-</button>
 
-                    <input class="quantity" type="text" value="{{ @SESSION.sessionCart->getProductQuantity(@item['item_id'])}}">
+                    <input class="quantity" id="counter{{@item['item_id']}}" type="text" value="{{ @SESSION.sessionCart->getProductQuantity(@item['item_id'])}}">
 
-                    <button class="btn btn-success btn-sm add">+</button>
+                    <button id="add{{@item['item_id']}}" class="btn btn-success btn-sm add">+</button>
 
                 </repeat>
             </td>
@@ -47,27 +47,36 @@ shopping-cart.html
 
 
 
-<include href="includes/jscript.html"></include>
-<script src="scripts/modal-check.js"></script>
-
 <script src="//code.jquery.com/jquery.js"></script>
-<script src="scripts/modal-check.js"></script>
-
-<!--Script for incrementing and decrementing quantity in cart-->
-<!--<script>
-    $(".add").click(function() {
-        $('#counter').html(function(i, val) {
+<script>
+    $(".add").on("click",function(){
+        let productID= $(this).attr('id').substring(3);
+        alert(productID);
+        $.ajax({
+            type: "POST",
+            url: "classes/cartOperations.php",
+            data: {val: productID},
+            success: function(){
+            }
+        });
+        return false;
+    });
+/*    $(".add").click(function() {
+        let productID= $(this).attr('id').substring(3);
+        alert(productID);
+        $('.counter').html(function(i, val) {
+            let incQuantity = true;
             $.ajax({
-                url: '/path/to/script/',
+                url: 'classes/cartOperations.php',
                 type: 'POST',
-                data: {incQuantity: true},
+                data: {incQuantity: incQuantity},
                 success: function() { alert('Request has returned') }
             });
             return +val+1;
         });
-    });
+    });*/
 
-</script>-->
+</script>
 
 </body>
 </html>
