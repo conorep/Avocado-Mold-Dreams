@@ -21,17 +21,20 @@ customer.html
                 <p>Last Name: {{@SESSION.loggedUser->getLname()}}</p>
                 <p>Email: {{@SESSION.loggedUser->getEmail()}}</p>
                 <p>Phone Number: {{@SESSION.loggedUser->getPhoneNum()}}</p>
-                <!--TODO: delete this-->
-                <p>User ID: {{@SESSION.loggedUser->getUserId()}}</p>
                 
                 <h4>Would you like to change any of these values?</h4>
-                <select name="changeSelect">
-                    <option selected disabled>Select One</option>
-                    <option value="fname">First Name</option>
-                    <option value="lname">Last Name</option>
-                    <option value="email">Email Address</option>
-                    <option value="phone">Phone Number</option>
-                </select>
+                <form  class="mb-3" method="post">
+                    <select name="changeSelect" class="p-1 me-1">
+                        <option selected disabled>Select One</option>
+                        <option value="fname">First Name</option>
+                        <option value="lname">Last Name</option>
+                        <option value="email">Email Address</option>
+                        <option value="phone">Phone Number</option>
+                    </select>
+                    <label class="d-inline-block me-3"><input type="text" name="updateInfo"></label>
+                    <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
+                            value="userChanger">Submit Change</button>
+                </form>
             </div>
         </div>
         <!--user orders-->
@@ -157,17 +160,6 @@ customer.html
         </div>
     
     </div>
-
-</div>
-
-<!--orders-->
-<div class="row">
-
-</div>
-
-<!--conversations-->
-<div class="row">
-
 
 </div>
 

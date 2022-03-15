@@ -398,6 +398,63 @@
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
+
+        //TODO: MAKE THIS WORK.
+        /**
+         * Updates a specified column value of a specified user.
+         * @param $userID mixed
+         * @param $updateColumn mixed
+         * @param $updateVal mixed
+         * @return void
+         */
+        function updateUser($userID, $updateColumn, $updateVal)
+        {
+            $sql = "UPDATE users SET :updatecol = :updateval WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':updatecol', $updateColumn);
+            $statement->bindParam(':updateval', $updateVal);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+
+        function updateUserFname($userID, $updateVal)
+        {
+            $sql = "UPDATE users SET f_name = :updateval WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':updateval', $updateVal);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+        function updateUserLname($userID, $updateVal)
+        {
+            $sql = "UPDATE users SET l_name = :updateval WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':updateval', $updateVal);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+        function updateUserEmail($userID, $updateVal)
+        {
+            $sql = "UPDATE users SET user_email = :updateval WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':updateval', $updateVal);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+        function updateUserPhone($userID, $updateVal)
+        {
+            $sql = "UPDATE users SET user_phone = :updateval WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':updateval', $updateVal);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+
         /**
          * Send in user password entry, hash it, then check database for it. Return array with associated user email
          * and is_admin for final verification and routing to admin or customer page.

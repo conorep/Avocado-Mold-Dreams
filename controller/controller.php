@@ -306,6 +306,50 @@
                     $custQs = $GLOBALS['dataLayer']->getThisUsersQuestions($_SESSION['loggedUser']->getUserID());
                     $this->_f3->set('custQuestions', $custQs);
 
+                    /*TODO: need to do validation on ALL OF THIS*/
+                    if($_POST['submit'] == 'userChanger') {
+                        $userID = $_SESSION['loggedUser']->getUserID();
+                        $updateValue = $_POST['updateInfo'];
+
+                        /* call function: using user_id, column_name, and value */
+                        if($_POST['changeSelect'] == 'fname') {
+                            $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
+                            /*$GLOBALS['dataLayer']->updateUser($userID, 'f_name', $updateValue);*/
+                            $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
+
+                            $this->_f3->reroute('customer');
+                        }
+                        else if ($_POST['changeSelect'] == 'lname') {
+                            $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
+                            /*$GLOBALS['dataLayer']->updateUser($userID, 'l_name', $updateValue);*/
+                            $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
+
+                            $this->_f3->reroute('customer');
+                        }
+                        else if ($_POST['changeSelect'] == 'email') {
+                            $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
+                            /*$GLOBALS['dataLayer']->updateUser($userID, 'user_email', $updateValue);*/
+                            $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
+
+                            $this->_f3->reroute('customer');
+                        }
+                        else if ($_POST['changeSelect'] == 'phone') {
+                            $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
+                            /*$GLOBALS['dataLayer']->updateUser($userID, 'user_phone', $updateValue);*/
+                            $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
+
+                            $this->_f3->reroute('customer');
+                        }
+                    }
+
+                    //TODO: THESE TWO
+                    if($_POST['submit'] == 'newaddressSub') {
+
+                    }
+
+                    if($_POST['submit'] == 'deladdressSub') {
+
+                    }
 
                     echo $views->render('views/customer.html');
                 } else if ($_SESSION['loggedUser']->getIsAdmin() == 1) {
@@ -333,10 +377,10 @@
             $cartRows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
             $this->_f3->set('cartItems', $cartRows);
 
-            echo("<br><br>product array: <BR>");
+/*            echo("<br><br>product array: <BR>");
             print_r($productArr);
             echo("<br><br>products returned from db: <BR>");
-            print_r($cartRows);
+            print_r($cartRows);*/
 
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
