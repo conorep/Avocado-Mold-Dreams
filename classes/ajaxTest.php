@@ -22,6 +22,7 @@ var_dump($_POST);
 
 //if no existing cart
 
+
 if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
         $userCart= new cart();
