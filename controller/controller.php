@@ -137,6 +137,7 @@
                     $this->_f3->set('errors2["newphone"]', 'If entering a phone number, it must be 10 numbers long.');
                 }
 
+
                 if(empty($this->_f3->get('errors2'))) {
                     $GLOBALS['dataLayer']->makeNewUser($newemail, $newphone, $newfname, $newlname, $newpass);
                     $this->_f3->set('usermade["newusermade"]', 'Account successfully made. Login to continue.');

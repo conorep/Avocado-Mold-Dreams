@@ -3,6 +3,7 @@ Conor, Pat, Regina
 SDEV328 AMD
 my-account.html
 -->
+
 <include href="includes/header.html"></include>
 
 <div class="row justify-content-center">
@@ -114,7 +115,7 @@ my-account.html
                         <label for="newpass">ACCOUNT PASSWORD:</label>
                         <!--display error if there is one -->
                         <check if="{{ isset(@errors2['pass']) }}">
-                            <span class="err">{{ @errors2['pass'] }}</span>
+                            <span class="err" id="err-newpass">{{ @errors2['pass'] }}</span>
                         </check>
                         <input type="password" class="form-control" id="newpass" value="{{@newpass}}"
                                placeholder="user password here" name="newpass">
@@ -137,6 +138,7 @@ my-account.html
 </div>
     
 <include href="includes/jscript.html"></include>
+<script src="scripts/js-validation.js"></script>
 <script src="scripts/generic-script.js"></script>
 
 </body>
