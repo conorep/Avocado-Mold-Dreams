@@ -58,6 +58,20 @@
         }
 
         /**
+         * This method returns all user questions associated with one user in the database.
+         * @return array|false array of questions or none if there aren't any
+         */
+        function getThisUsersQuestions($userID)
+        {
+            $sql = "SELECT * FROM user_questions WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userID', $userID);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
          * This function fills in an admin's answer to a user question and marks it answered.
          * @param $ansText
          * @param $qID
