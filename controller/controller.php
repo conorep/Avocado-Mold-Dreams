@@ -11,12 +11,20 @@
             $this->_f3 = $f3;
         }
 
+        /**
+         * This function destroys the session. Activated by clicking the logout button on any given page.
+         * @return void
+         */
         function logOut()
         {
             session_destroy();
             $this->_f3->reroute('my-account');
         }
 
+        /**
+         * This function routes to the home page.
+         * @return void
+         */
         function home()
         {
             $_SESSION['adminOrCusty'] = 0;
@@ -39,118 +47,8 @@
         }
 
         /**
-         * This method routes to the admin page and calls for data to fill its tables, handles the calls for new/archived admins,
-         *
-         * @return void
-         */
-        function admin()
-        {
-            $views = new Template();
-
-            //check to see if anyone is logged in.
-            //if yes, send them to appropriate section - don't allow access to admin page if admin not logged in.
-            if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
-                $_SESSION['adminOrCusty'] = 1;
-
-                //call modal method
-                $this->modalOps();
-
-                //vars for sticky forms
-                $itemName = ""; $itemPrice = ""; $itemQty = "";
-
-                //should I make a sub method for home and admin to use...?
-                $rows = $GLOBALS['dataLayer']->getItems();
-                $this->_f3->set('amdProducts', $rows);
-
-                //orders for table
-                $rows = $GLOBALS['dataLayer']->getOrders();
-                $this->_f3->set('amdOrders', $rows);
-
-                //user questions stuff for table display
-                $rows = $GLOBALS['dataLayer']->getUserQuestions();
-                $this->_f3->set('questionStuff', $rows);
-
-                //users for table
-                $rows = $GLOBALS['dataLayer']->getUsers();
-                $this->_f3->set('userTableStuff', $rows);
-
-                //stuff for adding new item to db inventory
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-                    //item upload code
-                    if ($_POST['submit'] == 'itemUpload') {
-                        //call to item add method
-                        $itemName = stripslashes($_POST['uploadName']);
-                        $itemPrice = stripslashes($_POST['uploadPrice']);
-                        $itemDesc = stripslashes($_POST['uploadDescription']);
-                        $itemQty = stripslashes($_POST['uploadCount']);
-
-                        //if itemLoad returns true, reset those vars to empty
-                        if($this->itemLoad($itemName, $itemPrice, $itemDesc, $itemQty)) {
-                            $itemName = ""; $itemPrice = ""; $itemQty = "";
-                        }
-                    }
-
-                    //question response code
-                    if($_POST['submitQ']) {
-                        $hiddenQID = substr($_POST['answers'], 7);
-                        $userAnswer = $_POST[$hiddenQID];
-
-                        if($_POST[$hiddenQID] == "") {
-                            $this->_f3->set('errorsAns["blankAnswer"]', "Please enter an answer before submitting.");
-                        } else {
-                            $GLOBALS['dataLayer']->answerUserQuestion($userAnswer, $hiddenQID);
-                            $this->_f3->reroute('admin');
-                        }
-                    }
-
-                    //item archive code
-                    if ($_POST['submit'] == 'archiveItem') {
-                        $GLOBALS['dataLayer']->archiveItem($_POST['archiveOrDelete']);
-                        $this->_f3->reroute('admin');
-                    }
-
-                    //item delete code
-                    if ($_POST['submit'] == 'deleteItem') {
-                        $GLOBALS['dataLayer']->deleteItem($_POST['archiveOrDelete']);
-                        $this->_f3->reroute('admin');
-                    }
-
-                    //admin update code
-                    if ($_POST['submit'] == 'adminUpdate') {
-                        $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
-                        $this->_f3->reroute('admin');
-                    }
-                    //admin remove code
-                    if ($_POST['submit'] == 'adminRemove') {
-                        $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
-                        $this->_f3->reroute('admin');
-                    }
-                    //filled order code
-                    if ($_POST['submit'] == 'orderFill') {
-                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
-                        $this->_f3->reroute('admin');
-                    }
-                }
-                /*sticky forms*/
-                $this->_f3->set('uploadName', $itemName);
-                $this->_f3->set('uploadPrice', $itemPrice);
-                $this->_f3->set('uploadCount', $itemQty);
-
-                echo $views->render('views/admin.html');
-            }
-
-            //if not admin, send to user page if there's a login active in session
-            else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
-                $this->_f3->reroute('customer');
-            }
-            else {
-                $this->_f3->reroute('my-account');
-            }
-        }
-
-        /**
-         * This method routes to the account login page and handles login logic.
+         * This function routes to the account login page, pulls associated data, and uses functions from the datalayer
+         * and validation functions objects.
          * @return void
          */
         function accountLogin()
@@ -264,7 +162,118 @@
         }
 
         /**
-         * This method routes to the customer page.
+         * This function routes to the admin page and calls for data to fill its tables,
+         * handles the calls for new/archived admins, etc.
+         * @return void
+         */
+        function admin()
+        {
+            $views = new Template();
+
+            //check to see if anyone is logged in.
+            //if yes, send them to appropriate section - don't allow access to admin page if admin not logged in.
+            if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 1) {
+                $_SESSION['adminOrCusty'] = 1;
+
+                //call modal method
+                $this->modalOps();
+
+                //vars for sticky forms
+                $itemName = ""; $itemPrice = ""; $itemQty = "";
+
+                //should I make a sub method for home and admin to use...?
+                $rows = $GLOBALS['dataLayer']->getItems();
+                $this->_f3->set('amdProducts', $rows);
+
+                //orders for table
+                $rows = $GLOBALS['dataLayer']->getOrders();
+                $this->_f3->set('amdOrders', $rows);
+
+                //user questions stuff for table display
+                $rows = $GLOBALS['dataLayer']->getUserQuestions();
+                $this->_f3->set('questionStuff', $rows);
+
+                //users for table
+                $rows = $GLOBALS['dataLayer']->getUsers();
+                $this->_f3->set('userTableStuff', $rows);
+
+                //stuff for adding new item to db inventory
+                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+                    //item upload code
+                    if ($_POST['submit'] == 'itemUpload') {
+                        //call to item add method
+                        $itemName = stripslashes($_POST['uploadName']);
+                        $itemPrice = stripslashes($_POST['uploadPrice']);
+                        $itemDesc = stripslashes($_POST['uploadDescription']);
+                        $itemQty = stripslashes($_POST['uploadCount']);
+
+                        //if itemLoad returns true, reset those vars to empty
+                        if($this->itemLoad($itemName, $itemPrice, $itemDesc, $itemQty)) {
+                            $itemName = ""; $itemPrice = ""; $itemQty = "";
+                        }
+                    }
+
+                    //question response code
+                    if($_POST['submitQ']) {
+                        $hiddenQID = substr($_POST['answers'], 7);
+                        $userAnswer = $_POST[$hiddenQID];
+
+                        if($_POST[$hiddenQID] == "") {
+                            $this->_f3->set('errorsAns["blankAnswer"]', "Please enter an answer before submitting.");
+                        } else {
+                            $GLOBALS['dataLayer']->answerUserQuestion($userAnswer, $hiddenQID);
+                            $this->_f3->reroute('admin');
+                        }
+                    }
+
+                    //item archive code
+                    if ($_POST['submit'] == 'archiveItem') {
+                        $GLOBALS['dataLayer']->archiveItem($_POST['archiveOrDelete']);
+                        $this->_f3->reroute('admin');
+                    }
+
+                    //item delete code
+                    if ($_POST['submit'] == 'deleteItem') {
+                        $GLOBALS['dataLayer']->deleteItem($_POST['archiveOrDelete']);
+                        $this->_f3->reroute('admin');
+                    }
+
+                    //admin update code
+                    if ($_POST['submit'] == 'adminUpdate') {
+                        $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
+                        $this->_f3->reroute('admin');
+                    }
+                    //admin remove code
+                    if ($_POST['submit'] == 'adminRemove') {
+                        $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
+                        $this->_f3->reroute('admin');
+                    }
+                    //filled order code
+                    if ($_POST['submit'] == 'orderFill') {
+                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
+                        $this->_f3->reroute('admin');
+                    }
+                }
+                /*sticky forms*/
+                $this->_f3->set('uploadName', $itemName);
+                $this->_f3->set('uploadPrice', $itemPrice);
+                $this->_f3->set('uploadCount', $itemQty);
+
+                echo $views->render('views/admin.html');
+            }
+
+            //if not admin, send to user page if there's a login active in session
+            else if (isset($_SESSION['loggedUser']) && $_SESSION['loggedUser']->getIsAdmin() == 0) {
+                $this->_f3->reroute('customer');
+            }
+            else {
+                $this->_f3->reroute('my-account');
+            }
+        }
+
+        /**
+         * This function routes to the customer page.
          * @return void
          */
         function customer()
@@ -279,6 +288,18 @@
                 if ($_SESSION['loggedUser']->getIsAdmin() == 0) {
                     //do customer stuff here!
 
+                    //orders for table
+                    $rows = $GLOBALS['dataLayer']->getUserOrder($_SESSION['loggedUser']->getUserID());
+                    $this->_f3->set('customersOrders', $rows);
+
+                    foreach($rows as $aRow) {
+                        $thisKey = $aRow['order_id'];
+                        $this->_f3->set($thisKey, $aRow);
+                    }
+
+                    $these = $GLOBALS['dataLayer']->getOrderItems(1);
+                    $this->_f3->set('whateverTest', $these);
+
 
                     echo $views->render('views/customer.html');
                 } else if ($_SESSION['loggedUser']->getIsAdmin() == 1) {
@@ -290,7 +311,7 @@
         }
 
         /**
-         * This method routes to the cart page.
+         * This function routes to the cart page.
          * @return void
          */
         function cart()
@@ -316,7 +337,7 @@
         }
 
         /**
-         * This method does verifications for the modal that can be used in any given window.
+         * This function does verifications for the modal that can be used in any given window.
          * @return void
          */
         private function modalOps()
