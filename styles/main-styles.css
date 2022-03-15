@@ -73,7 +73,7 @@ main-styles.css
 .tableChoices {
     display: none;
     background-color: white;
-    border: green 5px solid;
+    border: #aec7b0 5px solid;
     padding: 15px;
 }
 

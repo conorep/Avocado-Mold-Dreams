@@ -219,6 +219,13 @@
 
         }
 
+        //TODO: make an admin function to alter existing stock nums.
+        /**
+         * This function changes the qty of the item reflecting the itemID sent in.
+         * @param $itemID number the item ID to alter
+         * @param $itemQTY number how much to make the stock reflect
+         * @return void
+         */
         function changeItemQty($itemID, $itemQTY)
         {
             $sql = "UPDATE item_stock SET stck_num = :stocknum WHERE item_id = :itemID";

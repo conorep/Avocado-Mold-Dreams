@@ -34,7 +34,8 @@
         }
 
         /**
-         * @return number
+         * This method returns the user's ID.
+         * @return number userID
          */
         public function getUserID()
         {
@@ -42,7 +43,8 @@
         }
 
         /**
-         * @return number
+         * This method states if the user is an admin or not.
+         * @return number 0 for non-admin, 1 for admin.
          */
         public function getIsAdmin()
         {
@@ -50,6 +52,7 @@
         }
 
         /**
+         * This method returns an email
          * @return String
          */
         public function getEmail()

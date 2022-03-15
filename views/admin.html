@@ -284,6 +284,7 @@ admin.html
                             <th>Description</th>
                             <th>'Added' Date</th>
                             <th>Stock Quantity</th>
+                            <th>Active/Archived</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -295,6 +296,10 @@ admin.html
                                 <th>{{ @item['description'] }}</th>
                                 <th>{{ @item['add_date'] }}</th>
                                 <th>{{ @GLOBALS.dataLayer->getItemQty( @item['item_id'] ) }}</th>
+                                <check if="@item['is_archived'] == 0">
+                                    <true><th>Active</th></true>
+                                    <false><th>Archived</th></false>
+                                </check>
                             </tr>
                         </repeat>
                     </tbody>
@@ -306,6 +311,7 @@ admin.html
                             <th>Description</th>
                             <th>'Added' Date</th>
                             <th>Stock Quantity</th>
+                            <th>Active/Archived</th>
                         </tr>
                     </tfoot>
         
