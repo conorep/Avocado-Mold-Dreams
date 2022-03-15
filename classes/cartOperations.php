@@ -22,7 +22,10 @@ var_dump($_POST);
 
 //if no existing cart
 
-echo $_POST['val'];
+if(isset($_POST['val'])) {
+    $_SESSION['cartMessage'] = "increment triggered" .$_POST['val'];
+    $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+}
 //if there is an increment signal, increment (add) to item quantity
 //$_SESSION['sessionCart']->addToCart((int)$_POST['val']);
 

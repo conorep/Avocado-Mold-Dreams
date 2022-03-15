@@ -53,10 +53,17 @@ shopping-cart.html
         let productID= $(this).attr('id').substring(3);
         alert(productID);
         $.ajax({
+            context: this,
+            vars: {id:productID},
             type: "POST",
             url: "classes/cartOperations.php",
             data: {val: productID},
             success: function(){
+                alert("success reached")
+
+                let nextVal = parseInt($(this).prev().val())+1;
+                alert("next value is: " +nextVal);
+                $(this).prev().val(nextVal);
             }
         });
         return false;
