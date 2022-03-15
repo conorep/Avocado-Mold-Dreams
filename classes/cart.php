@@ -11,7 +11,12 @@ class cart
      */
     public function getInCartArr(): array
     {
-        return $this->_inCartArr;
+        return array_keys($this->_inCartArr);
+//        return $this->_inCartArr;
+    }
+
+    public function getProductQuantity($productID) {
+        return $this->_inCartArr[$productID];
     }
 
     /**
@@ -42,7 +47,9 @@ echo "<br>";
      *Pushes an item to the cart array containing product ids
      */
     public function addToCart($productID) {
-        array_push($this->_inCartArr, $productID);
+//        array_push($this->_inCartArr, $productID);
+
+        $this->_inCartArr[$productID] += 1;
 
         //just for testing purposes, went through a lot just to get the object to populate
         $this->_testField = $productID;

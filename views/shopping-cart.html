@@ -30,6 +30,13 @@ shopping-cart.html
             <td>
                 <repeat group="{{ @cartItems }}" value="{{ @item }}">
                     <p>{{@item['price']}} <button type="button" class="btn btn-danger">Remove Item</button></p>
+
+                    <button class="btn btn-success btn-sm sub">-</button>
+
+                    <input class="quantity" type="text" value="{{ @SESSION.sessionCart->getProductQuantity(@item['item_id'])}}">
+
+                    <button class="btn btn-success btn-sm add">+</button>
+
                 </repeat>
             </td>
         </tr>
@@ -40,7 +47,27 @@ shopping-cart.html
 
 
 
-    <include href="includes/jscript.html"></include>
+<include href="includes/jscript.html"></include>
 <script src="scripts/modal-check.js"></script>
+
+<script src="//code.jquery.com/jquery.js"></script>
+<script src="scripts/modal-check.js"></script>
+
+<!--Script for incrementing and decrementing quantity in cart-->
+<!--<script>
+    $(".add").click(function() {
+        $('#counter').html(function(i, val) {
+            $.ajax({
+                url: '/path/to/script/',
+                type: 'POST',
+                data: {incQuantity: true},
+                success: function() { alert('Request has returned') }
+            });
+            return +val+1;
+        });
+    });
+
+</script>-->
+
 </body>
 </html>
