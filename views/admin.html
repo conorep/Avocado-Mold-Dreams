@@ -290,15 +290,15 @@ admin.html
                     <tbody>
                         <repeat group="{{ @amdProducts }}" value="{{ @item }}">
                             <tr>
-                                <th>{{ @item['item_id'] }}</th>
-                                <th>{{ @item['item_name'] }}</th>
-                                <th>{{ @item['price'] }}</th>
-                                <th>{{ @item['description'] }}</th>
-                                <th>{{ @item['add_date'] }}</th>
-                                <th>{{ @GLOBALS.dataLayer->getItemQty( @item['item_id'] ) }}</th>
+                                <td>{{ @item['item_id'] }}</td>
+                                <td>{{ @item['item_name'] }}</td>
+                                <td>{{ @item['price'] }}</td>
+                                <td>{{ @item['description'] }}</td>
+                                <td>{{ @item['add_date'] }}</td>
+                                <td>{{ @GLOBALS.dataLayer->getItemQty( @item['item_id'] ) }}</td>
                                 <check if="@item['is_archived'] == 0">
-                                    <true><th>Active</th></true>
-                                    <false><th>Archived</th></false>
+                                    <true><td>Active</td></true>
+                                    <false><td>Archived</td></false>
                                 </check>
                             </tr>
                         </repeat>
@@ -339,19 +339,19 @@ admin.html
                     <tbody>
                         <repeat group="{{ @questionStuff }}" value="{{ @questionCategory }}">
                             <tr>
-                                <th>{{ @questionCategory['q_id'] }}</th>
-                                <th>{{ @questionCategory['q_date'] }}</th>
-                                <th>{{ @questionCategory['user_id'] }}</th>
-                                <th>{{ @questionCategory['contact_email'] }}</th>
-                                <th>{{ @questionCategory['user_name'] }}</th>
-                                <th>
+                                <td>{{ @questionCategory['q_id'] }}</td>
+                                <td>{{ @questionCategory['q_date'] }}</td>
+                                <td>{{ @questionCategory['user_id'] }}</td>
+                                <td>{{ @questionCategory['contact_email'] }}</td>
+                                <td>{{ @questionCategory['user_name'] }}</td>
+                                <td>
                                     <check if="@questionCategory['is_answered'] == 0">
                                         <true>No</true>
                                         <false>Yes</false>
                                     </check>
-                                </th>
-                                <th>{{ @questionCategory['q_text'] }}</th>
-                                <th>{{ @questionCategory['q_answer'] }}</th>
+                                </td>
+                                <td>{{ @questionCategory['q_text'] }}</td>
+                                <td>{{ @questionCategory['q_answer'] }}</td>
                             </tr>
                         </repeat>
                     </tbody>
@@ -390,17 +390,17 @@ admin.html
                     <tbody>
                         <repeat group="{{ @amdOrders }}" value="{{ @order }}">
                             <tr>
-                                <th>{{ @order['order_id'] }}</th>
-                                <th>{{ @order['user_id'] }}</th>
-                                <th>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</th>
-                                <th>{{ @order['created_date'] }}</th>
-                                <th>
+                                <td>{{ @order['order_id'] }}</td>
+                                <td>{{ @order['user_id'] }}</td>
+                                <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
+                                <td>{{ @order['created_date'] }}</td>
+                                <td>
                                     <check if="@order['is_fulfilled'] == 1">
                                         <true>Yes</true>
                                         <false>No</false>
                                     </check>
-                                </th>
-                                <th>{{ @order['fulfilled_date'] }}</th>
+                                </td>
+                                <td>{{ @order['fulfilled_date'] }}</td>
                             </tr>
                         </repeat>
             
@@ -435,15 +435,15 @@ admin.html
                     <tbody>
                         <repeat group="{{ @userTableStuff }}" value="{{ @user }}">
                             <tr>
-                                <th>{{ @user['user_id'] }}</th>
-                                <th>{{ @user['f_name'] }} {{ @user['l_name'] }}</th>
-                                <th>{{ @user['user_email'] }}</th>
-                                <th>
+                                <td>{{ @user['user_id'] }}</td>
+                                <td>{{ @user['f_name'] }} {{ @user['l_name'] }}</td>
+                                <td>{{ @user['user_email'] }}</td>
+                                <td>
                                     <check if="@user['is_admin'] == 0">
                                         <true>No</true>
                                         <false>Yes</false>
                                     </check>
-                                </th>
+                                </td>
                                 <th>{{ @user['user_phone'] }}</th>
                             </tr>
                         </repeat>
@@ -468,6 +468,5 @@ admin.html
     <include href="includes/tables.html"></include>
 <script src="scripts/modal-check.js"></script>
 <script src="scripts/qandaScript.js"></script>
-<script src="scripts/tableScript.js"></script>
 </body>
 </html>

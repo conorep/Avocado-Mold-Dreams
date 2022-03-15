@@ -10,7 +10,87 @@ customer.html
     <!--customer info-->
     <div class="row justify-content-center">
         
-        <div class="container">
+        <div class="container row">
+            <!--username and such-->
+            <div class="col-6 ">
+                <div class="container py-3 userData">
+                    <h3>Customer Info</h3>
+                    <p>First Name: {{@SESSION.loggedUser->getFname()}}</p>
+                    <p>Last Name: {{@SESSION.loggedUser->getLname()}}</p>
+                    <p>Email: {{@SESSION.loggedUser->getEmail()}}</p>
+                    <p>Phone Number: {{@SESSION.loggedUser->getPhoneNum()}}</p>
+                    <p>User ID: {{@SESSION.loggedUser->getUserID()}}</p>
+                    <ul>
+                            <repeat group="{{ @whateverTest }}" value="{{@attr}}">
+                                <li>
+                                    Item ID: {{@attr['item_id']}} Qty: {{@attr['buy_qty']}}
+                                </li>
+                            </repeat>
+                    </ul>
+                </div>
+            </div>
+            <!--user orders-->
+            <div class="col-6">
+                <div class="container py-3 userData">
+                    <h3>Order History</h3>
+                    <table class="sales-admin display">
+                        <thead>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Order Date</th>
+                                <th>Order Items</th>
+                                <th>Order Total</th>
+                                <th>Fulfilled?</th>
+                                <th>Fulfilled Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <repeat group="{{ @customersOrders }}" value="{{ @order }}">
+                                <tr>
+                                    <td>{{@order['order_id']}}</td>
+                                    <td>{{@order['created_date']}}</td>
+                                    <td>
+                                        <div class="hoverItems">
+                                            HOVER HERE
+                                            <div class="hoverContent">
+                                                <repeat group="{{ @GLOBALS.dataLayer->getOrderItems( @order['order_id'] ) }}" value="{{ @itemAttr }}">
+                                                    <p>Item ID: {{ @itemAttr['item_id'] }} Item Qty: {{ @itemAttr['buy_qty'] }}</p>
+<!--                                                    <p>Item ID: {{@itemAttr['item_id']}}</p>
+                                                    <p>Item qty: {{@itemAttr['buy_qty']}}</p>-->
+                                                </repeat>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
+                                    <td>
+                                        <check if="@order['is_fulfilled'] == 0">
+                                            <true>No</true>
+                                            <false>Yes</false>
+                                        </check>
+                                    </td>
+                                    <td>
+                                        <check if="@order['is_fulfilled'] == 0">
+                                            <true>N/A</true>
+                                            <false>{{@order['fulfilled_date']}}</false>
+                                        </check>
+                                    </td>
+                                </tr>
+                            </repeat>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Order Number</th>
+                                <th>Order Date</th>
+                                <th>Order Items</th>
+                                <th>Order Total</th>
+                                <th>Fulfilled?</th>
+                                <th>Fulfilled Date</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+    
+            </div>
         
         </div>
         
@@ -22,10 +102,14 @@ customer.html
     </div>
 
     <!--conversations-->
-    <div class="row"></div>
+    <div class="row">
+
+
+    </div>
 
 
     <include href="includes/jscript.html"></include>
+    <include href="includes/tables.html"></include>
 <script src="scripts/modal-check.js"></script>
 </body>
 </html>
