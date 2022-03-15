@@ -1,5 +1,5 @@
 document.getElementById("newUser").onsubmit = validate;
-
+$validation = new ValidationFuntions;
 function validate()
 {
     let isValid = true;
@@ -7,7 +7,7 @@ function validate()
     //validate password
     let password = document.getElementById("newpass").value;
     if(!checkPassword(password)){
-        //document.getElementById("err-newpass").style.display = "block";
+        document.getElementById("err-newpass").style.display = "block";
         isValid = false;
     }
     return isValid;
