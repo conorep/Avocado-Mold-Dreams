@@ -100,16 +100,28 @@
         }
 
         /**
+         * This method retrieves all orders for a certain customer.
+         * @param $userID number the id to pull all associated order by
+         * @return array|false array of orders if there are some, otherwise nothing
+         */
+        function getUserOrder($userID)
+        {
+            $sql = "SELECT * FROM orders WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userID', $userID);
+            $statement->execute();
+
+            return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
          * This method gathers all items associated with an order number and returns them.
-         * @param $orderID mixed order num to search for associated items
+         * @param $orderID number order num to search for associated items
          * @return array|false array of the items, or nothing if no items
          */
         function getOrderItems($orderID)
         {
-            $sql = "SELECT o.item_id, o.buy_qty, p.price 
-                            FROM order_items o, product p
-                            INNER JOIN ON o.item_id = p.item_id
-                            WHERE o.order_id = :orderID";
+            $sql = "SELECT * FROM order_items WHERE order_id = :orderID";
             $statement = $this->_dbh->prepare($sql);
             $statement->bindParam(':orderID', $orderID);
             $statement->execute();
@@ -119,7 +131,7 @@
 
         //TODO: calculate tax and add that.
         /**
-         * This method returns a cash total of the items in an order.
+         * This method returns a cash total of the items in an order. This adds 10% tax to the total and returns that.
          * @param $orderID mixed order id to search my
          * @return float|int number return of the sum of all order items
          */
@@ -137,6 +149,8 @@
             {
                 $sum += $item['buy_qty'] * $item['price'];
             }
+            /*add tax!*/
+            $sum += $sum * 0.1;
             return $sum;
         }
 
