@@ -4,112 +4,151 @@ SDEV328 AMD
 customer.html
 -->
 <include href="includes/header.html"></include>
-    <h1>CUSTOMER PAGE</h1>
+<h1>CUSTOMER PAGE</h1>
 
-    <!--TODO: customer info, 'add shipping addresses' function, list shipping addresses, orders history, reset pass-->
-    <!--customer info-->
-    <div class="row justify-content-center">
-        
-        <div class="container row">
-            <!--username and such-->
-            <div class="col-6 ">
-                <div class="container py-3 userData">
-                    <h3>Customer Info</h3>
-                    <p>First Name: {{@SESSION.loggedUser->getFname()}}</p>
-                    <p>Last Name: {{@SESSION.loggedUser->getLname()}}</p>
-                    <p>Email: {{@SESSION.loggedUser->getEmail()}}</p>
-                    <p>Phone Number: {{@SESSION.loggedUser->getPhoneNum()}}</p>
-                    <p>User ID: {{@SESSION.loggedUser->getUserID()}}</p>
-                    <ul>
-                            <repeat group="{{ @whateverTest }}" value="{{@attr}}">
-                                <li>
-                                    Item ID: {{@attr['item_id']}} Qty: {{@attr['buy_qty']}}
-                                </li>
-                            </repeat>
-                    </ul>
-                </div>
-            </div>
-            <!--user orders-->
-            <div class="col-6">
-                <div class="container py-3 userData">
-                    <h3>Order History</h3>
-                    <table class="sales-admin display">
-                        <thead>
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Order Date</th>
-                                <th>Order Items</th>
-                                <th>Order Total</th>
-                                <th>Fulfilled?</th>
-                                <th>Fulfilled Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <repeat group="{{ @customersOrders }}" value="{{ @order }}">
-                                <tr>
-                                    <td>{{@order['order_id']}}</td>
-                                    <td>{{@order['created_date']}}</td>
-                                    <td>
-                                        <div class="hoverItems">
-                                            HOVER HERE
-                                            <div class="hoverContent">
-                                                <repeat group="{{ @GLOBALS.dataLayer->getOrderItems( @order['order_id'] ) }}" value="{{ @itemAttr }}">
-                                                    <p>Item ID: {{ @itemAttr['item_id'] }} Item Qty: {{ @itemAttr['buy_qty'] }}</p>
-<!--                                                    <p>Item ID: {{@itemAttr['item_id']}}</p>
-                                                    <p>Item qty: {{@itemAttr['buy_qty']}}</p>-->
-                                                </repeat>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
-                                    <td>
-                                        <check if="@order['is_fulfilled'] == 0">
-                                            <true>No</true>
-                                            <false>Yes</false>
-                                        </check>
-                                    </td>
-                                    <td>
-                                        <check if="@order['is_fulfilled'] == 0">
-                                            <true>N/A</true>
-                                            <false>{{@order['fulfilled_date']}}</false>
-                                        </check>
-                                    </td>
-                                </tr>
-                            </repeat>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Order Date</th>
-                                <th>Order Items</th>
-                                <th>Order Total</th>
-                                <th>Fulfilled?</th>
-                                <th>Fulfilled Date</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+<!--TODO: customer info, 'add shipping addresses' function, list shipping addresses, orders history, reset pass-->
+<!--TODO: fix hoverover popup.-->
+<!--customer info-->
+<div class="row justify-content-center">
     
+    <div class="container row">
+        <!--username and such-->
+        <div class="col-md-6 col-12 mb-3">
+            <div class="container py-3 userData">
+                <h3>Customer Info</h3>
+                <hr>
+                <p>First Name: {{@SESSION.loggedUser->getFname()}}</p>
+                <p>Last Name: {{@SESSION.loggedUser->getLname()}}</p>
+                <p>Email: {{@SESSION.loggedUser->getEmail()}}</p>
+                <p>Phone Number: {{@SESSION.loggedUser->getPhoneNum()}}</p>
+                <!--TODO: delete this-->
+                <p>User ID: {{@SESSION.loggedUser->getUserId()}}</p>
+                
+                <h4>Would you like to change any of these values?</h4>
+                <select name="changeSelect">
+                    <option selected disabled>Select One</option>
+                    <option value="fname">First Name</option>
+                    <option value="lname">Last Name</option>
+                    <option value="email">Email Address</option>
+                    <option value="phone">Phone Number</option>
+                </select>
+            </div>
+        </div>
+        <!--user orders-->
+        <div class="col-md-6 col-12">
+            <div class="container py-3 userData">
+                <h3>Order History</h3>
+                <hr>
+                <table class="sales-admin display">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Order Date</th>
+                            <th>Items</th>
+                            <th>Order Total</th>
+                            <th>Fulfilled?</th>
+                            <th>Fulfilled Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <repeat group="{{ @customersOrders }}" value="{{ @order }}">
+                            <tr>
+                                <td>{{@order['order_id']}}</td>
+                                <td>{{@order['created_date']}}</td>
+                                <td>
+                                    <div class="hoverItems">
+                                        <u class="hovercolor">ITEMS</u>
+                                        <div class="hoverContent">
+                                            <repeat group="{{ @GLOBALS.dataLayer->getOrderItems( @order['order_id'] ) }}"
+                                                    value="{{ @itemAttr }}">
+                                                <p>Item Name: {{ @GLOBALS.dataLayer->getThisItem(@itemAttr['item_id'])
+                                                   }}</p>
+                                                <p>Buy Qty: {{ @itemAttr['buy_qty'] }}</p>
+                                            </repeat>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
+                                <td>
+                                    <check if="@order['is_fulfilled'] == 0">
+                                        <true>No</true>
+                                        <false>Yes</false>
+                                    </check>
+                                </td>
+                                <td>
+                                    <check if="@order['is_fulfilled'] == 0">
+                                        <true>N/A</true>
+                                        <false>{{@order['fulfilled_date']}}</false>
+                                    </check>
+                                </td>
+                            </tr>
+                        </repeat>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Order Date</th>
+                            <th>Items</th>
+                            <th>Order Total</th>
+                            <th>Fulfilled?</th>
+                            <th>Fulfilled Date</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
         
         </div>
         
-    </div>
+        <!--provided addresses-->
+        <div class="col-md-6 col-12 mb-3">
+            <div class="container py-3 userData">
+                
+                <h3>{{@SESSION.loggedUser->getFname()}}'s Addresses</h3>
+                <hr>
+                
+                <repeat group="{{@customerAddys}}" value="{{@addy}}">
+                    <p>{{@addy['ship_location']}}</p>
+                </repeat>
+                
+                    <!--add new-->
+                    <form method="post">
+                        <h4>Would you like to add a new address?</h4>
+                        <textarea name="addressAdd"></textarea>
+                        <button type="submit" name="submit" value="newaddressSub">Add New</button>
+                    </form>
 
-    <!--orders-->
-    <div class="row">
+                    <!--delete old-->
+                    <form method="post">
+                        <h4>Delete an address?</h4>
+                        <select name="deleteAddressList">
+                            <repeat group="{{@customerAddys}}" value="{{@addy}}">
+                                <option value="{{@addy['ship_location']}}">{{@addy['ship_location']}}</option>
+                            </repeat>
+                        </select>
+                        <button type="submit" name="submit" value="deladdressSub">Delete</button>
+                    </form>
+
+            </div>
+        </div>
     
     </div>
 
-    <!--conversations-->
-    <div class="row">
+</div>
+
+<!--orders-->
+<div class="row">
+
+</div>
+
+<!--conversations-->
+<div class="row">
 
 
-    </div>
+</div>
 
 
-    <include href="includes/jscript.html"></include>
-    <include href="includes/tables.html"></include>
+<include href="includes/jscript.html"></include>
+<include href="includes/tables.html"></include>
 <script src="scripts/modal-check.js"></script>
 </body>
 </html>

@@ -297,8 +297,9 @@
                         $this->_f3->set($thisKey, $aRow);
                     }
 
-                    $these = $GLOBALS['dataLayer']->getOrderItems(1);
-                    $this->_f3->set('whateverTest', $these);
+                    //user addresses
+                    $addys = $GLOBALS['dataLayer']->getShippingAddresses($_SESSION['loggedUser']->getUserID());
+                    $this->_f3->set('customerAddys', $addys);
 
 
                     echo $views->render('views/customer.html');

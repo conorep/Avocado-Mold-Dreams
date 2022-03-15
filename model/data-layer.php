@@ -30,6 +30,21 @@
         }
 
         /**
+         * This function retrieves one specific item's name.
+         * @param $itemID number itemid to search by
+         * @return string name of item
+         */
+        function getThisItem($itemID)
+        {
+            $sql = "SELECT * FROM product WHERE item_id = :itemID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':itemID', $itemID);
+            $statement->execute();
+            $itemName = $statement->fetch(PDO::FETCH_ASSOC);
+            return $itemName['item_name'];
+        }
+
+        /**
          * This method returns all user questions in the database.
          * @return array|false array of questions or none if there aren't any
          */
@@ -129,7 +144,6 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        //TODO: calculate tax and add that.
         /**
          * This method returns a cash total of the items in an order. This adds 10% tax to the total and returns that.
          * @param $orderID mixed order id to search my
@@ -250,7 +264,13 @@
             $statement->execute();
         }
 
-        //NEED TO CHECK IF THERE IS ALREADY ITEM STOCK WHEN USING THIS
+        //TODO: NEED TO CHECK IF THERE IS ALREADY ITEM STOCK WHEN USING THIS
+        /**
+         * This function add an item and its quantity into the database.
+         * @param $itemID number id of item to add
+         * @param $itemQTY number quantity to add
+         * @return void
+         */
         function addItemQty($itemID, $itemQTY)
         {
             $sql = "INSERT INTO item_stock (item_id, item_stock)
