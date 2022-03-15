@@ -273,11 +273,9 @@ admin.html
     
     
             <!--items table. add a button that opens a form for new additions or archiving old products.-->
-            <div class="tableChoices" id="itemsDiv">
+            <div class="col tableChoices" id="itemsDiv">
                 <h3 >Inventory</h3>
                 <table class="sales-admin display">
-                    <!--NOTE: need inventory/stock table. keep that count separate
-                                       from item listing table for sql 'normalization'-->
                     <thead>
                         <tr>
                             <th>Item ID</th>
@@ -285,6 +283,7 @@ admin.html
                             <th>Price</th>
                             <th>Description</th>
                             <th>'Added' Date</th>
+                            <th>Stock Quantity</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -295,6 +294,7 @@ admin.html
                                 <th>{{ @item['price'] }}</th>
                                 <th>{{ @item['description'] }}</th>
                                 <th>{{ @item['add_date'] }}</th>
+                                <th>{{ @GLOBALS.dataLayer->getItemQty( @item['item_id'] ) }}</th>
                             </tr>
                         </repeat>
                     </tbody>
@@ -305,6 +305,7 @@ admin.html
                             <th>Price</th>
                             <th>Description</th>
                             <th>'Added' Date</th>
+                            <th>Stock Quantity</th>
                         </tr>
                     </tfoot>
         
@@ -313,7 +314,7 @@ admin.html
             </div>
     
             <!--customer questions. add ability to answer from here-->
-            <div class="col-12 tableChoices" id="questionsDiv">
+            <div class="col tableChoices" id="questionsDiv">
                 <h3 >Customer Questions</h3>
                 <table class="sales-admin display">
                     <thead>
@@ -367,7 +368,7 @@ admin.html
             </div> <!--end of customer questions table-->
     
             <!--orders table-->
-            <div class="col-12 tableChoices" id="ordersDiv">
+            <div class="col tableChoices" id="ordersDiv">
                 <h3 >Order History</h3>
                 <table class="sales-admin display">
                     <thead>
@@ -413,7 +414,7 @@ admin.html
             </div> <!--end of orders table-->
     
             <!--list of users table-->
-            <div class="col-12 tableChoices" id="usersDiv">
+            <div class="col tableChoices" id="usersDiv">
                 <h3 >Site Users</h3>
                 <table class="sales-admin display">
                     <thead>
