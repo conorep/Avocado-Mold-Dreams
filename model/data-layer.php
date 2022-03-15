@@ -496,8 +496,8 @@
         function getItemsForCart($cartArrayInput)
         {
             $sqlString = implode(', ', $cartArrayInput);
-            echo "<br><br>sqlString: ";
-            print_r($sqlString);
+            /*echo "<br><br>sqlString: ";
+            print_r($sqlString);*/
             //need to select rows that match product ids from cart session
 
             $sql = "SELECT * FROM product WHERE item_id IN ($sqlString)";
