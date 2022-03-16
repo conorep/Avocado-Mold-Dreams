@@ -1,5 +1,12 @@
+
+//execute validation function for login
 document.getElementById("adminLogin").onsubmit = validateLogin;
-document.getElementById("newUser").onsubmit = validate;
+
+//execute validation function for new account creation
+document.getElementById("newUser").onsubmit = validateNewUser;
+
+//execute validation for question form
+document.getElementById("questionForm").onsubmit = validateQuestion;
 
 function validateLogin()
 {
@@ -8,11 +15,12 @@ function validateLogin()
 
     //validate email/username
     let userName = document.getElementById("username").value;
+    let userEmail = document.getElementById("username").value;
     if(userName === ""){
         document.getElementById("err-username").style.display = "block";
         isValid = false;
     }
-    if(!validateEmail(userName)){
+    if(!validateEmail(userEmail) && userEmail !== ""){
         document.getElementById("err-useremail").style.display = "block";
         isValid = false;
     }
@@ -20,7 +28,7 @@ function validateLogin()
     return isValid;
 }
 
-function validate()
+function validateNewUser()
 {
     let isValid = true;
     clearErrors();
@@ -67,15 +75,58 @@ function validate()
 
 }
 
+function validateQuestion()
+{
+    let isValid = true;
+    clearErrors();
+
+    //validate question field
+    let question = document.getElementById("questionContent").value;
+    if(question === ""){
+        document.getElementById("err-question").style.display = "block";
+        isValid = false;
+    }
+
+    //validate name field
+    let name = document.getElementById("questionUserInput").value;
+    if(name === ""){
+        document.getElementById("err-name").style.display = "block";
+        isValid = false;
+    }
+
+    //validate email field
+    //if email field is empty
+    let emptyEmail = document.getElementById("questionEmailInput").value;
+    if(emptyEmail === ""){
+        document.getElementById("err-emptyEmail").style.display = "block";
+        isValid = false;
+    }
+
+    //if email is invalid
+    let invalidEmail = document.getElementById("questionEmailInput").value;
+    if(!validateEmail(invalidEmail) && invalidEmail !== ""){
+        document.getElementById("err-invalidEmail").style.display = "block";
+        isValid = false;
+    }
+
+    return isValid;
+}
+
+
+
+/*Helper functions*/
+
+//clears errors messages
 function clearErrors()
 {
     //Clear all error messages
-    let errors = document.getElementsByClassName("err");
+    let errors = document.getElementsByClassName("js-err");
     for (let i=0; i<errors.length; i++) {
         errors[i].style.display = "none";
     }
 }
 
+//function for checking password requirements
 function checkPassword(newPass)
 {
     let validPass =  /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{7,15}$/;
@@ -89,6 +140,7 @@ function checkPassword(newPass)
     }
 }
 
+//function for validating email format
 function validateEmail(newEmail)
 {
     let mailformat = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -102,6 +154,7 @@ function validateEmail(newEmail)
     }
 }
 
+//function for validating phone format
 function validPhone(phoneNum)
 {
     let phonedash = /^\(?([0-9]{3})\)?[-]?([0-9]{3})[-]?([0-9]{4})$/;

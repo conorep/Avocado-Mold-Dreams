@@ -50,7 +50,7 @@
     </nav>
     
     <!-- Modal -->
-    <form type="post" method="post">
+    <form type="post" method="post" id="questionForm">
         <div class="modal fade" id="amdQuestionModal" tabindex="-1" aria-labelledby="amdQuestionModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -67,6 +67,7 @@
                             </check>
                             <label for="questionContent">User Question</label>
                             <textarea id="questionContent" name="questionText"></textarea>
+                            <span class="js-err" id="err-question">Question field cannot be empty!</span>
                         </div>
                         
                         <!--question sender-->
@@ -76,6 +77,7 @@
                             </check>
                             <label for="questionUserInput">User Name</label>
                             <input type="text" class="w-100" id="questionUserInput" name="questionUser" value="{{@questionUserNameVal}}">
+                            <span class="js-err" id="err-name">Please provide a contact name.</span>
                         </div>
                         
                         <!--question sender email-->
@@ -85,6 +87,8 @@
                             </check>
                             <label for="questionEmailInput">Answer Email Address</label>
                             <input type="text" class="w-100" id="questionEmailInput" name="questionEmail" value="{{@questionEmailVal}}">
+                            <span class="js-err" id="err-emptyEmail">Please provide an email address.</span>
+                            <span class="js-err" id="err-invalidEmail">Invalid email address.</span>
                         </div>
 
                     </div>
