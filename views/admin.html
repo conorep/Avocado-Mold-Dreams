@@ -192,8 +192,8 @@ admin.html
                             <check if="@order['is_fulfilled'] == 0">
                                 <option name='orderfill' value="{{@order['order_id']}}" >
                                     Order ID: {{@order['order_id']}}
-                                    User ID: {{@order['l_name']}}
-                                    Total: {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}
+                                    User ID: {{@order['user_id']}}
+                                    Total: ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], @order['is_premium'], @order['prem_percent'] ) }}
                                 </option>
                             </check>
                         </repeat>
@@ -205,9 +205,10 @@ admin.html
         </div>
     </div> <!--end mark fulfilled block-->
 
-    <!--make an admin form-->
+    <!--make an admin or premium member form-->
     <div class="row justify-content-center">
         <div class="container border border-dark m-3 col-md-8 col-10" id="make-admin-block">
+            <!--make admin block-->
             <form class="mt-3" method="post">
                 <div class="text-center">
                     <h3>Non-Admin Users</h3>
@@ -218,7 +219,7 @@ admin.html
                     <select class="bg-white w-50  p-1 d-inline-block" name="addition">
                         <repeat group="{{@userTableStuff}}" value="{{@user}}">
                             <check if="@user['is_admin'] == 0">
-                                <option name='userAdd' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
+                                <option name='userAdd' value="{{@user['user_id']}}">Name: {{@user['f_name']}} {{@user['l_name']}} Email: {{@user['user_email']}}</option>
                             </check>
                         </repeat>
                     </select>
@@ -226,8 +227,8 @@ admin.html
                 </div>
                 
             </form>
-    
-            <form class="mt-3 mb-3" method="post">
+            <!--remove admin block-->
+            <form class="mt-3 " method="post">
                 <div class="text-center">
                     <h3>Administrators</h3>
                     <h4>Select one that you'd like to remove admin privileges from.</h4>
@@ -237,7 +238,7 @@ admin.html
                     <select class="bg-white w-50  p-1 d-inline-block" name="removal">
                         <repeat group="{{@userTableStuff}}" value="{{@user}}">
                             <check if="@user['is_admin'] == 1">
-                                <option name='userRemove' value="{{@user['user_id']}}">{{@user['f_name']}} {{@user['l_name']}} {{@user['user_email']}}</option>
+                                <option name='userRemove' value="{{@user['user_id']}}">Name: {{@user['f_name']}} {{@user['l_name']}} Email: {{@user['user_email']}}</option>
                             </check>
                         </repeat>
                     </select>
@@ -245,6 +246,54 @@ admin.html
                 </div>
     
             </form>
+            
+            <!--make premium block-->
+            <form class="mt-3" method="post">
+                <div class="text-center">
+                    <h3>Non-Premium Users</h3>
+                    <h4>Select one that you'd like to make premium.</h4>
+                </div>
+        
+                <div class="text-center ">
+                    <select class="bg-white w-50  p-1 d-inline-block" name="newPremUserID">
+                        <repeat group="{{@userTableStuff}}" value="{{@user}}">
+                            <check if="@user['is_premium'] == 0">
+                                <option name='userAdd' value="{{@user['user_id']}}">Name: {{@user['f_name']}} {{@user['l_name']}} Email: {{@user['user_email']}}</option>
+                            </check>
+                        </repeat>
+                    </select>
+                    <h6>What percentage discount would you like to give them?</h6>
+                    <select class="bg-white w-25  p-1 d-inline-block" name="percentInput">
+                        <option value="0.10">10%</option>
+                        <option value="0.25">25%</option>
+                        <option value="0.40">40%</option>
+                        <option value="0.50">50%</option>
+                    </select>
+                    
+                    <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="premMake">Make Premium</button>
+                </div>
+    
+            </form>
+            
+            <!--make standard block-->
+            <form class="mt-3 mb-3" method="post">
+                <div class="text-center">
+                    <h3>Non-Premium Users</h3>
+                    <h4>Select one that you'd like to make a standard customer.</h4>
+                </div>
+                <div class="text-center ">
+                    <select class="bg-white w-50  p-1 d-inline-block" name="newStandardUserID">
+                        <repeat group="{{@userTableStuff}}" value="{{@user}}">
+                            <check if="@user['is_premium'] == 1">
+                                <option name='userAdd' value="{{@user['user_id']}}">Name: {{@user['f_name']}} {{@user['l_name']}} Email: {{@user['user_email']}}</option>
+                            </check>
+                        </repeat>
+                    </select>
+                    <button class=" btn btn-lg btn-outline-success d-inline-block" type="submit" name="submit" value="premTake">Make Standard</button>
+                </div>
+    
+            </form>
+            
         </div>
     </div> <!--end make admin block-->
 
@@ -392,7 +441,7 @@ admin.html
                             <tr>
                                 <td>{{ @order['order_id'] }}</td>
                                 <td>{{ @order['user_id'] }}</td>
-                                <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
+                                <td>${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], @order['is_premium'], @order['prem_percent'] ) }} </td>
                                 <td>{{ @order['created_date'] }}</td>
                                 <td>
                                     <check if="@order['is_fulfilled'] == 1">
@@ -430,6 +479,8 @@ admin.html
                             <th>User Email</th>
                             <th>Administrator?</th>
                             <th>Phone Number</th>
+                            <th>Premium Account?</th>
+                            <th>Premium Discount</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -444,7 +495,14 @@ admin.html
                                         <false>Yes</false>
                                     </check>
                                 </td>
-                                <th>{{ @user['user_phone'] }}</th>
+                                <td>{{ @user['user_phone'] }}</td>
+                                <td>
+                                    <check if="@user['is_premium'] == 0">
+                                        <true>No</true>
+                                        <false>Yes</false>
+                                    </check>
+                                </td>
+                                <td>{{ @user['prem_percent'] * 100 }}%</td>
                             </tr>
                         </repeat>
                     </tbody>
@@ -455,6 +513,8 @@ admin.html
                             <th>User Email</th>
                             <th>Administrator?</th>
                             <th>Phone Number</th>
+                            <th>Premium Account?</th>
+                            <th>Premium Discount</th>
                         </tr>
                     </tfoot>
                 </table>

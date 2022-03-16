@@ -121,11 +121,26 @@
          */
         function getOrders()
         {
-            $sql = "SELECT * FROM orders";
+            $sql = "SELECT * FROM orders o LEFT JOIN users u ON o.user_id = u.user_id";
             $statement = $this->_dbh->prepare($sql);
             $statement->execute();
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * This function returns a user ID associated with an order ID.
+         * @param $orderID
+         * @return number|false
+         */
+        function getUserID($orderID)
+        {
+            $sql = "SELECT user_id FROM orders WHERE order_id = :orderID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userid', $userID);
+            $statement->execute();
+
+            return $statement->fetchColumn();
         }
 
         /**
@@ -160,10 +175,12 @@
 
         /**
          * This method returns a cash total of the items in an order. This adds 10% tax to the total and returns that.
-         * @param $orderID mixed order id to search my
+         * @param $orderID mixed order id to search by
+         * @param $ispremium mixed premium or not
+         * @param $prempercent mixed percentage discount
          * @return float|int number return of the sum of all order items
          */
-        function getOrderTotal($orderID)
+        function getOrderTotal($orderID, $ispremium, $prempercent)
         {
             $sql = "SELECT * from order_items o
                         INNER JOIN product p ON o.item_id = p.item_id
@@ -173,9 +190,14 @@
             $statement->execute();
             $items = $statement->fetchAll(PDO::FETCH_ASSOC);
             $sum = 0;
+
             foreach ($items as $item)
             {
                 $sum += $item['buy_qty'] * $item['price'];
+            }
+
+            if($ispremium == 1) {
+                $sum -= $sum * $prempercent;
             }
             /*add tax!*/
             $sum += $sum * 0.1;
@@ -398,22 +420,34 @@
             return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
-
-        //TODO: MAKE THIS WORK.
         /**
-         * Updates a specified column value of a specified user.
-         * @param $userID mixed
-         * @param $updateColumn mixed
-         * @param $updateVal mixed
+         * This method creates or removes a premium user status.
+         * @param $userID
+         * @param $makeTake
          * @return void
          */
-        function updateUser($userID, $updateColumn, $updateVal)
+        function makeOrTakePrem($userID, $makeTake)
         {
-            $sql = "UPDATE users SET :updatecol = :updateval WHERE user_id = :userID";
+            $sql = "UPDATE users SET is_premium = :makeTake WHERE user_id = :userID";
             $statement = $this->_dbh->prepare($sql);
-            $statement->bindParam(':updatecol', $updateColumn);
-            $statement->bindParam(':updateval', $updateVal);
             $statement->bindParam(':userID', $userID);
+            $statement->bindParam(':makeTake', $makeTake);
+
+            $statement->execute();
+        }
+
+        /**
+         * This method alters a premium user discount.
+         * @param $useID
+         * @param $premPerc
+         * @return void
+         */
+        function setPremPercentage($useID, $premPerc)
+        {
+            $sql = "UPDATE users SET prem_percent = :premPerc WHERE user_id = :userID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':userID', $useID);
+            $statement->bindParam(':premPerc', $premPerc);
 
             $statement->execute();
         }

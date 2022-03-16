@@ -136,6 +136,8 @@
                 if(!ValidationFunctions::validPhone($newphone) && !empty($newphone)) {
                     $this->_f3->set('errors2["newphone"]', 'If entering a phone number, it must be 10 numbers long.');
                 }
+
+
                 if(empty($this->_f3->get('errors2'))) {
                     $GLOBALS['dataLayer']->makeNewUser($newemail, $newphone, $newfname, $newlname, $newpass);
                     $this->_f3->set('usermade["newusermade"]', 'Account successfully made. Login to continue.');
@@ -253,6 +255,18 @@
                         $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
                         $this->_f3->reroute('admin');
                     }
+                    //make premium code
+                    if ($_POST['submit'] == 'premMake') {
+                        $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newPremUserID'], 1);
+                        $GLOBALS['dataLayer']->setPremPercentage($_POST['newPremUserID'], $_POST['percentInput']);
+                        $this->_f3->reroute('admin');
+                    }
+                    //make standard code
+                    if ($_POST['submit'] == 'premTake') {
+                        $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newStandardUserID'], 0);
+                        $GLOBALS['dataLayer']->setPremPercentage($_POST['newStandardUserID'], 0);
+                        $this->_f3->reroute('admin');
+                    }
                 }
                 /*sticky forms*/
                 $this->_f3->set('uploadName', $itemName);
@@ -310,30 +324,26 @@
                         $updateValue = $_POST['updateInfo'];
 
                         /* call function: using user_id, column_name, and value */
-                        if($_POST['changeSelect'] == 'fname') {
+                        if($_POST['changeSelect'] == 'f_name') {
                             $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
-                            /*$GLOBALS['dataLayer']->updateUser($userID, 'f_name', $updateValue);*/
                             $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
 
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'lname') {
+                        else if ($_POST['changeSelect'] == 'l_name') {
                             $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
-                            /*$GLOBALS['dataLayer']->updateUser($userID, 'l_name', $updateValue);*/
                             $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
 
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'email') {
+                        else if ($_POST['changeSelect'] == 'user_email') {
                             $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
-                            /*$GLOBALS['dataLayer']->updateUser($userID, 'user_email', $updateValue);*/
                             $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
 
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'phone') {
+                        else if ($_POST['changeSelect'] == 'user_phone') {
                             $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
-                            /*$GLOBALS['dataLayer']->updateUser($userID, 'user_phone', $updateValue);*/
                             $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
 
                             $this->_f3->reroute('customer');

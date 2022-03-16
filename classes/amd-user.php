@@ -1,10 +1,11 @@
 <?php
 
     /**
-     * User class for standard users of dating site.
+     * User class for standard users of AMD site.
      */
     class AMDUser
     {
+        // standard member fields
         private $_userID;
         private $_isAdmin;
         private $_email;
@@ -14,6 +15,7 @@
         private $_hashedpass;
 
         /**
+         * Constructor for the standard user class.
          * @param $_userID
          * @param $_isAdmin
          * @param $_email

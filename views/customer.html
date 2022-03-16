@@ -7,7 +7,6 @@ customer.html
 <h3 class="text-center text-white">Customer Panel. Welcome, {{ @SESSION.loggedUser->getFname() }}.</h3>
 
 <!--TODO: customer info, 'add shipping addresses' function, list shipping addresses, orders history, reset pass-->
-<!--TODO: fix hoverover popup.-->
 <!--customer info-->
 <div class="row justify-content-center">
     
@@ -26,10 +25,10 @@ customer.html
                 <form  class="mb-3" method="post">
                     <select name="changeSelect" class="p-1 me-1">
                         <option selected disabled>Select One</option>
-                        <option value="fname">First Name</option>
-                        <option value="lname">Last Name</option>
-                        <option value="email">Email Address</option>
-                        <option value="phone">Phone Number</option>
+                        <option value="f_name">First Name</option>
+                        <option value="l_name">Last Name</option>
+                        <option value="user_email">Email Address</option>
+                        <option value="user_phone">Phone Number</option>
                     </select>
                     <label class="d-inline-block me-3"><input type="text" name="updateInfo"></label>
                     <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
@@ -71,7 +70,18 @@ customer.html
                                         </div>
                                     </div>
                                 </td>
-                                <td>{{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'] ) }}</td>
+                                <check if="@SESSION['loggedUser'] instanceof AmdPremUser">
+                                    <true>
+                                        <td>
+                                            {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 1, @SESSION['loggedUser']->getPremStatus() ) }}
+                                        </td>
+                                    </true>
+                                    <false>
+                                        <td>
+                                            {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 0, 0) }}
+                                        </td>
+                                    </false>
+                                </check>
                                 <td>
                                     <check if="@order['is_fulfilled'] == 0">
                                         <true>No</true>
