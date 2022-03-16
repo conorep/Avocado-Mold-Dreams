@@ -91,9 +91,12 @@ shopping-cart.html
                 if(productQuantity==1) {
                     $("#container" +productID).html("");
                 }
-                let nextVal = parseInt($(this).next().val())-1;
-                alert("next value is: " +nextVal);
-                $(this).next().val(nextVal);
+                else {
+                    let nextVal = parseInt($(this).next().val())-1;
+                    alert("next value is: " +nextVal);
+                    $(this).next().val(nextVal);
+                }
+
             }
         });
         return false;
@@ -110,8 +113,6 @@ shopping-cart.html
             url: "classes/cartOperations.php",
             data: {val: productID, flag: "remove"},
             success: function(){
-
-
                 $("#container" +productID).html("");
             }
         });
