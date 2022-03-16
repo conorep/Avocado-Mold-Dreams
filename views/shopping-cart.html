@@ -44,6 +44,7 @@ shopping-cart.html
         </repeat>
         </tbody>
     </table>
+    <button class="btn btn-sm btn-primary checkout">Complete your order!</button>
 </div>
 
 
@@ -119,6 +120,23 @@ shopping-cart.html
         return false;
     });
 
+
+    <!--For completing the order-->
+    $(".remove").on("click",function(){
+        let productID= $(this).attr('id').substring(6);
+        alert("product id is" +productID);
+        $.ajax({
+            context: this,
+            // vars: {id:productID},
+            type: "POST",
+            url: "classes/cartOperations.php",
+            data: {val: productID, flag: "remove"},
+            success: function(){
+                $("#container" +productID).html("");
+            }
+        });
+        return false;
+    });
 
 /*    $(".add").click(function() {
         let productID= $(this).attr('id').substring(3);
