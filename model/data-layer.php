@@ -678,4 +678,49 @@
             return $statement->fetchAll(PDO::FETCH_ASSOC);
         }
 
+        /*MAKE ORDER STATEMENTS*/
+
+        /**
+         * This function inserts a new order into the orders table. User ID could be null if there is no loggedUser,
+         * which is allowable by the orders table.
+         * @param $userID
+         * @return void
+         */
+        function setNewOrder($userID)
+        {
+            $sql = "INSERT INTO orders (user_id, is_fulfilled) VALUES (:userid, 0)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(":userid", $userID);
+            $statement->execute();
+        }
+
+
+        /**
+         * This function returns the latest orderID.
+         * @return number of latest order in table
+         */
+        function getLatestOrderId()
+        {
+            $sql = "SELECT MAX(order_id) FROM orders";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+            return $statement->fetchColumn();
+        }
+
+        /**
+         * This function inserts an order item with its quantity, based on an order id provided.
+         * Note: needs to be used in a for-loop to populate all items from shipping cart, using the getLatestOrderId
+         * function to know what to reference.
+         * @return void
+         */
+        function insertOrderItem($orderID, $itemID, $itemQTY)
+        {
+            $sql = "INSERT INTO order_items (order_id, item_id, buy_qty) VALUES (:orderID, :itemID, :buyQTY)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(":orderID", $orderID);
+            $statement->bindParam(":itemID", $itemID);
+            $statement->bindParam(":buyQTY", $itemQTY);
+            $statement->execute();
+        }
+
     }
