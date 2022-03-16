@@ -1,4 +1,24 @@
+document.getElementById("adminLogin").onsubmit = validateLogin;
 document.getElementById("newUser").onsubmit = validate;
+
+function validateLogin()
+{
+    let isValid = true;
+    clearErrors();
+
+    //validate email/username
+    let userName = document.getElementById("username").value;
+    if(userName === ""){
+        document.getElementById("err-username").style.display = "block";
+        isValid = false;
+    }
+    if(!validateEmail(userName)){
+        document.getElementById("err-useremail").style.display = "block";
+        isValid = false;
+    }
+
+    return isValid;
+}
 
 function validate()
 {
@@ -23,17 +43,6 @@ function validate()
     let phone = document.getElementById("newphone").value;
     if(!validPhone(phone)){
         document.getElementById("err-newphone").style.display = "block";
-        isValid = false;
-    }
-
-    //validate email/username
-    let userName = document.getElementById("username").value;
-    if(userName === ""){
-        document.getElementById("err-username").style.display = "block";
-        isValid = false;
-    }
-    if(!validateEmail(userName)){
-        document.getElementById("err-useremail").style.display = "block";
         isValid = false;
     }
 
