@@ -26,13 +26,13 @@ var_dump($_POST);*/
 if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
         $userCart= new cart();
-        $userCart->addToCart((int)$_POST['val']);
+        $userCart->incrementCartItem((int)$_POST['val']);
         $_SESSION['sessionCart'] = $userCart;
 
     }
 //if cart already exists
     elseif (isset($_SESSION['sessionCart'])) {
-        $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+        $_SESSION['sessionCart']->incrementCartItem((int)$_POST['val']);
     }
 }
 

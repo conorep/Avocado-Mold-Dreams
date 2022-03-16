@@ -26,46 +26,46 @@ if(isset($_POST['val'])) {
 
     if($_POST['flag']=="add") {
         $_SESSION['cartMessage'] = "increment triggered" .$_POST['val'];
-        $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+        $_SESSION['sessionCart']->incrementCartItem((int)$_POST['val']);
     }
 
     if($_POST['flag']=="sub") {
         $_SESSION['cartMessage'] = "decrement triggered" .$_POST['val'];
-        $_SESSION['sessionCart']->removeFromCart((int)$_POST['val']);
+        $_SESSION['sessionCart']->decrementCartItem((int)$_POST['val']);
     }
 
     if($_POST['flag']=="remove") {
         $_SESSION['cartMessage'] = "remove triggered" .$_POST['val'];
-//        $_SESSION['sessionCart']->removeFromCart((int)$_POST['val']);
+        $_SESSION['sessionCart']->removeCartItem((int)$_POST['val']);
     }
 
 
 }
 //if there is an increment signal, increment (add) to item quantity
-//$_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+//$_SESSION['sessionCart']->incrementCartItem((int)$_POST['val']);
 
 /*if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
         $userCart= new cart();
-        $userCart->addToCart((int)$_POST['val']);
+        $userCart->incrementCartItem((int)$_POST['val']);
         $_SESSION['sessionCart'] = $userCart;
 
     }*/
 /*//if cart already exists
     elseif (isset($_SESSION['sessionCart'])) {
-        $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+        $_SESSION['sessionCart']->incrementCartItem((int)$_POST['val']);
     }*/
 
 
 /*        if(!(isset($_SESSION['sessionCart']))) {
             $userCart= new cart();
-            $userCart->addToCart((int)$_POST['val']);
+            $userCart->incrementCartItem((int)$_POST['val']);
             $_SESSION['sessionCart'] = $userCart;
 
         }
 //if cart already exists
         elseif (isset($_SESSION['sessionCart'])) {
-            $_SESSION['sessionCart']->addToCart((int)$_POST['val']);
+            $_SESSION['sessionCart']->incrementCartItem((int)$_POST['val']);
         }*/
 
 
