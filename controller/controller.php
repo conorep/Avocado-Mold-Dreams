@@ -40,7 +40,7 @@
 
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-            print_r($rows);
+            //print_r($rows);
 
             $views = new Template();
             echo $views->render('views/home.html');
@@ -90,10 +90,16 @@
                         //if password doesn't match email address pass, error code
                         $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
                     } else {
-                        $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
-                            $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
-                            $retrieveUser['l_name'], $retrieveUser['hash_pass']);
-
+                        if ($retrieveUser['is_premium'] == 0 ){
+                            $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
+                                $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
+                                $retrieveUser['l_name'], $retrieveUser['hash_pass']);
+                        } else {
+                            $_SESSION['loggedUser'] = new AmdPremUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
+                                $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
+                                $retrieveUser['l_name'], $retrieveUser['hash_pass'], $retrieveUser['prem_percent'],
+                                'text-primary');
+                        }
                         //user_id 1 is for admins, user_id 0 is for custies
                         if($validatePass['is_admin'] == 1)
                         {
@@ -110,6 +116,7 @@
                 $newemail = stripslashes($_POST['newemail']);
                 $newphone = ValidationFunctions::stripPhone($_POST['newphone']);
                 $newpass = stripslashes($_POST['newpass']);
+                $newpass2 = stripslashes($_POST['newpass2']);
 
                 $this->_f3->set('display', 'd-block');
                 $this->_f3->set('display2', 'd-none');
@@ -137,12 +144,15 @@
                     $this->_f3->set('errors2["newphone"]', 'If entering a phone number, it must be 10 numbers long.');
                 }
 
+                if($newpass != $newpass2) {
+                    $this->_f3->set('errors2["pass2"]', 'Passwords do not match! Please try again.');
+                }
 
                 if(empty($this->_f3->get('errors2'))) {
                     $GLOBALS['dataLayer']->makeNewUser($newemail, $newphone, $newfname, $newlname, $newpass);
                     $this->_f3->set('usermade["newusermade"]', 'Account successfully made. Login to continue.');
                     //blank them again
-                    $newfname ="";
+                    $newfname = "";
                     $newlname = "";
                     $newemail = "";
                     $newphone = "";

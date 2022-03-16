@@ -121,6 +121,14 @@ my-account.html
                         </check>
                         <input type="password" class="form-control" id="newpass" value="{{@newpass}}"
                                placeholder="user password here" name="newpass">
+    
+                        <label for="newpass2">TYPE IT AGAIN:</label>
+                        <!--display error if there is one -->
+                        <check if="{{ isset(@errors2['pass2']) }}">
+                            <span class="err" id="err-newpass2">{{ @errors2['pass2'] }}</span>
+                        </check>
+                        <input type="password" class="form-control" id="newpass2" value="{{@newpass2}}"
+                               placeholder="enter again here" name="newpass2">
                     </div>
                 
                     <div class="float-end">
