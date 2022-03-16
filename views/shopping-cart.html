@@ -76,6 +76,8 @@ shopping-cart.html
     <!--For decreasing quantity when clicking + symbol-->
     $(".sub").on("click",function(){
         let productID= $(this).attr('id').substring(3);
+        let productQuantity= $("#counter"+productID).val();
+        alert("product quantity is: " +productQuantity);
         alert(productID);
         $.ajax({
             context: this,
@@ -85,7 +87,10 @@ shopping-cart.html
             data: {val: productID, flag: "sub"},
             success: function(){
                 alert("success reached")
-
+                //if success is reached when quantity is 1, nuke the inner html
+                if(productQuantity==1) {
+                    $("#container" +productID).html("");
+                }
                 let nextVal = parseInt($(this).next().val())-1;
                 alert("next value is: " +nextVal);
                 $(this).next().val(nextVal);
@@ -105,6 +110,8 @@ shopping-cart.html
             url: "classes/cartOperations.php",
             data: {val: productID, flag: "remove"},
             success: function(){
+
+
                 $("#container" +productID).html("");
             }
         });
