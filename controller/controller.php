@@ -235,11 +235,17 @@
                     if($_POST['submitQ']) {
                         $hiddenQID = substr($_POST['answers'], 7);
                         $userAnswer = $_POST[$hiddenQID];
+                        $thisQuestion = $GLOBALS['dataLayer']->getThisQuestion($hiddenQID);
 
                         if($_POST[$hiddenQID] == "") {
                             $this->_f3->set('errorsAns["blankAnswer"]', "Please enter an answer before submitting.");
                         } else {
                             $GLOBALS['dataLayer']->answerUserQuestion($userAnswer, $hiddenQID);
+
+                            /*$userEmail, $username, $userquestion, $qresponse*/
+                            $GLOBALS['dataLayer']->emailQuestionUser($thisQuestion['contact_email'],
+                                $thisQuestion['user_name'], $thisQuestion['q_text'], $userAnswer);
+
                             $this->_f3->reroute('admin');
                         }
                     }
@@ -409,10 +415,10 @@
             //call modal method
             $this->modalOps();
 
+
             $productArr = $_SESSION['sessionCart']->getInCartArr();
 
             //if there's a cart object in the session, generate a cart page
-
             $cartRows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
             $this->_f3->set('cartItems', $cartRows);
 

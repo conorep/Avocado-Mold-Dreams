@@ -4,54 +4,54 @@ SDEV328 AMD
 shopping-cart.html
 -->
 <include href="includes/header.html"></include>
-    <h3>Shopping Cart</h3>
-<div class="container-fluid">
-    <table class="table table-bordered">
-        <thead>
-        <tr>
-            <th scope="col">Item ID</th>
-            <th scope="col">Item Name</th>
-            <th scope="col">Price</th>
-        </tr>
-        </thead>
-        <tbody>
-        <repeat group="{{ @cartItems }}" value="{{ @item }}">
-            <cartItem >
-        <tr id="container{{@item['item_id']}}">
-            <td>
 
-
-                    <p>{{@item['item_id']}}</p>
-
-            </td>
-            <td>
-                    <p>{{@item['item_name']}}</p>
-            </td>
-            <td>
-
-                    <p>{{@item['price']}} <button type="button" id="remove{{@item['item_id']}}" class="btn btn-danger remove">Remove Item</button></p>
-
-                    <button id="sub{{@item['item_id']}}" class="btn btn-success btn-sm sub">-</button>
-
-                    <input class="quantity" id="counter{{@item['item_id']}}" type="text" value="{{ @SESSION.sessionCart->getProductQuantity(@item['item_id'])}}">
-
-                    <button id="add{{@item['item_id']}}" class="btn btn-success btn-sm add">+</button>
-
-
-            </td>
-        </tr>
-            </cartItem>
-        </repeat>
-        </tbody>
-    </table>
-</div>
-
+        <h3 class="text-center">Shopping Cart</h3>
+        <div class="container-fluid row justify-content-center">
+            <div class="container border border-dark m-3 col-md-10 col-12" id="">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item ID</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <repeat group="{{ @cartItems }}" value="{{ @item }}">
+                            <cartItem >
+                                <tr id="container{{@item['item_id']}}">
+                                    <td>
+                                        <p>{{@item['item_id']}}</p>
+                                    </td>
+                                    <td>
+                                        <p>{{@item['item_name']}}</p>
+                                    </td>
+                                    <td>
+                                    
+                                        <p>{{@item['price']}} <button type="button" id="remove{{@item['item_id']}}" class="btn btn-danger remove">Remove Item</button></p>
+                                    
+                                        <button id="sub{{@item['item_id']}}" class="btn btn-success btn-sm sub">-</button>
+                                    
+                                        <input class="quantity" id="counter{{@item['item_id']}}" type="text" value="{{ @SESSION.sessionCart->getProductQuantity(@item['item_id'])}}">
+                                    
+                                        <button id="add{{@item['item_id']}}" class="btn btn-success btn-sm add">+</button>
+                                
+                                
+                                    </td>
+                                </tr>
+                            </cartItem>
+                        </repeat>
+                    </tbody>
+                </table>
+            </div>
+    
+        </div>
 
 
 
 <script src="//code.jquery.com/jquery.js"></script>
 <script>
-    <!--For increasing quantity when clicking + symbol-->
+    <!--For increasing quantity if clicking + symbol-->
     $(".add").on("click",function(){
         let productID= $(this).attr('id').substring(3);
         alert(productID);

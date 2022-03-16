@@ -72,6 +72,20 @@
         }
 
         /**
+         * This method returns a row of question info.
+         * @return array|false array of questions or none if there aren't any
+         */
+        function getThisQuestion($qID)
+        {
+            $sql = "SELECT * FROM user_questions WHERE q_id = :qid";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':qid', $qID);
+            $statement->execute();
+
+            return $statement->fetch();
+        }
+
+        /**
          * This function fills in an admin's answer to a user question and marks it answered.
          * @param $ansText
          * @param $qID
@@ -85,6 +99,37 @@
             $statement->bindParam(':qID', $qID);
 
             $statement->execute();
+        }
+
+        /**
+         * This function sends an email response to the user.
+         * @param $userEmail
+         * @param $username
+         * @param $userquestion
+         * @param $qresponse
+         * @return void
+         */
+        function emailQuestionUser($userEmail, $username, $userquestion, $qresponse)
+        {
+            $mailtext = 'Hello, ' . $username .'. Please see the answer to your question: '."\nUser Question: " . $userquestion . "\nAnswer: " . $qresponse;
+            $mailtext = wordwrap($mailtext, 70);
+
+            mail($userEmail, 'Avocado Mold Dreams QandA', $mailtext, 'AMD Answer Contained:');
+        }
+
+        /**
+         * This function sends an email when an order is marked fulfilled.
+         * @param $orderID number user id
+         * @return void
+         */
+        function emailCustomer($orderID)
+        {
+            $row = $this->getInfo($orderID);
+
+            $mailtext = 'Hello, ' . $row['f_name'] .'. Your order (order ID #' . $row['order_id'] . ") has shipped. Thank you for shopping with us! Avocado Mold Dreams hopes to see you again!";
+
+            $mailtext = wordwrap($mailtext, 70);
+            mail($row['user_email'], 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
         }
 
         /**
@@ -282,21 +327,6 @@
             $statement->execute();
 
             return $statement->fetch(PDO::FETCH_ASSOC);
-        }
-
-        /**
-         * This function sends an email when an order is marked fulfilled.
-         * @param $orderID number user id
-         * @return void
-         */
-        function emailCustomer($orderID)
-        {
-            $row = $this->getInfo($orderID);
-
-            $mailtext = 'Hello, ' . $row['f_name'] .'. Your order (order ID #' . $row['order_id'] . ") has shipped. Thank you for shopping with us! Avocado Mold Dreams hopes to see you again!";
-
-            $mailtext = wordwrap($mailtext, 70);
-            mail($row['user_email'], 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
         }
 
         /**
