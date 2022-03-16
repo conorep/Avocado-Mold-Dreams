@@ -30,8 +30,16 @@ if(isset($_POST['val'])) {
     }
 
     if($_POST['flag']=="sub") {
-        $_SESSION['cartMessage'] = "decrement triggered" .$_POST['val'];
-        $_SESSION['sessionCart']->decrementCartItem((int)$_POST['val']);
+        //if quanity is already 1
+        if($_SESSION['sessionCart']->getVal($_POST['val']) == 1) {
+            $_SESSION['cartMessage2'] = "quantity is 1, removal will take place";
+            $_SESSION['sessionCart']->removeCartItem((int)$_POST['val']);
+        }
+        else {
+            $_SESSION['cartMessage'] = "decrement triggered" .$_POST['val'];
+            $_SESSION['sessionCart']->decrementCartItem((int)$_POST['val']);
+        }
+
     }
 
     if($_POST['flag']=="remove") {

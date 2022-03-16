@@ -81,4 +81,12 @@ echo "<br>";
 //        $this->_testField = $productID;
     }
 
+    /**
+     *
+     * Returns quantity of the associated product by ID
+     */
+    public function getVal($productID) {
+        return $this->_inCartArr[$productID];
+    }
+
 }
