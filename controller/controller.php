@@ -40,7 +40,6 @@
 
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-            print_r($rows);
 
             $views = new Template();
             echo $views->render('views/home.html');
@@ -90,10 +89,16 @@
                         //if password doesn't match email address pass, error code
                         $this->_f3->set('errors["pass"]', 'Please enter a valid password.');
                     } else {
-                        $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
-                            $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
-                            $retrieveUser['l_name'], $retrieveUser['hash_pass']);
-
+                        if ($retrieveUser['is_premium'] == 0 ){
+                            $_SESSION['loggedUser'] = new AMDUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
+                                $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
+                                $retrieveUser['l_name'], $retrieveUser['hash_pass']);
+                        } else {
+                            $_SESSION['loggedUser'] = new AmdPremUser($retrieveUser['user_id'], $retrieveUser['is_admin'],
+                                $retrieveUser['user_email'], $retrieveUser['user_phone'], $retrieveUser['f_name'],
+                                $retrieveUser['l_name'], $retrieveUser['hash_pass'], $retrieveUser['prem_percent'],
+                                'text-primary');
+                        }
                         //user_id 1 is for admins, user_id 0 is for custies
                         if($validatePass['is_admin'] == 1)
                         {
@@ -110,6 +115,7 @@
                 $newemail = stripslashes($_POST['newemail']);
                 $newphone = ValidationFunctions::stripPhone($_POST['newphone']);
                 $newpass = stripslashes($_POST['newpass']);
+                $newpass2 = stripslashes($_POST['newpass2']);
 
                 $this->_f3->set('display', 'd-block');
                 $this->_f3->set('display2', 'd-none');
@@ -137,12 +143,15 @@
                     $this->_f3->set('errors2["newphone"]', 'If entering a phone number, it must be 10 numbers long.');
                 }
 
+                if($newpass != $newpass2) {
+                    $this->_f3->set('errors2["pass2"]', 'Passwords do not match! Please try again.');
+                }
 
                 if(empty($this->_f3->get('errors2'))) {
                     $GLOBALS['dataLayer']->makeNewUser($newemail, $newphone, $newfname, $newlname, $newpass);
                     $this->_f3->set('usermade["newusermade"]', 'Account successfully made. Login to continue.');
                     //blank them again
-                    $newfname ="";
+                    $newfname = "";
                     $newlname = "";
                     $newemail = "";
                     $newphone = "";
@@ -215,15 +224,28 @@
                         }
                     }
 
+                    //filled order code
+                    if ($_POST['submit'] == 'orderFill') {
+                        $GLOBALS['dataLayer']->emailCustomer($_POST['fulfill']);
+                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
+                        $this->_f3->reroute('admin');
+                    }
+
                     //question response code
                     if($_POST['submitQ']) {
                         $hiddenQID = substr($_POST['answers'], 7);
                         $userAnswer = $_POST[$hiddenQID];
+                        $thisQuestion = $GLOBALS['dataLayer']->getThisQuestion($hiddenQID);
 
                         if($_POST[$hiddenQID] == "") {
                             $this->_f3->set('errorsAns["blankAnswer"]', "Please enter an answer before submitting.");
                         } else {
                             $GLOBALS['dataLayer']->answerUserQuestion($userAnswer, $hiddenQID);
+
+                            /*$userEmail, $username, $userquestion, $qresponse*/
+                            $GLOBALS['dataLayer']->emailQuestionUser($thisQuestion['contact_email'],
+                                $thisQuestion['user_name'], $thisQuestion['q_text'], $userAnswer);
+
                             $this->_f3->reroute('admin');
                         }
                     }
@@ -245,22 +267,20 @@
                         $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
                         $this->_f3->reroute('admin');
                     }
+
                     //admin remove code
                     if ($_POST['submit'] == 'adminRemove') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
                         $this->_f3->reroute('admin');
                     }
-                    //filled order code
-                    if ($_POST['submit'] == 'orderFill') {
-                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
-                        $this->_f3->reroute('admin');
-                    }
+
                     //make premium code
                     if ($_POST['submit'] == 'premMake') {
                         $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newPremUserID'], 1);
                         $GLOBALS['dataLayer']->setPremPercentage($_POST['newPremUserID'], $_POST['percentInput']);
                         $this->_f3->reroute('admin');
                     }
+
                     //make standard code
                     if ($_POST['submit'] == 'premTake') {
                         $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newStandardUserID'], 0);
@@ -318,44 +338,61 @@
                     $custQs = $GLOBALS['dataLayer']->getThisUsersQuestions($_SESSION['loggedUser']->getUserID());
                     $this->_f3->set('custQuestions', $custQs);
 
-                    /*TODO: need to do validation on ALL OF THIS*/
-                    if($_POST['submit'] == 'userChanger') {
-                        $userID = $_SESSION['loggedUser']->getUserID();
-                        $updateValue = $_POST['updateInfo'];
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                        /* call function: using user_id, column_name, and value */
-                        if($_POST['changeSelect'] == 'f_name') {
-                            $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
+                        /*TODO: need to do validation on ALL OF THIS*/
+                        if($_POST['submit'] == 'userChanger') {
+                            $userID = $_SESSION['loggedUser']->getUserID();
+                            $updateValue = $_POST['updateInfo'];
 
+                            /* call function: using user_id, column_name, and value */
+                            if($_POST['changeSelect'] == 'f_name') {
+                                $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'l_name') {
+                                $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'user_email') {
+                                $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'user_phone') {
+                                $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                        }
+
+                        // add and delete shipping addresses
+                        if($_POST['submit'] == 'newaddressSub') {
+                            $GLOBALS['dataLayer']->setShippingAddresses($_SESSION['loggedUser']->getUserID(), $_POST['addressAdd']);
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'l_name') {
-                            $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
 
+                        if($_POST['submit'] == 'deladdressSub') {
+                            $GLOBALS['dataLayer']->deleteShippingAdd($_SESSION['loggedUser']->getUserID(), $_POST['deleteAddressList']);
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'user_email') {
-                            $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
 
-                            $this->_f3->reroute('customer');
+                        if ($_POST['submit'] == 'passChange') {
+                            if ($_POST['updateInfo'] != $_POST['updateInfo2']) {
+                                $this->_f3->set('errorsPass["passmatch"]', "Your passwords did not match.");
+                            } else if (!ValidationFunctions::validPassword($_POST['updateInfo'])) {
+                                $this->_f3->set('errorsPass["passmatch"]', "Your password must be longer than three characters.");
+                            } else {
+                                $GLOBALS['dataLayer']->updatePass($_SESSION['loggedUser']->getUserID(), $_POST['updateInfo']);
+                                $this->_f3->reroute('logout');
+                            }
                         }
-                        else if ($_POST['changeSelect'] == 'user_phone') {
-                            $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
-
-                            $this->_f3->reroute('customer');
-                        }
-                    }
-
-                    //TODO: THESE TWO
-                    if($_POST['submit'] == 'newaddressSub') {
-
-                    }
-
-                    if($_POST['submit'] == 'deladdressSub') {
 
                     }
 
@@ -378,10 +415,10 @@
             //call modal method
             $this->modalOps();
 
+
             $productArr = $_SESSION['sessionCart']->getInCartArr();
 
             //if there's a cart object in the session, generate a cart page
-
             $cartRows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
             $this->_f3->set('cartItems', $cartRows);
 

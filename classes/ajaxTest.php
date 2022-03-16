@@ -25,7 +25,7 @@ var_dump($_POST);*/
 
 if(isset($_POST['val'])) {
     if(!(isset($_SESSION['sessionCart']))) {
-        $userCart= new cart();
+        $userCart= new Cart();
         $userCart->incrementCartItem((int)$_POST['val']);
         $_SESSION['sessionCart'] = $userCart;
 

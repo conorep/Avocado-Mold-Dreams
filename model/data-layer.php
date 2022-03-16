@@ -72,6 +72,20 @@
         }
 
         /**
+         * This method returns a row of question info.
+         * @return array|false array of questions or none if there aren't any
+         */
+        function getThisQuestion($qID)
+        {
+            $sql = "SELECT * FROM user_questions WHERE q_id = :qid";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':qid', $qID);
+            $statement->execute();
+
+            return $statement->fetch();
+        }
+
+        /**
          * This function fills in an admin's answer to a user question and marks it answered.
          * @param $ansText
          * @param $qID
@@ -85,6 +99,37 @@
             $statement->bindParam(':qID', $qID);
 
             $statement->execute();
+        }
+
+        /**
+         * This function sends an email response to the user.
+         * @param $userEmail
+         * @param $username
+         * @param $userquestion
+         * @param $qresponse
+         * @return void
+         */
+        function emailQuestionUser($userEmail, $username, $userquestion, $qresponse)
+        {
+            $mailtext = 'Hello, ' . $username .'. Please see the answer to your question: '."\nUser Question: " . $userquestion . "\nAnswer: " . $qresponse;
+            $mailtext = wordwrap($mailtext, 70);
+
+            mail($userEmail, 'Avocado Mold Dreams QandA', $mailtext, 'AMD Answer Contained:');
+        }
+
+        /**
+         * This function sends an email when an order is marked fulfilled.
+         * @param $orderID number user id
+         * @return void
+         */
+        function emailCustomer($orderID)
+        {
+            $row = $this->getInfo($orderID);
+
+            $mailtext = 'Hello, ' . $row['f_name'] .'. Your order (order ID #' . $row['order_id'] . ") has shipped. Thank you for shopping with us! Avocado Mold Dreams hopes to see you again!";
+
+            $mailtext = wordwrap($mailtext, 70);
+            mail($row['user_email'], 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
         }
 
         /**
@@ -113,6 +158,56 @@
             $statement->execute();
 
             return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * This function inserts new shipping locations into the ship_locations table.
+         * @param $userID number
+         * @param $shipLoc string
+         * @return void
+         */
+        function setShippingAddresses($userID, $shipLoc)
+        {
+            $sql = "INSERT INTO shipping_info (ship_location, user_id) VALUES (:shipLoc, :userID)";
+            $statement = $this->_dbh->prepare($sql);
+
+            $statement->bindParam(':shipLoc', $shipLoc);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+
+        /**
+         * This function deletes a shipping location from the ship_locations table.
+         * @param $userID number
+         * @param $shipLoc string
+         * @return void
+         */
+        function deleteShippingAdd($userID, $shipLoc)
+        {
+            $sql = "DELETE FROM shipping_info WHERE ship_location = :shiploc AND user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+
+            $statement->bindParam(':shiploc', $shipLoc);
+            $statement->bindParam(':userid', $userID);
+
+            $statement->execute();
+        }
+
+        /**
+         * This function updates a user's password.
+         * @param $userID
+         * @param $pass
+         * @return void
+         */
+        function updatePass($userID, $pass)
+        {
+            $sql = "UPDATE users SET hash_pass = :hashpass WHERE user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+            $newPass = $this->hashPass($pass);
+
+            $statement->bindParam(':hashpass', $newPass);
+            $statement->bindParam(':userid', $userID);
         }
 
         /**
@@ -201,7 +296,7 @@
             }
             /*add tax!*/
             $sum += $sum * 0.1;
-            return $sum;
+            return number_format($sum, 2);
         }
 
         /**
@@ -217,6 +312,21 @@
             $statement->bindParam(':orderid', $orderID);
             $statement->bindParam(':fdate', $thisdate);
             $statement->execute();
+        }
+
+        /**
+         * This function gets user info referenced against an orderID.
+         * @param $orderID
+         * @return mixed
+         */
+        function getInfo($orderID)
+        {
+            $sql = "SELECT * FROM orders o LEFT JOIN users u ON o.user_id = u.user_id WHERE order_id = :orderID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':orderID', $orderID);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
         }
 
         /**
@@ -452,6 +562,12 @@
             $statement->execute();
         }
 
+        /**
+         * This function updates the user's first name.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserFname($userID, $updateVal)
         {
             $sql = "UPDATE users SET f_name = :updateval WHERE user_id = :userID";
@@ -461,6 +577,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's last name.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserLname($userID, $updateVal)
         {
             $sql = "UPDATE users SET l_name = :updateval WHERE user_id = :userID";
@@ -470,6 +593,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's email.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserEmail($userID, $updateVal)
         {
             $sql = "UPDATE users SET user_email = :updateval WHERE user_id = :userID";
@@ -479,6 +609,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's phone number.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserPhone($userID, $updateVal)
         {
             $sql = "UPDATE users SET user_phone = :updateval WHERE user_id = :userID";
@@ -539,6 +676,51 @@
             $statement->bindParam(":cartArr", $sqlString);
             $statement->execute();
             return $statement->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        /*MAKE ORDER STATEMENTS*/
+
+        /**
+         * This function inserts a new order into the orders table. User ID could be null if there is no loggedUser,
+         * which is allowable by the orders table.
+         * @param $userID
+         * @return void
+         */
+        function setNewOrder($userID)
+        {
+            $sql = "INSERT INTO orders (user_id, is_fulfilled) VALUES (:userid, 0)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(":userid", $userID);
+            $statement->execute();
+        }
+
+
+        /**
+         * This function returns the latest orderID.
+         * @return number of latest order in table
+         */
+        function getLatestOrderId()
+        {
+            $sql = "SELECT MAX(order_id) FROM orders";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->execute();
+            return $statement->fetchColumn();
+        }
+
+        /**
+         * This function inserts an order item with its quantity, based on an order id provided.
+         * Note: needs to be used in a for-loop to populate all items from shipping cart, using the getLatestOrderId
+         * function to know what to reference.
+         * @return void
+         */
+        function insertOrderItem($orderID, $itemID, $itemQTY)
+        {
+            $sql = "INSERT INTO order_items (order_id, item_id, buy_qty) VALUES (:orderID, :itemID, :buyQTY)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(":orderID", $orderID);
+            $statement->bindParam(":itemID", $itemID);
+            $statement->bindParam(":buyQTY", $itemQTY);
+            $statement->execute();
         }
 
     }

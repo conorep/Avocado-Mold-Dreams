@@ -89,6 +89,10 @@ main-styles.css
     color: red;
 }
 
+.js-err {
+    color: red;
+    display: none;
+}
 .userData {
     background-color: #fff6ee;
     border: #aec7b0 5px solid;

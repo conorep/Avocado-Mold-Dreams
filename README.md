@@ -42,7 +42,7 @@ OrchOttersPass
  * Conor, Pat, and Regina all have commits in the shared Git repo. Each commit contains clear commentary.
 
 6. Uses OOP, and utilizes multiple classes, including at least one inheritance relationship.
- * 
+ * The page uses several classes for operations, including a standard user class, a premium user class (containing applicable discounts) that extends the standard user, and a cart class for creation of user orders.
 
 7. Contains full Docblocks for all PHP files and follows PEAR standards.
  * 
