@@ -40,7 +40,7 @@
 
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-            //print_r($rows);
+            print_r($rows);
 
             $views = new Template();
             echo $views->render('views/home.html');

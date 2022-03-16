@@ -15,21 +15,21 @@ shopping-cart.html
         </tr>
         </thead>
         <tbody>
-        <tr>
+        <repeat group="{{ @cartItems }}" value="{{ @item }}">
+            <cartItem >
+        <tr id="container{{@item['item_id']}}">
             <td>
-                <repeat group="{{ @cartItems }}" value="{{ @item }}">
+
+
                     <p>{{@item['item_id']}}</p>
 
-                </repeat>
             </td>
             <td>
-                <repeat group="{{ @cartItems }}" value="{{ @item }}">
                     <p>{{@item['item_name']}}</p>
-                </repeat>
             </td>
             <td>
-                <repeat group="{{ @cartItems }}" value="{{ @item }}">
-                    <p>{{@item['price']}} <button type="button" class="btn btn-danger">Remove Item</button></p>
+
+                    <p>{{@item['price']}} <button type="button" id="remove{{@item['item_id']}}" class="btn btn-danger remove">Remove Item</button></p>
 
                     <button id="sub{{@item['item_id']}}" class="btn btn-success btn-sm sub">-</button>
 
@@ -37,9 +37,11 @@ shopping-cart.html
 
                     <button id="add{{@item['item_id']}}" class="btn btn-success btn-sm add">+</button>
 
-                </repeat>
+
             </td>
         </tr>
+            </cartItem>
+        </repeat>
         </tbody>
     </table>
 </div>
@@ -49,13 +51,14 @@ shopping-cart.html
 
 <script src="//code.jquery.com/jquery.js"></script>
 <script>
+    <!--For increasing quantity when clicking + symbol-->
     $(".add").on("click",function(){
         let productID= $(this).attr('id').substring(3);
         alert(productID);
         $.ajax({
             flag: "add",
             context: this,
-            vars: {id:productID},
+            // vars: {id:productID},
             type: "POST",
             url: "classes/cartOperations.php",
             data: {val: productID, flag: "add"},
@@ -70,12 +73,13 @@ shopping-cart.html
         return false;
     });
 
+    <!--For decreasing quantity when clicking + symbol-->
     $(".sub").on("click",function(){
         let productID= $(this).attr('id').substring(3);
         alert(productID);
         $.ajax({
             context: this,
-            vars: {id:productID},
+            // vars: {id:productID},
             type: "POST",
             url: "classes/cartOperations.php",
             data: {val: productID, flag: "sub"},
@@ -89,6 +93,25 @@ shopping-cart.html
         });
         return false;
     });
+
+    <!--For removing item from cart completely when remove button is clicked-->
+    $(".remove").on("click",function(){
+        let productID= $(this).attr('id').substring(6);
+        alert("product id is" +productID);
+        $.ajax({
+            context: this,
+            // vars: {id:productID},
+            type: "POST",
+            url: "classes/cartOperations.php",
+            data: {val: productID, flag: "remove"},
+            success: function(){
+                $("#container" +productID).html("");
+            }
+        });
+        return false;
+    });
+
+
 /*    $(".add").click(function() {
         let productID= $(this).attr('id').substring(3);
         alert(productID);

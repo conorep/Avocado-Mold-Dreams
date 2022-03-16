@@ -46,7 +46,7 @@ echo "<br>";
      *
      *Pushes an item to the cart array containing product ids
      */
-    public function addToCart($productID) {
+    public function incrementCartItem($productID) {
 //        array_push($this->_inCartArr, $productID);
 
         $this->_inCartArr[$productID] += 1;
@@ -59,13 +59,26 @@ echo "<br>";
      *
      *Removes an item from the cart array containing product ids
      */
-    public function removeFromCart($productID) {
+    public function decrementCartItem($productID) {
 //        array_push($this->_inCartArr, $productID);
 
         $this->_inCartArr[$productID] -= 1;
 
         //just for testing purposes, went through a lot just to get the object to populate
         $this->_testField = $productID;
+    }
+
+    /**
+     *
+     *Removes an item from the cart array containing product ids
+     */
+    public function removeCartItem($productID) {
+//        array_push($this->_inCartArr, $productID);
+        unset($this->_inCartArr[$productID]);
+//        $this->_inCartArr[$productID] -= 1;
+
+        //just for testing purposes, went through a lot just to get the object to populate
+//        $this->_testField = $productID;
     }
 
 }
