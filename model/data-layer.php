@@ -116,6 +116,56 @@
         }
 
         /**
+         * This function inserts new shipping locations into the ship_locations table.
+         * @param $userID number
+         * @param $shipLoc string
+         * @return void
+         */
+        function setShippingAddresses($userID, $shipLoc)
+        {
+            $sql = "INSERT INTO shipping_info (ship_location, user_id) VALUES (:shipLoc, :userID)";
+            $statement = $this->_dbh->prepare($sql);
+
+            $statement->bindParam(':shipLoc', $shipLoc);
+            $statement->bindParam(':userID', $userID);
+
+            $statement->execute();
+        }
+
+        /**
+         * This function deletes a shipping location from the ship_locations table.
+         * @param $userID number
+         * @param $shipLoc string
+         * @return void
+         */
+        function deleteShippingAdd($userID, $shipLoc)
+        {
+            $sql = "DELETE FROM shipping_info WHERE ship_location = :shiploc AND user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+
+            $statement->bindParam(':shiploc', $shipLoc);
+            $statement->bindParam(':userid', $userID);
+
+            $statement->execute();
+        }
+
+        /**
+         * This function updates a user's password.
+         * @param $userID
+         * @param $pass
+         * @return void
+         */
+        function updatePass($userID, $pass)
+        {
+            $sql = "UPDATE users SET hash_pass = :hashpass WHERE user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+            $newPass = $this->hashPass($pass);
+
+            $statement->bindParam(':hashpass', $newPass);
+            $statement->bindParam(':userid', $userID);
+        }
+
+        /**
          * This method retrieves orders from the database.
          * @return array|false array of all orders, or none if there aren't any
          */
@@ -246,7 +296,7 @@
             $mailtext = 'Hello, ' . $row['f_name'] .'. Your order (order ID #' . $row['order_id'] . ") has shipped. Thank you for shopping with us! Avocado Mold Dreams hopes to see you again!";
 
             $mailtext = wordwrap($mailtext, 70);
-            mail('conorepobrien@gmail.com', 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
+            mail($row['user_email'], 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
         }
 
         /**
