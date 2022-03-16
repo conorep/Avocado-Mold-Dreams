@@ -40,7 +40,6 @@
 
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
-            //print_r($rows);
 
             $views = new Template();
             echo $views->render('views/home.html');
@@ -333,44 +332,61 @@
                     $custQs = $GLOBALS['dataLayer']->getThisUsersQuestions($_SESSION['loggedUser']->getUserID());
                     $this->_f3->set('custQuestions', $custQs);
 
-                    /*TODO: need to do validation on ALL OF THIS*/
-                    if($_POST['submit'] == 'userChanger') {
-                        $userID = $_SESSION['loggedUser']->getUserID();
-                        $updateValue = $_POST['updateInfo'];
+                    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                        /* call function: using user_id, column_name, and value */
-                        if($_POST['changeSelect'] == 'f_name') {
-                            $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
+                        /*TODO: need to do validation on ALL OF THIS*/
+                        if($_POST['submit'] == 'userChanger') {
+                            $userID = $_SESSION['loggedUser']->getUserID();
+                            $updateValue = $_POST['updateInfo'];
 
+                            /* call function: using user_id, column_name, and value */
+                            if($_POST['changeSelect'] == 'f_name') {
+                                $_SESSION['loggedUser']->setFname($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserFname($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'l_name') {
+                                $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'user_email') {
+                                $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                            else if ($_POST['changeSelect'] == 'user_phone') {
+                                $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
+                                $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
+
+                                $this->_f3->reroute('customer');
+                            }
+                        }
+
+                        // add and delete shipping addresses
+                        if($_POST['submit'] == 'newaddressSub') {
+                            $GLOBALS['dataLayer']->setShippingAddresses($_SESSION['loggedUser']->getUserID(), $_POST['addressAdd']);
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'l_name') {
-                            $_SESSION['loggedUser']->setLname($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserLname($userID, $updateValue);
 
+                        if($_POST['submit'] == 'deladdressSub') {
+                            $GLOBALS['dataLayer']->deleteShippingAdd($_SESSION['loggedUser']->getUserID(), $_POST['deleteAddressList']);
                             $this->_f3->reroute('customer');
                         }
-                        else if ($_POST['changeSelect'] == 'user_email') {
-                            $_SESSION['loggedUser']->setEmail($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserEmail($userID, $updateValue);
 
-                            $this->_f3->reroute('customer');
+                        if ($_POST['submit'] == 'passChange') {
+                            if ($_POST['updateInfo'] != $_POST['updateInfo2']) {
+                                $this->_f3->set('errorsPass["passmatch"]', "Your passwords did not match.");
+                            } else if (!ValidationFunctions::validPassword($_POST['updateInfo'])) {
+                                $this->_f3->set('errorsPass["passmatch"]', "Your password must be longer than three characters.");
+                            } else {
+                                $GLOBALS['dataLayer']->updatePass($_SESSION['loggedUser']->getUserID(), $_POST['updateInfo']);
+                                $this->_f3->reroute('logout');
+                            }
                         }
-                        else if ($_POST['changeSelect'] == 'user_phone') {
-                            $_SESSION['loggedUser']->setPhoneNum($_POST['updateInfo']);
-                            $GLOBALS['dataLayer']->updateUserPhone($userID, $updateValue);
-
-                            $this->_f3->reroute('customer');
-                        }
-                    }
-
-                    //TODO: THESE TWO
-                    if($_POST['submit'] == 'newaddressSub') {
-
-                    }
-
-                    if($_POST['submit'] == 'deladdressSub') {
 
                     }
 

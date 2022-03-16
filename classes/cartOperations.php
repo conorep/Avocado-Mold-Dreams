@@ -11,10 +11,10 @@ require_once('cart.php');
 session_start();
 
 //showing us what is in post and session from home.html
-echo("SESSION: <BR>");
+/*echo("SESSION: <BR>");
 var_dump($_SESSION);
 echo("<br>POST: <BR>");
-var_dump($_POST);
+var_dump($_POST);*/
 
 //session_destroy();
 

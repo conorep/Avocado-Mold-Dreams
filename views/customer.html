@@ -37,6 +37,22 @@ customer.html
                     <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
                             value="userChanger">Submit Change</button>
                 </form>
+    
+                <h4 class="mt-4">Would you like to change your password?</h4>
+                <h5>Please note that, if successful, this will log you out.</h5>
+                <check if="{{ isset(@errorsPass['passmatch']) }}">
+                    <span class="err ml-4">{{ @errorsPass['passmatch'] }}</span>
+                </check>
+                <form  class="my-3" method="post">
+                    <label for="firstPass" class="">Input New Password:</label>
+                    <input id="firstPass" type="password" name="updateInfo">
+                    
+                    <label for="secondPass" class="">Enter again:</label>
+                    <input id="secondPass" type="password" name="updateInfo2">
+                    
+                    <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
+                            value="passChange">Submit New Password</button>
+                </form>
             </div>
         </div>
         <!--user orders-->
@@ -66,8 +82,7 @@ customer.html
                                         <div class="hoverContent">
                                             <repeat group="{{ @GLOBALS.dataLayer->getOrderItems( @order['order_id'] ) }}"
                                                     value="{{ @itemAttr }}">
-                                                <p>Item Name: {{ @GLOBALS.dataLayer->getThisItem(@itemAttr['item_id'])
-                                                   }}</p>
+                                                <p>Item Name: {{ @GLOBALS.dataLayer->getThisItem(@itemAttr['item_id']) }}</p>
                                                 <p>Buy Qty: {{ @itemAttr['buy_qty'] }}</p>
                                             </repeat>
                                         </div>
@@ -76,12 +91,12 @@ customer.html
                                 <check if="@SESSION['loggedUser'] instanceof AmdPremUser">
                                     <true>
                                         <td>
-                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 1, @SESSION['loggedUser']->getPremStatus() ),100.00 | format }}
+                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 1, @SESSION['loggedUser']->getPremStatus() ) }}
                                         </td>
                                     </true>
                                     <false>
                                         <td>
-                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 0, 0),100.00 | format }}
+                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 0, 0) }}
                                         </td>
                                     </false>
                                 </check>
@@ -130,18 +145,18 @@ customer.html
                     <form method="post">
                         <h4>Would you like to add a new address?</h4>
                         <textarea name="addressAdd"></textarea>
-                        <button type="submit" name="submit" value="newaddressSub">Add New</button>
+                        <button type="submit" name="submit" class="mt-3 btn btn-outline-success" value="newaddressSub">Add New</button>
                     </form>
 
                     <!--delete old-->
                     <form method="post">
                         <h4>Delete an address?</h4>
-                        <select name="deleteAddressList">
+                        <select class="p-1" name="deleteAddressList">
                             <repeat group="{{@customerAddys}}" value="{{@addy}}">
                                 <option value="{{@addy['ship_location']}}">{{@addy['ship_location']}}</option>
                             </repeat>
                         </select>
-                        <button type="submit" name="submit" value="deladdressSub">Delete</button>
+                        <button type="submit" name="submit" class="btn btn-lg btn-outline-success" value="deladdressSub">Delete</button>
                     </form>
 
             </div>
