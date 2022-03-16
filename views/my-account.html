@@ -30,6 +30,9 @@ my-account.html
                         </check>
                         <input type="text" class="form-control" id="username" value="{{@username}}"
                                placeholder="enter user email here" name="username">
+                        <!--Javascript validation-->
+                        <span class="js-err" id="err-username">Please enter your username<br></span>
+                        <span class="js-err" id="err-useremail">Please enter a valid username (Hint: Try your email address)</span>
                     </div>
                     
                     <div class="mt-4">
@@ -75,6 +78,8 @@ my-account.html
                             </check>
                             <input type="text" class="form-control" id="newfname" value="{{@newfname}}"
                                    placeholder="first name here" name="newfname">
+                            <!--Javascript validation-->
+                            <span class="js-err" id="err-newfname">Please enter your first name</span>
                         </div>
                     
                         <!--last name-->
@@ -86,6 +91,7 @@ my-account.html
                             </check>
                             <input type="text" class="form-control" id="newlname" value="{{@newlname}}"
                                    placeholder="last name here" name="newlname">
+                            <span class="js-err" id="err-newlname">Please enter your last name</span>
                         </div>
                 
                     </div><!-- end fname and lname form group -->
@@ -99,6 +105,8 @@ my-account.html
                         </check>
                         <input type="text" class="form-control" id="newphone" value="{{@newphone}}"
                                placeholder="phone number here" name="newphone">
+                        <!--Javascript validation-->
+                        <span class="js-err" id="err-newphone">Please enter a valid phone number (1234567890 or 123-456-7890)</span>
                     </div>
                 
                     <!--user email-->
@@ -110,6 +118,8 @@ my-account.html
                         </check>
                         <input type="text" class="form-control" id="newemail" value="{{@newemail}}"
                                placeholder="email address here" name="newemail">
+                        <!--Javascript validation-->
+                        <span class="js-err" id="err-newemail">Please select enter a valid email address</span>
                     </div>
                 
                     <!--password-->
@@ -117,11 +127,13 @@ my-account.html
                         <label for="newpass">ACCOUNT PASSWORD:</label>
                         <!--display error if there is one -->
                         <check if="{{ isset(@errors2['pass']) }}">
-                            <span class="err" id="err-newpass">{{ @errors2['pass'] }}</span>
+                            <span class="err">{{ @errors2['pass'] }}</span>
                         </check>
                         <input type="password" class="form-control" id="newpass" value="{{@newpass}}"
                                placeholder="user password here" name="newpass">
-    
+                        <!--Javascript validation-->
+                        <span class="js-err" id="err-newpass">Password must be 7-15 characters and contain
+                        at least one number and one special character.</span>
                         <label for="newpass2">TYPE IT AGAIN:</label>
                         <!--display error if there is one -->
                         <check if="{{ isset(@errors2['pass2']) }}">
@@ -129,6 +141,8 @@ my-account.html
                         </check>
                         <input type="password" class="form-control" id="newpass2" value="{{@newpass2}}"
                                placeholder="enter again here" name="newpass2">
+                        <!--Javascript validation-->
+                        <span class="js-err" id="err-repeatPass">Passwords do not match!</span>
                     </div>
                 
                     <div class="float-end">
@@ -148,7 +162,7 @@ my-account.html
 </div>
     
 <include href="includes/jscript.html"></include>
-<!--<script src="scripts/js-validation.js"></script>-->
+<script src="scripts/js-validation.js"></script>
 <script src="scripts/generic-script.js"></script>
 
 </body>
