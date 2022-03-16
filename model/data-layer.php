@@ -201,7 +201,7 @@
             }
             /*add tax!*/
             $sum += $sum * 0.1;
-            return $sum;
+            return number_format($sum, 2);
         }
 
         /**
@@ -217,6 +217,36 @@
             $statement->bindParam(':orderid', $orderID);
             $statement->bindParam(':fdate', $thisdate);
             $statement->execute();
+        }
+
+        /**
+         * This function gets user info referenced against an orderID.
+         * @param $orderID
+         * @return mixed
+         */
+        function getInfo($orderID)
+        {
+            $sql = "SELECT * FROM orders o LEFT JOIN users u ON o.user_id = u.user_id WHERE order_id = :orderID";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':orderID', $orderID);
+            $statement->execute();
+
+            return $statement->fetch(PDO::FETCH_ASSOC);
+        }
+
+        /**
+         * This function sends an email when an order is marked fulfilled.
+         * @param $orderID number user id
+         * @return void
+         */
+        function emailCustomer($orderID)
+        {
+            $row = $this->getInfo($orderID);
+
+            $mailtext = 'Hello, ' . $row['f_name'] .'. Your order (order ID #' . $row['order_id'] . ") has shipped. Thank you for shopping with us! Avocado Mold Dreams hopes to see you again!";
+
+            $mailtext = wordwrap($mailtext, 70);
+            mail('conorepobrien@gmail.com', 'AMD Order '. $row['order_id'] . ' Completed', $mailtext, 'AMD Order Info Contained:');
         }
 
         /**
@@ -452,6 +482,12 @@
             $statement->execute();
         }
 
+        /**
+         * This function updates the user's first name.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserFname($userID, $updateVal)
         {
             $sql = "UPDATE users SET f_name = :updateval WHERE user_id = :userID";
@@ -461,6 +497,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's last name.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserLname($userID, $updateVal)
         {
             $sql = "UPDATE users SET l_name = :updateval WHERE user_id = :userID";
@@ -470,6 +513,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's email.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserEmail($userID, $updateVal)
         {
             $sql = "UPDATE users SET user_email = :updateval WHERE user_id = :userID";
@@ -479,6 +529,13 @@
 
             $statement->execute();
         }
+
+        /**
+         * This function updates the user's phone number.
+         * @param $userID
+         * @param $updateVal
+         * @return void
+         */
         function updateUserPhone($userID, $updateVal)
         {
             $sql = "UPDATE users SET user_phone = :updateval WHERE user_id = :userID";

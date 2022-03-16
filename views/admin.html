@@ -190,10 +190,10 @@ admin.html
                     <select class="bg-white w-50 p-1 d-inline-block" name="fulfill">
                         <repeat group="{{@amdOrders}}" value="{{@order}}">
                             <check if="@order['is_fulfilled'] == 0">
-                                <option name='orderfill' value="{{@order['order_id']}}" >
+                                <option name='orderfill' value="{{@order['user_id']}}" >
                                     Order ID: {{@order['order_id']}}
                                     User ID: {{@order['user_id']}}
-                                    Total: ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], @order['is_premium'], @order['prem_percent'] ) }}
+                                    <!--Total: ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], @order['is_premium'], @order['prem_percent'] ) }}-->
                                 </option>
                             </check>
                         </repeat>

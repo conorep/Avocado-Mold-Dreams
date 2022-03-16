@@ -225,6 +225,13 @@
                         }
                     }
 
+                    //filled order code
+                    if ($_POST['submit'] == 'orderFill') {
+                        $GLOBALS['dataLayer']->emailCustomer($_POST['fulfill']);
+                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
+                        $this->_f3->reroute('admin');
+                    }
+
                     //question response code
                     if($_POST['submitQ']) {
                         $hiddenQID = substr($_POST['answers'], 7);
@@ -255,22 +262,20 @@
                         $GLOBALS['dataLayer']->changeUserType($_POST['addition'], 1);
                         $this->_f3->reroute('admin');
                     }
+
                     //admin remove code
                     if ($_POST['submit'] == 'adminRemove') {
                         $GLOBALS['dataLayer']->changeUserType($_POST['removal'], 0);
                         $this->_f3->reroute('admin');
                     }
-                    //filled order code
-                    if ($_POST['submit'] == 'orderFill') {
-                        $GLOBALS['dataLayer']->completeOrder($_POST['fulfill']);
-                        $this->_f3->reroute('admin');
-                    }
+
                     //make premium code
                     if ($_POST['submit'] == 'premMake') {
                         $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newPremUserID'], 1);
                         $GLOBALS['dataLayer']->setPremPercentage($_POST['newPremUserID'], $_POST['percentInput']);
                         $this->_f3->reroute('admin');
                     }
+
                     //make standard code
                     if ($_POST['submit'] == 'premTake') {
                         $GLOBALS['dataLayer']->makeOrTakePrem($_POST['newStandardUserID'], 0);

@@ -76,12 +76,12 @@ customer.html
                                 <check if="@SESSION['loggedUser'] instanceof AmdPremUser">
                                     <true>
                                         <td>
-                                            {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 1, @SESSION['loggedUser']->getPremStatus() ) }}
+                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 1, @SESSION['loggedUser']->getPremStatus() ),100.00 | format }}
                                         </td>
                                     </true>
                                     <false>
                                         <td>
-                                            {{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 0, 0) }}
+                                            ${{ @GLOBALS.dataLayer->getOrderTotal( @order['order_id'], 0, 0),100.00 | format }}
                                         </td>
                                     </false>
                                 </check>
