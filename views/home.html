@@ -17,7 +17,8 @@ home.html
                     <div class="card my-3">
                         <img src="images/inventory/{{ @item['pic_link'] }}" class="card-img-top p-2" alt="{{ @item['description'] }}">
                         <div class="card-body">
-                            <h3 class="card-title">Price ${{ @item['price'] }}</h3>
+                            <h3 class="card-title">{{ @item['item_name'] }}</h3>
+                            <h5 class="card-text">Price ${{ @item['price'] }}</h5>
                             <p class="card-text">{{ @item['description'] }}</p>
                 
                             <button class="btn btn-outline-success float-end addToCart" value="{{@item['item_id']}}"

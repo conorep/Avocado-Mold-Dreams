@@ -34,6 +34,7 @@ admin.html
                     <repeat group="{{ @questionStuff }}" value="{{ @question }}">
                         <check if="@question['is_answered'] == 0">
                             <div class="hiddenQClass mx-2 mx-md-3 mt-4" id="hiddenQ{{@question['q_id']}}">
+                                <p>User's question:</p>
                                 <p><strong>{{@question['q_text']}}</strong></p>
                                 <textarea class="bg-white form-control" name="{{@question['q_id']}}" id="{{@question['q_id']}}"></textarea>
                                 <button class="float-end btn btn-lg btn-outline-success d-inline-block my-3"

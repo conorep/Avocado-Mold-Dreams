@@ -27,17 +27,9 @@
          */
         function home()
         {
-
             $_SESSION['adminOrCusty'] = 0;
             //call modal method
             $this->modalOps();
-
-            //if add to cart button or other submit is clicked
-            if ($_SERVER['REQUEST_METHOD'] == 'POST'){
-
-                //how to get item from post array?
-
-            }
 
             $rows = $GLOBALS['dataLayer']->getItems();
             $this->_f3->set('amdProducts', $rows);
@@ -511,9 +503,13 @@
 
             // Check if image file is actual or fake image
             if(isset($_POST["submit"])) {
-                $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
-                if(!$check) {
-                    $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
+                if(!empty($_FILES['uploadPic'])) {
+                    $check = getimagesize($_FILES["uploadPic"]["tmp_name"]);
+                    if(!$check) {
+                        $this->_f3->set('errorsPic["realImage"]', 'This does not appear to be a picture.');
+                    }
+                } else {
+                    $this->_f3->set('errorsPic["realImage"]', 'Pic name cannot be blank.');
                 }
             }
             // Check if file already exists here. IS THIS NEEDED?
