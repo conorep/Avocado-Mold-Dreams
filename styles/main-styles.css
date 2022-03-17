@@ -59,6 +59,10 @@ main-styles.css
     display: none;
 }
 
+sessionInfo {
+    color: red;
+}
+
 #newItemForms input, label {
     display: block;
 }

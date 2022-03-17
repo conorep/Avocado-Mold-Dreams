@@ -31,11 +31,20 @@ home.html
         
     </div>
 
+<div>
+
+</div>
 
 
 
+    <div id="floatyCart" >
+        <sessionInfo id="sessionInfo">
+            <check if="{{ @cartExists }}">
+            <true>True</true>
+            <false>False</false>
+        </check>
+        </sessionInfo>
 
-    <div id="floatyCart">
         <a href="cart">
         <button type="button" class="btn btn-primary">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
@@ -54,6 +63,15 @@ home.html
 <!--This script posts to the page below, does what is in the php (session change), and makes that change available-->
 <script>
 //Pat's
+
+    $( document ).ready(function() {
+        //if janky information i am passing through custom tag has something (if cart exists), make cart button visible
+        if($("#sessionInfo").html()==="\n" +
+            "                        True\n" +
+            "                    ") {
+            $("#floatyCart").css("display", "unset");
+        }
+    });
 
     $(".addToCart").on("click",function(){
         let productValue = $(this).val();
