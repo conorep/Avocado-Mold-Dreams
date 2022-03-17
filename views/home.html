@@ -76,7 +76,7 @@ home.html
         let productValue = $(this).val();
         $.ajax({
             type: "POST",
-            url: "classes/ajaxTest.php",
+            url: "model/ajaxTest.php",
             data: {val: productValue},
             success: function(){
                 //alert("cart added to");

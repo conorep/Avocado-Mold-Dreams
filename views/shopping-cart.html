@@ -62,7 +62,7 @@ shopping-cart.html
                 context: this,
                 // vars: {id:productID},
                 type: "POST",
-                url: "classes/cartOperations.php",
+                url: "model/cartOperations.php",
                 data: {val: productID, flag: "add"},
                 success: function(){
                     //alert("success reached")
@@ -85,7 +85,7 @@ shopping-cart.html
             context: this,
             // vars: {id:productID},
             type: "POST",
-            url: "classes/cartOperations.php",
+            url: "model/cartOperations.php",
             data: {val: productID, flag: "sub"},
             success: function(){
                 //alert("success reached")
@@ -112,7 +112,7 @@ shopping-cart.html
             context: this,
             // vars: {id:productID},
             type: "POST",
-            url: "classes/cartOperations.php",
+            url: "model/cartOperations.php",
             data: {val: productID, flag: "remove"},
             success: function(){
                 $("#container" +productID).html("");
