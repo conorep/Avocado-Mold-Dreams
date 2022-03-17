@@ -50,7 +50,7 @@ function validateNewUser()
 
     //validate phone number
     let phone = document.getElementById("newphone").value;
-    if(!validPhone(phone)){
+    if(!validPhone(phone) && phone !== ''){
         document.getElementById("err-newphone").style.display = "block";
         isValid = false;
     }
@@ -112,8 +112,6 @@ function validateQuestion()
 
     return isValid;
 }
-
-
 
 /*Helper functions*/
 

@@ -3,13 +3,12 @@
     /*This class handles data validation from view/controller input.*/
     class ValidationFunctions
     {
-        //TODO: this is probably too simple of a validation function
+
         static function validUserName($user)
         {
-            return strlen($user) >= 3;
+            return strlen($user) >= 7;
         }
 
-        //TODO: this is too simple. need to set rules. how many characters, what in it, etc. also, need to use it.
         static function validPassword($pass)
         {
             return strlen($pass) >= 3;
