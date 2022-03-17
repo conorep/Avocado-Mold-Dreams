@@ -60,7 +60,14 @@ main-styles.css
 }
 
 sessionInfo {
-    color: red;
+    display: none;
+}
+
+#circle {
+    background: blue;
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
 }
 
 #newItemForms input, label {
