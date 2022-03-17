@@ -59,7 +59,7 @@ shopping-cart.html
     <!--For increasing quantity if clicking + symbol-->
         $(".add").on("click",function(){
             let productID= $(this).attr('id').substring(3);
-            alert(productID);
+            //alert(productID);
             $.ajax({
                 flag: "add",
                 context: this,
@@ -68,10 +68,10 @@ shopping-cart.html
                 url: "classes/cartOperations.php",
                 data: {val: productID, flag: "add"},
                 success: function(){
-                    alert("success reached")
+                    //alert("success reached")
 
                     let nextVal = parseInt($(this).prev().val())+1;
-                    alert("next value is: " +nextVal);
+                    //alert("next value is: " +nextVal);
                     $(this).prev().val(nextVal);
                 }
             });
@@ -82,8 +82,8 @@ shopping-cart.html
     $(".sub").on("click",function(){
         let productID= $(this).attr('id').substring(3);
         let productQuantity= $("#counter"+productID).val();
-        alert("product quantity is: " +productQuantity);
-        alert(productID);
+        //alert("product quantity is: " +productQuantity);
+        //alert(productID);
         $.ajax({
             context: this,
             // vars: {id:productID},
@@ -91,14 +91,14 @@ shopping-cart.html
             url: "classes/cartOperations.php",
             data: {val: productID, flag: "sub"},
             success: function(){
-                alert("success reached")
+                //alert("success reached")
                 //if success is reached when quantity is 1, nuke the inner html
                 if(productQuantity==1) {
                     $("#container" +productID).html("");
                 }
                 else {
                     let nextVal = parseInt($(this).next().val())-1;
-                    alert("next value is: " +nextVal);
+                    //alert("next value is: " +nextVal);
                     $(this).next().val(nextVal);
                 }
 
@@ -110,7 +110,7 @@ shopping-cart.html
     <!--For removing item from cart completely when remove button is clicked-->
     $(".remove").on("click",function(){
         let productID= $(this).attr('id').substring(6);
-        alert("product id is" +productID);
+        //alert("product id is" +productID);
         $.ajax({
             context: this,
             // vars: {id:productID},
@@ -127,14 +127,14 @@ shopping-cart.html
 
     /*    $(".add").click(function() {
             let productID= $(this).attr('id').substring(3);
-            alert(productID);
+            //alert(productID);
             $('.counter').html(function(i, val) {
                 let incQuantity = true;
                 $.ajax({
                     url: 'classes/cartOperations.php',
                     type: 'POST',
                     data: {incQuantity: incQuantity},
-                    success: function() { alert('Request has returned') }
+                    success: function() { //alert('Request has returned') }
                 });
                 return +val+1;
             });
