@@ -5,7 +5,7 @@ created by Conor O'Brien, Pat Tagliavia, and Regina Vanata
 ## A BRIEF WALKTHROUGH AND DESCRIPTION:
 Welcome to our web store! Upon entering, you will find a database-generated list of all items for sale. Click an item to add it to your shopping cart.
 
-The my account page allows you to create a new customer account or login to your active customer portal. It will route appropriately based on whether or not a customer account is an admin (customer to customer portal, admin to admin portal). Passwords are hashed and stored in the database.
+The 'my account' page allows you to create a new customer account or login to your active customer portal. It will route appropriately based on whether or not a customer account is an admin (customer to customer portal, admin to admin portal). Passwords are hashed and stored in the database.
 
 If you log into an active customer account, you will be able to verify or alter your personal contact info and shipping information. You will also be able to review your order history and whether or not the items have shipped, below which you can see all submitted questions and their respective answers.
 
