@@ -65,9 +65,11 @@ main-styles.css
 
 #circle {
     position: fixed;
+    font-size: 1.3rem;
     bottom: 5%;
     right: 2%;
     background: #8cde78;
+    color: white;
     border-radius: 50%;
     width: 100px;
     height: 100px;
