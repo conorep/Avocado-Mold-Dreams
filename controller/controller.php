@@ -416,9 +416,20 @@
          */
         function cart()
         {
+            if(!isset($_SESSION['loggedUser'])) {
+
+                //asdasdasdasd
+                $this->_f3->reroute('my-account');
+            }
+            if(!isset($_SESSION['sessionCart'])) {
+                $this->_f3->reroute('/');
+            }
+
             $_SESSION['adminOrCusty'] = 0;
             //call modal method
             $this->modalOps();
+
+
 
 
             $productArr = $_SESSION['sessionCart']->getInCartArr();
