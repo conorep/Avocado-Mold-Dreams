@@ -6,6 +6,10 @@ shopping-cart.html
 <!--This is the shopping cart view page.-->
 <include href="includes/header.html"></include>
 
+<form method="post">
+    <button class="float-end btn btn-lg btn-outline-success me-4" type="submit" name="submit" value="orderFinish">Place Order</button>
+</form>
+
 <h3 class="text-center">Shopping Cart</h3>
 <div class="container-fluid row justify-content-center">
     <div class="container border border-dark m-3 col-md-10 col-12" id="">
@@ -19,7 +23,7 @@ shopping-cart.html
             </thead>
             <tbody>
             <repeat group="{{ @cartItems }}" value="{{ @item }}">
-                <cartItem >
+                <cartItem>
                     <tr id="container{{@item['item_id']}}">
                         <td>
                             <p>{{@item['item_id']}}</p>

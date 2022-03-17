@@ -417,20 +417,16 @@
         function cart()
         {
             if(!isset($_SESSION['loggedUser'])) {
-
-                //asdasdasdasd
                 $this->_f3->reroute('my-account');
             }
             if(!isset($_SESSION['sessionCart'])) {
                 $this->_f3->reroute('/');
             }
 
+
             $_SESSION['adminOrCusty'] = 0;
             //call modal method
             $this->modalOps();
-
-
-
 
             $productArr = $_SESSION['sessionCart']->getInCartArr();
 
@@ -442,6 +438,16 @@
             print_r($productArr);
             echo("<br><br>products returned from db: <BR>");
             print_r($cartRows);*/
+
+            /*run 'create order' functions here*/
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                if ($_POST['submit'] == 'orderFinish') {
+/*                    $GLOBALS['dataLayer']->setNewOrders($_SESSION['loggedUser']->getUserID());
+                    $someVar = $GLOBALS['dataLayer']->getLatestOrderId();
+                    $GLOBALS['dataLayer']->insertOrderItems( $_SESSION['loggedUser']->getUserID(), $itemID, $itemQTY );*/
+
+                }
+            }
 
             $views = new Template();
             echo $views->render('views/shopping-cart.html');
