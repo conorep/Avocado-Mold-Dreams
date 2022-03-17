@@ -676,9 +676,9 @@
 
         /*MAKE ORDER STATEMENTS*/
 
-        /* $GLOBALS['dataLayer']->setNewOrders($_SESSION['loggedUser']->getUserID()); */
+        /* $GLOBALS['dataLayer']->setNewOrder($_SESSION['loggedUser']->getUserID()); */
         /* $someVar = $GLOBALS['dataLayer']->getLatestOrderId(); */
-        /* $GLOBALS['dataLayer']->insertOrderItems( $_SESSION['loggedUser']->getUserID(), $itemID, $itemQTY ) */
+        /* $GLOBALS['dataLayer']->insertOrderItems( $someVar, $itemID, $itemQTY ) */
 
         // this will get you user id
         /* $_SESSION['loggedUser']->getUserID() */

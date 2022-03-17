@@ -337,7 +337,6 @@
 
                     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                        /*TODO: need to do validation on ALL OF THIS*/
                         if($_POST['submit'] == 'userChanger') {
                             $userID = $_SESSION['loggedUser']->getUserID();
                             $updateValue = $_POST['updateInfo'];
@@ -415,7 +414,6 @@
                 $this->_f3->reroute('/');
             }
 
-
             $_SESSION['adminOrCusty'] = 0;
             //call modal method
             $this->modalOps();
@@ -426,18 +424,25 @@
             $cartRows = $GLOBALS['dataLayer']->getItemsForCart($productArr);
             $this->_f3->set('cartItems', $cartRows);
 
-/*            echo("<br><br>product array: <BR>");
-            print_r($productArr);
-            echo("<br><br>products returned from db: <BR>");
-            print_r($cartRows);*/
-
             /*run 'create order' functions here*/
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 if ($_POST['submit'] == 'orderFinish') {
-/*                    $GLOBALS['dataLayer']->setNewOrders($_SESSION['loggedUser']->getUserID());
-                    $someVar = $GLOBALS['dataLayer']->getLatestOrderId();
-                    $GLOBALS['dataLayer']->insertOrderItems( $_SESSION['loggedUser']->getUserID(), $itemID, $itemQTY );*/
+                    //create new order
+                    $GLOBALS['dataLayer']->setNewOrder($_SESSION['loggedUser']->getUserID());
 
+                    //get the order num created by setNewOrder
+                    $someVar = $GLOBALS['dataLayer']->getLatestOrderId();
+
+                    //insert all cart items into the order_items table
+                    $arrayOfItems = $_SESSION['sessionCart']->getInCartArr();
+
+                    //iterate through and add to order_items table
+                    foreach($arrayOfItems as $itemNumb => $itemNum) {
+                        $GLOBALS['dataLayer']->insertOrderItems( $someVar, $itemNum, $_SESSION['sessionCart']->getProductQuantity($itemNum) );
+                    }
+                    $_SESSION['sessionCart']->setInCartArr(array());
+
+                    $this->_f3->reroute('customer');
                 }
             }
 
