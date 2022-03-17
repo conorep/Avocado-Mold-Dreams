@@ -67,7 +67,7 @@ main-styles.css
     position: fixed;
     bottom: 5%;
     right: 2%;
-    background: blue;
+    background: #8cde78;
     border-radius: 50%;
     width: 100px;
     height: 100px;
@@ -83,6 +83,10 @@ main-styles.css
 
 
 /*class styles*/
+
+.move {
+
+}
 
 .hiddenQClass {
     display: none;
