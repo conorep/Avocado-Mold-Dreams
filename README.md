@@ -36,7 +36,7 @@ OrchOttersPass
  * Prepared statements are used in the site's database-communicating functions.
 
 4. Data can be added and viewed.
- * The account page, home page (with displayed products for sale), admin page, and customer page all haev unique ways of retrieving, altering, and adding data to the database.
+ * The account page, home page (with displayed products for sale), admin page, and customer page all have unique ways of retrieving, altering, and adding data to the database.
 
 5. Has a history of commits from all team members to a Git repository. Commits are clearly commented.
  * Conor, Pat, and Regina all have commits in the shared Git repo. Each commit contains clear commentary.
@@ -45,17 +45,17 @@ OrchOttersPass
  * The page uses several classes for operations, including a standard user class, a premium user class (containing applicable discounts) that extends the standard user, and a cart class for creation of user orders.
 
 7. Contains full Docblocks for all PHP files and follows PEAR standards.
- * 
+ * All functions have docblocks, and the PHP follows PEAR standards.
 
 8. Has full validation on the client side through JavaScript and server side through PHP.
- * 
+ * JavaScript validation checks input from the client side, while the controller PHP file checks for all sorts of validation server side (in addition to the data validation class).
 
 9. All code is clean, clear, and well-commented. DRY (Don't Repeat Yourself) is practiced.
- * 
+ * The code is clean, clear, comments, and EXPANSIVE.
 
 10. Your submission shows adequate effort for a final project in a full-stack web development course.
  * This submission shows a strong understanding + usage of the F3 framework, in addition to php, css, js, and html.
  * The database is complex and well-designed.
 
 11. BONUS:  Incorporates Ajax that access data from a JSON file, PHP script, or API. If you implement Ajax, be sure to include how you did so in your readme file.
- *
+ * Our project incorporates Ajax to gather input of item addition to/subtraction from the shopping cart.
