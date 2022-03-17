@@ -6,12 +6,12 @@
 
         static function validUserName($user)
         {
-            return strlen($user) >= 7;
+            return strlen($user) >= 3;
         }
 
         static function validPassword($pass)
         {
-            return strlen($pass) >= 3;
+            return strlen($pass) >= 7;
         }
 
         /**
