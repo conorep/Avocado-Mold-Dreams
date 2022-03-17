@@ -26,7 +26,6 @@
 
     $f3->route('GET|POST /', function ()
     {
-        session_destroy();
         $GLOBALS['con']->home();
     });
 
