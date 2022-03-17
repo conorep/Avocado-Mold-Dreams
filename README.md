@@ -59,3 +59,7 @@ OrchOttersPass
 
 11. BONUS:  Incorporates Ajax that access data from a JSON file, PHP script, or API. If you implement Ajax, be sure to include how you did so in your readme file.
  * Our project incorporates Ajax to gather input of item addition to/subtraction from the shopping cart.
+
+
+![Orchestrating Otters UML](https://user-images.githubusercontent.com/91850829/158900733-3ec02026-61a7-460d-823b-10bd8badc203.png)
+
