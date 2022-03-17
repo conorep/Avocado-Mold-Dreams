@@ -65,7 +65,8 @@ main-styles.css
 
 #circle {
     position: fixed;
-    top: 20%;
+    bottom: 5%;
+    right: 2%;
     background: blue;
     border-radius: 50%;
     width: 100px;
@@ -155,6 +156,7 @@ main-styles.css
 
 body {
     background-image: linear-gradient(90deg, white, #c4a68e);
+    overflow-x: hidden;
 }
 
 
