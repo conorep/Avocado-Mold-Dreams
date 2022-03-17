@@ -52,6 +52,13 @@ main-styles.css
     display: none;
 }
 
+#floatyCart {
+    position: absolute;
+    right: 100px;
+    bottom: 150px;
+    display: none;
+}
+
 #newItemForms input, label {
     display: block;
 }
