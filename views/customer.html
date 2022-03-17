@@ -24,15 +24,20 @@ customer.html
                 <p>Phone Number: {{@SESSION.loggedUser->getPhoneNum()}}</p>
                 
                 <h4>Would you like to change any of these values?</h4>
-                <form  class="mb-3" method="post">
-                    <select name="changeSelect" class="p-1 me-1">
+                <form  class="mb-3" method="post" id="changeInfo">
+                    <select name="changeSelect" class="p-1 me-1" id="choices">
                         <option selected disabled>Select One</option>
                         <option value="f_name">First Name</option>
                         <option value="l_name">Last Name</option>
                         <option value="user_email">Email Address</option>
                         <option value="user_phone">Phone Number</option>
                     </select>
-                    <label class="d-inline-block me-3"><input type="text" name="updateInfo"></label>
+
+                    <label class="d-inline-block me-3"><input type="text" name="updateInfo" id="newInfo"></label>
+                    <span class="js-err" id="err-fname">Please enter a first name</span>
+                    <span class="js-err" id="err-lname">Please enter a last name</span>
+                    <span class="js-err" id="err-email">Please enter a valid email</span>
+                    <span class="js-err" id="err-phone">Phone must be in valid format (1234567891 or 123-456-7891)</span>
                     <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
                             value="userChanger">Submit Change</button>
                 </form>
@@ -42,13 +47,16 @@ customer.html
                 <check if="{{ isset(@errorsPass['passmatch']) }}">
                     <span class="err ml-4">{{ @errorsPass['passmatch'] }}</span>
                 </check>
-                <form  class="my-3" method="post">
+                <form  class="my-3" method="post" id="newPass">
                     <label for="firstPass" class="">Input New Password:</label>
                     <input id="firstPass" type="password" name="updateInfo">
+                    <span class="js-err" id="err-firstPass">Please enter a password</span>
                     
                     <label for="secondPass" class="">Enter again:</label>
                     <input id="secondPass" type="password" name="updateInfo2">
-                    
+                    <span class="js-err" id="err-passMatch">Passwords do not match</span>
+                    <span class="js-err" id="err-passCriteria">Password must be between 7-15 characters and contain at least 1 letter and 1 special character</span>
+
                     <button class="btn btn-outline-success float-end me-4" type="submit" name="submit"
                             value="passChange">Submit New Password</button>
                 </form>
@@ -141,9 +149,10 @@ customer.html
                 </repeat>
                 
                     <!--add new-->
-                    <form method="post">
+                    <form method="post" id="addAddress">
                         <h4>Would you like to add a new address?</h4>
-                        <textarea name="addressAdd"></textarea>
+                        <textarea name="addressAdd" id="addressAdd"></textarea>
+                        <span class="js-err" id="err-addAddress">Address field cannot be empty</span>
                         <button type="submit" name="submit" class="mt-3 btn btn-outline-success" value="newaddressSub">Add New</button>
                     </form>
 

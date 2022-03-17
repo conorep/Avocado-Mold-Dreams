@@ -9,6 +9,7 @@ document.getElementById("newUser").onsubmit = validateNewUser;
 //execute validation for question form
 document.getElementById("questionForm").onsubmit = validateQuestion;
 
+
 function validateLogin()
 {
     let isValid = true;
@@ -25,6 +26,8 @@ function validateLogin()
         document.getElementById("err-useremail").style.display = "block";
         isValid = false;
     }
+
+    //validate password (empty field only)
 
     return isValid;
 }
@@ -112,6 +115,7 @@ function validateQuestion()
 
     return isValid;
 }
+
 
 /*Helper functions*/
 
