@@ -386,7 +386,7 @@
                                 $this->_f3->set('errorsPass["passmatch"]', "Your password must be longer than three characters.");
                             } else {
                                 $GLOBALS['dataLayer']->updatePass($_SESSION['loggedUser']->getUserID(), $_POST['updateInfo']);
-                                $this->_f3->reroute('logout');
+                                $this->_f3->reroute('logOut');
                             }
                         }
 

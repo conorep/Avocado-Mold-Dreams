@@ -196,22 +196,6 @@
         }
 
         /**
-         * This function updates a user's password.
-         * @param $userID
-         * @param $pass
-         * @return void
-         */
-        function updatePass($userID, $pass)
-        {
-            $sql = "UPDATE users SET hash_pass = :hashpass WHERE user_id = :userid";
-            $statement = $this->_dbh->prepare($sql);
-            $newPass = $this->hashPass($pass);
-
-            $statement->bindParam(':hashpass', $newPass);
-            $statement->bindParam(':userid', $userID);
-        }
-
-        /**
          * This method retrieves orders from the database.
          * @return array|false array of all orders, or none if there aren't any
          */
@@ -620,6 +604,24 @@
             $statement->bindParam(':userID', $userID);
 
             $statement->execute();
+        }
+
+        /**
+         * This function updates a user's password.
+         * @param $userID
+         * @param $pass
+         * @return void
+         */
+        function updatePass($userID, $pass)
+        {
+            $sql = "UPDATE users SET hash_pass = :hashpass WHERE user_id = :userid";
+            $statement = $this->_dbh->prepare($sql);
+            $newPass = $this->hashPass($pass);
+
+            $statement->bindParam(':hashpass', $newPass);
+            $statement->bindParam(':userid', $userID);
+            $statement->execute();
+
         }
 
         /**
