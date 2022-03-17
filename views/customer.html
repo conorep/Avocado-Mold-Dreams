@@ -3,13 +3,12 @@ Conor, Pat, Regina
 SDEV328 AMD
 customer.html
 -->
+<!--This page contains the customer panel code.-->
 <include href="includes/header.html"></include>
 <h3 class="text-center text-white">Customer Panel. Welcome, {{ @SESSION.loggedUser->getFname() }}.</h3>
 <check if="@SESSION.loggedUser instanceof AmdPremUser">
     <h3 class="text-center {{@SESSION.loggedUser->getPremColor()}}"><i>Thank you for being a loyal member! You currently have a {{@SESSION.loggedUser->getPremStatus() * 100}}% discount.</i></h3>
 </check>
-
-<!--TODO: customer info, 'add shipping addresses' function, list shipping addresses, orders history, reset pass-->
 <!--customer info-->
 <div class="row justify-content-center">
     

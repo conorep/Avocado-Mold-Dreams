@@ -1,4 +1,5 @@
 <?php
+    /*This index page provides the routing calls to site pages.*/
     //output buffering
     ob_start();
 

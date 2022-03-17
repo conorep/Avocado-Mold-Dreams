@@ -3,7 +3,7 @@
 * SDEV328 AMD
 * generic-script.js
 * */
-
+/*This page handles an open/close onclick event.*/
 let userCheck = document.getElementById("newUserForms");
 
 //toggle on and off new user box

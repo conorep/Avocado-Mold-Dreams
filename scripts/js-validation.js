@@ -1,3 +1,4 @@
+/*This page provides client-side validation.*/
 
 //execute validation function for login
 document.getElementById("adminLogin").onsubmit = validateLogin;

@@ -1,5 +1,5 @@
 <?php
-
+    /*This class handles the function calls and routing of input from views to the model, while also handling data from the model to views.*/
     //328/Avocado-Mold-Dreams/controller/controller.php
     //NOTE: adminorcusty var is used to check whether to display a link to login page. pages with a 0 will have the account login route button visible
     class Controller

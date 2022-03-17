@@ -1,6 +1,6 @@
 <?php
 
-    //TODO: MOST OF THIS PAGE
+    /*This class handles data validation from view/controller input.*/
     class ValidationFunctions
     {
         //TODO: this is probably too simple of a validation function

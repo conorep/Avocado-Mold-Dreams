@@ -1,6 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/../amd-config.php';
 
+    /*This class is our DataLayer class, which insert/updates/deletes/otherwise alters the connected database.*/
     class DataLayer
     {
         //add field to store the db connection object
@@ -346,9 +347,6 @@
             $statement->execute();
         }
 
-
-        //TODO: set a qty in item_stock table after this. need item_id, though
-
         /**
          * This method allows addition of new items to the database.
          * @param $itemName string item name
@@ -393,7 +391,6 @@
 
         }
 
-        //TODO: make an admin function to alter existing stock nums.
         /**
          * This function changes the qty of the item reflecting the itemID sent in.
          * @param $itemID number the item ID to alter
@@ -410,7 +407,6 @@
             $statement->execute();
         }
 
-        //TODO: NEED TO CHECK IF THERE IS ALREADY ITEM STOCK WHEN USING THIS
         /**
          * This function add an item and its quantity into the database.
          * @param $itemID number id of item to add
@@ -680,6 +676,12 @@
 
         /*MAKE ORDER STATEMENTS*/
 
+        /* $GLOBALS['dataLayer']->setNewOrders($_SESSION['loggedUser']->getUserID()); */
+        /* $someVar = $GLOBALS['dataLayer']->getLatestOrderId(); */
+        /* $GLOBALS['dataLayer']->insertOrderItems( $_SESSION['loggedUser']->getUserID(), $itemID, $itemQTY ) */
+
+        // this will get you user id
+        /* $_SESSION['loggedUser']->getUserID() */
         /**
          * This function inserts a new order into the orders table. User ID could be null if there is no loggedUser,
          * which is allowable by the orders table.
@@ -693,7 +695,6 @@
             $statement->bindParam(":userid", $userID);
             $statement->execute();
         }
-
 
         /**
          * This function returns the latest orderID.
@@ -713,7 +714,7 @@
          * function to know what to reference.
          * @return void
          */
-        function insertOrderItem($orderID, $itemID, $itemQTY)
+        function insertOrderItems($orderID, $itemID, $itemQTY)
         {
             $sql = "INSERT INTO order_items (order_id, item_id, buy_qty) VALUES (:orderID, :itemID, :buyQTY)";
             $statement = $this->_dbh->prepare($sql);

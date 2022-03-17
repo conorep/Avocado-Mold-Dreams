@@ -1,4 +1,4 @@
-//toggle appropriate question and answer boxes, toggle appropriate tables
+//This page handles the ability to toggle appropriate question and answer boxes, toggle appropriate tables.
 
 window.onload = function() {
     //this is the select element's id

@@ -1,4 +1,5 @@
 <?php
+//This page handles creation and input to the session cart.
 //output buffering
 ob_start();
 

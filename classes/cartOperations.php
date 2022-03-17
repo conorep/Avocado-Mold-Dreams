@@ -1,4 +1,5 @@
 <?php
+    /*This class handles the add, subtract, and other functions of the shopping cart ajax stuff.*/
 //output buffering
 ob_start();
 
@@ -30,7 +31,7 @@ if(isset($_POST['val'])) {
     }
 
     if($_POST['flag']=="sub") {
-        //if quanity is already 1
+        //if quantity is already 1
         if($_SESSION['sessionCart']->getVal($_POST['val']) == 1) {
             $_SESSION['cartMessage2'] = "quantity is 1, removal will take place";
             $_SESSION['sessionCart']->removeCartItem((int)$_POST['val']);

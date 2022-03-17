@@ -1,6 +1,6 @@
 <?php
 
-    //this file creates the Cart object
+    //This class file creates the Cart object.
 class Cart
 {
     //NOTE: no need to declare types in PHP.
